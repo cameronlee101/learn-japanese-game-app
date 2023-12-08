@@ -1,0 +1,16 @@
+.navbarLink {
+    @apply  text-white/80 no-underline relative prose prose-xl font-semibold
+    hover:text-white transition duration-300 ease-in-out
+    after:bg-white/80 after:bottom-0 after:left-0 after:duration-300 after:origin-center after:w-full after:absolute
+    after:hover:origin-center;
+}
+
+.navbarLink::after {
+    content: '';
+    transform: scaleX(0);
+    height: 2px;
+}
+  
+.navbarLink:hover::after {
+    transform: scaleX(1);
+}
