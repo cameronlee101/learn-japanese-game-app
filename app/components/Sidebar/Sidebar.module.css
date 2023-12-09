@@ -6,27 +6,28 @@
 .sidebar {
     width: 10rem;
     height: 100%;
-    padding-top: 3.3rem;
+    padding-top: 4rem;
     background-color: #a9a9a9; 
     transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
     z-index: 10;
 }
 .sidebar[closed-sidebar='true'] {
     width: 0;
-    padding: 0;
+    padding-right: 0;
 }
 
 .menuButton {
     position: absolute;
-    margin-left: 3.3rem;
-    margin-top: 0.8rem;
     font-size: x-large;
     width: 3.3rem;
     height: 3.3rem;
     padding: 0.6rem;
+    margin-left: 3.4rem;
+    margin-top: 1rem;
+    background-color: #a9a9a9; 
     border-radius: 20%;
     transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-    background-color: #a9a9a9; 
+    z-index: 11;
 }
 .menuButton[closed-sidebar='true'] {   
     transform: translateX(-30px);
@@ -37,7 +38,6 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    transition: all 0.3s linear;
     -webkit-user-select: none;
     user-select: none;
 }

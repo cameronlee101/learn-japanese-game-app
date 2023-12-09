@@ -28,7 +28,6 @@ const Sidebar = () => {
 
     const toggleSidebar = () => {
         setIsOpen(!isOpen)
-        console.log('test')
     }
 
     return (
@@ -49,7 +48,13 @@ const Sidebar = () => {
                             closed-sidebar={(!isOpen).toString()}
                             key={item.name}
                         >
-                            <Link href={item.href} className={styles.sidebarLink}>{item.name}</Link>
+                            <Link 
+                                href={item.href} 
+                                className={styles.sidebarLink}
+                                onClick={toggleSidebar}
+                            >
+                                {item.name}
+                            </Link>
                         </li>
                     ))}
                 </ul>
