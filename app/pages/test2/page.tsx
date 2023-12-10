@@ -1,14 +1,11 @@
-import Link from 'next/link'
 import React from 'react'
 
-function page() {
+function Test2() {
   return (
-    <main className='flex flex-col text-center items-center justify-center h-full w-full'>
-      <p>current pages:</p>
-      <Link href='/pages/test1'>test1</Link>
-      <Link href='/'>home</Link>
+    <main className='flex flex-col items-center text-center min-h-screen min-w-full p-12'>
+      <h1 className='text-5xl font-semibold'>Test2</h1>
     </main>
   )
 }
 
-export default page
+export default Test2

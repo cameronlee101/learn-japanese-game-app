@@ -10,16 +10,16 @@ const sidebarItems = [
         href: '/',
     },
     {
-        name: 'Thing1',
-        href: '/',
+        name: 'Flashcards',
+        href: '/pages/flashcards-select',
     },
     {
-        name: 'Thing2',
-        href: '/',
+        name: 'Test1',
+        href: '/pages/test1',
     },
     {
-        name: 'Thing3',
-        href: '/',
+        name: 'Test2',
+        href: '/pages/test2',
     },
 ]
 
