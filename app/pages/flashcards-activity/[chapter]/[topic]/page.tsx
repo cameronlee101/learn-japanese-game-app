@@ -17,7 +17,7 @@ function FlashcardsActivity({
   }, [])
 
   return (
-    <main className='flex flex-col items-center text-center min-h-screen min-w-full p-12'>
+    <main className='main-center'>
       <h1 className='text-5xl font-semibold'>{selectedChapterStr} {selectedTopicStr} Flashcards</h1>
       <p></p>
     </main>

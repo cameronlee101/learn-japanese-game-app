@@ -3,6 +3,7 @@ import React, { useEffect, useState } from 'react'
 import { Chapters, Topics } from '@/app/utils/utils'
 import { useRouter } from 'next/navigation'
 import { useLocalStorage } from "@uidotdev/usehooks"
+import styles from './flashcards-select.module.css'
 
 function FlashcardsSelect() {
   const chapters = Object.values(Chapters)
@@ -34,35 +35,37 @@ function FlashcardsSelect() {
   }
 
   return (
-    <main className='flex flex-col items-center text-center min-h-screen min-w-full p-12'>
+    <main className='main-center'>
       <h1 className='text-5xl font-semibold'>Select Flashcard Level</h1>
       <div>
         <form className='flex flex-col mt-6' onSubmit={submitForm}>
-          <div className='flex flex-col space-y-1 mt-6'>
-            <label htmlFor='chapter'>Chapter</label>
+          <div className={styles.selectArea}>
+            <label htmlFor='chapter' className='text-xl'>Chapter</label>
             <select 
               id='chapter'
               value={selectedChapter}
               onChange={(e) => {setSelectedChapter(e.target.value)}}
+              className={styles.select}
             >
               {chapters.map((item) => (
                 <option key={item} value={item}>{item}</option>
               ))}
             </select>
           </div>
-          <div className='flex flex-col space-y-1 mt-6'>
-            <label htmlFor='topic'>Topic</label>
+          <div className={styles.selectArea}>
+            <label htmlFor='topic' className='text-xl'>Topic</label>
             <select 
               id='topic'
               value={selectedTopic}
               onChange={(e) => {setSelectedTopic(e.target.value)}}
+              className={styles.select}
             >
               {topics.map((item) => (
                 <option key={item} value={item}>{item}</option>
               ))}
             </select>
           </div>
-          <button className='bg-slate-500 hover:bg-slate-700 text-white font-bold py-1 px-2 rounded-full mt-8'>Submit</button>
+          <button className='bg-slate-500 hover:bg-slate-700 text-white text-xl font-bold py-1 px-2 rounded-full mt-20'>Submit</button>
         </form>
       </div>
     </main>

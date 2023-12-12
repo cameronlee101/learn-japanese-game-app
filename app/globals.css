@@ -5,3 +5,13 @@
 .bg-color {
     background-color: #efefef;
 }
+
+.main-center {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    min-height: 100vh;
+    min-width: 100%;
+    padding: 3rem;
+}
