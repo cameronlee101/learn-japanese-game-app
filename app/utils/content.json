@@ -1,0 +1,38 @@
+{
+  "textbook": "Genki I",
+  "chapters": [
+    {
+      "chapterNumber": 1,
+      "vocabulary": [
+        { "japanese": "単語1", "english": "Word 1" },
+        { "japanese": "単語2", "english": "Word 2" }
+      ],
+      "kanji": [
+        { "japanese": "漢字1", "english": "Kanji 1" },
+        { "japanese": "漢字2", "english": "Kanji 2" }
+      ]
+    },
+    {
+      "chapterNumber": 2,
+      "vocabulary": [
+        { "japanese": "単語3", "english": "Word 3" },
+        { "japanese": "単語4", "english": "Word 4" }
+      ],
+      "kanji": [
+        { "japanese": "漢字3", "english": "Kanji 3" },
+        { "japanese": "漢字4", "english": "Kanji 4" }
+      ]
+    },
+    {
+      "chapterNumber": 3,
+      "vocabulary": [
+        { "japanese": "単語5", "english": "Word 5" },
+        { "japanese": "単語6", "english": "Word 6" }
+      ],
+      "kanji": [
+        { "japanese": "漢字5", "english": "Kanji 5" },
+        { "japanese": "漢字6", "english": "Kanji 6" }
+      ]
+    }
+  ]
+}

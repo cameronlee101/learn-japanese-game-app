@@ -1,28 +1,21 @@
 'use client'
 import React, { useEffect, useState } from 'react'
-import { useLocalStorage } from "@uidotdev/usehooks";
-
-enum Chapters {
-  Ch1 = 'Chapter 1',
-  Ch2 = 'Chapter 2',
-  Ch3 = 'Chapter 3',
-}
-
-enum Topics {
-  Vocabulary = 'Vocabulary',
-  Kanji = 'Kanji',
-}
+import { Chapters, Topics } from '@/app/utils/utils'
+import { useRouter } from 'next/navigation'
+import { useLocalStorage } from "@uidotdev/usehooks"
 
 function FlashcardsSelect() {
   const chapters = Object.values(Chapters)
   const topics = Object.values(Topics)
+  const router = useRouter()
 
   const [selection, setSelection] = useLocalStorage('selection', [chapters[0].valueOf(), topics[0].valueOf()])
   const [selectedChapter, setSelectedChapter] = useState<string>(chapters[0])
   const [selectedTopic, setSelectedTopic] = useState<string>(topics[0])
 
   useEffect(() => {
-    // Gets chapter and topic from localstorage and sets the relevant hooks
+    // Gets chapter and topic from localstorage and sets the relevant hooks (used for remembering
+    // chapter and topic the user previously selected)
     const storedValue = localStorage.getItem('selection')
     
     if (storedValue) {
@@ -34,9 +27,10 @@ function FlashcardsSelect() {
   }, [])
   
   const submitForm = (event: React.FormEvent) => {
+    // Updates localstorage on user's previous chapter and topic choice and changes page
     event.preventDefault()
     setSelection([selectedChapter, selectedTopic])
-    alert('Submitted form')
+    router.push('/pages/flashcards-activity/' + selectedChapter + '/' + selectedTopic)
   }
 
   return (
