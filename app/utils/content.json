@@ -4,8 +4,24 @@
     {
       "chapterNumber": 1,
       "vocabulary": [
-        { "japanese": "単語1", "english": "Word 1" },
-        { "japanese": "単語2", "english": "Word 2" }
+        { "japanese": "おはよう", "english": "Good morning" },
+        { "japanese": "おはようございます", "english": "Good morning (polite)" },
+        { "japanese": "こんにちは", "english": "Good afternoon" },
+        { "japanese": "こんばんは", "english": "Good evening" },
+        { "japanese": "さよなら", "english": "Goodbye" },
+        { "japanese": "おやすみ（なさい）", "english": "Goodnight" },
+        { "japanese": "ありがとう", "english": "Thank you" },
+        { "japanese": "ありがとうございます", "english": "Thank you very much" },
+        { "japanese": "すみません", "english": "Excuse me / I'm sorry" },
+        { "japanese": "いいえ", "english": "No" },
+        { "japanese": "いってきます", "english": "I'll go and come back" },
+        { "japanese": "いってらっしゃい", "english": "Please go and come back" },
+        { "japanese": "ただいま", "english": "I'm home" },
+        { "japanese": "おかえり（なさい）", "english": "Welcome home" },
+        { "japanese": "いただきます", "english": "Thank you for the meal (before eating)" },
+        { "japanese": "ごちそうさまでした", "english": "Thank you for the meal (after eating)" },
+        { "japanese": "はじめまして", "english": "How do you do?" },
+        { "japanese": "よろしくおねがいします", "english": "Nice to meet you" }
       ],
       "kanji": [
         { "japanese": "漢字1", "english": "Kanji 1" },
