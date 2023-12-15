@@ -33,19 +33,16 @@ const Sidebar = () => {
     return (
         <div className={styles.sidebarContainer}>
             <GiHamburgerMenu 
-                className={styles.menuButton} 
+                className={`${styles.menuButton} ${isOpen ? '' : styles.closed}`}
                 onClick={toggleSidebar}
-                closed-sidebar={(!isOpen).toString()}
             />
             <aside 
-                className={styles.sidebar} 
-                closed-sidebar={(!isOpen).toString()}
+                className={`${styles.sidebar} ${isOpen ? '' : styles.closed}`}
             >
                 <ul className='mx-auto flex justify-between flex-col'>
                     {sidebarItems.map((item) => (
                         <li 
-                            className={styles.li} 
-                            closed-sidebar={(!isOpen).toString()}
+                            className={`${styles.li} ${isOpen ? '' : styles.closed}`}
                             key={item.name}
                         >
                             <Link 

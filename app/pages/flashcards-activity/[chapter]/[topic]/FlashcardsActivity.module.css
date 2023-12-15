@@ -1,3 +1,7 @@
+.main {
+  overflow: hidden;
+}
+
 .flashcardDiv {
   display: flex;
   flex-direction: column;
@@ -6,15 +10,28 @@
   padding-bottom: 20vh;
 }
 
-.moveAround {
-  animation: moveAnimation 2s ease-in-out 1s 4 alternate;
+.moveRight {
+  animation: moveRightAnimation 1s ease-in-out 0s 2 alternate;
 }
 
-@keyframes moveAnimation {
+.moveLeft {
+  animation: moveLeftAnimation 1s ease-in-out 0s 2 alternate;
+}
+
+@keyframes moveRightAnimation {
   0% {
     transform: translate(0, 0);
   }
   100% {
     transform: translate(100vw, 0); 
+  }
+}
+
+@keyframes moveLeftAnimation {
+  0% {
+    transform: translate(0, 0);
+  }
+  100% {
+    transform: translate(-100vw, 0); 
   }
 }

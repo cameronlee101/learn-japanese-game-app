@@ -9,10 +9,9 @@
     padding-top: 4.6rem;
     background-color: #a9a9a9; 
     transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-    z-index: 10;
     box-shadow: -30px 20px 100px 10px rgba(0, 0, 0, 0.507);
 }
-.sidebar[closed-sidebar='true'] {
+.sidebar.closed {
     width: 0;
     padding-right: 0;
     box-shadow: none;
@@ -29,10 +28,9 @@
     background-color: #a9a9a9; 
     border-radius: 20%;
     transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-    z-index: 11;
     cursor: pointer;
 }
-.menuButton[closed-sidebar='true'] {   
+.menuButton.closed {   
     transform: translateX(-30px);
 }
 
@@ -44,7 +42,7 @@
     -webkit-user-select: none;
     user-select: none;
 }
-.li[closed-sidebar='true'] {
+.li.closed {
     display: none;
 }
 
