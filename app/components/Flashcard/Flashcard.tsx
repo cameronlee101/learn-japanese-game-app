@@ -1,5 +1,5 @@
 'use client';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import styles from './Flashcard.module.css';
 
 const Flashcard = (props: { frontContent: string, backContent: string }) => {

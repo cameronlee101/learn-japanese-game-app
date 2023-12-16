@@ -9,12 +9,17 @@ export enum Topics {
   Kanji = 'Kanji',
 }
 
+interface FlashcardContent {
+  japanese: string
+  english: string
+}
+
 export class ContentClass {
   // TODO: switch to storing data on external server
   textbookData = require('./content.json')
 
   // Retrieves content based on chapter and topic from storage
-  get (chapter: string, topic: string) {
+  get (chapter: string, topic: string):undefined|FlashcardContent[] {
     const numberPattern: RegExp = /\d+/
     const chapterNum = parseInt(chapter.match(numberPattern)![0])
 
