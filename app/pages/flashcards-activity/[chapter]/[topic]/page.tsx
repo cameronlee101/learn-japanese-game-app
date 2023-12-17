@@ -24,13 +24,23 @@ function FlashcardsActivity({
   const [direction, setDirection] = useState<'left' | 'right' | null>(null);
   const cooldownDuration = 500
 
-  // TODO: commentt
+  // Checks that flashcard contents are defined, then shuffles the elements
   useEffect(() => {
     if (flashcardContents == undefined) {
       alert('Error retriving flashcard contents, returning to home page')
       router.push('/')
     }
+    else {
+      for (let i = flashcardContents.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [flashcardContents[i], flashcardContents[j]] = [flashcardContents[j], flashcardContents[i]];
+      }
+    }
+    // TODO: need to somehow update flashcard to use new 0th index element  
+  }, [])
 
+  // Creates keypress event listener on the window which uses the enableInput and lastKeyPressTime states
+  useEffect(() => {
     const handleKeyPress = (event: KeyboardEvent) => {
       if (event.key == 'ArrowLeft') {
         flashcardLeft()
@@ -51,7 +61,7 @@ function FlashcardsActivity({
   useEffect(() => {
     // If input was enabled, do something
     if (enableInput) {
-      // Move the flashcards to the left and update their contents accordingly
+      // If direction state is set to left, move the flashcards to the left and update their contents accordingly
       if (direction == 'left') {
         setEnableInput(false)
         setAnimationClass(styles.moveLeft)
@@ -67,7 +77,7 @@ function FlashcardsActivity({
           }   
         }, cooldownDuration / 2)
       } 
-      // Move the flashcards to the right and update their contents accordingly
+      // If direction state is set to right, move the flashcards to the right and update their contents accordingly
       else if (direction == 'right') {
         setEnableInput(false)
         setAnimationClass(styles.moveRight)

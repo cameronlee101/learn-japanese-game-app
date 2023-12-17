@@ -12,6 +12,7 @@ export enum Topics {
 interface FlashcardContent {
   japanese: string
   english: string
+  example?: string
 }
 
 export class ContentClass {

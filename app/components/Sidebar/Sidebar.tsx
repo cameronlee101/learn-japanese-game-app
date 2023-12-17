@@ -13,14 +13,6 @@ const sidebarItems = [
         name: 'Flashcards',
         href: '/pages/flashcards-select',
     },
-    {
-        name: 'Test1',
-        href: '/pages/test1',
-    },
-    {
-        name: 'Test2',
-        href: '/pages/test2',
-    },
 ]
 
 const Sidebar = () => {
