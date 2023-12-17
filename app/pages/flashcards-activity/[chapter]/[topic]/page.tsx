@@ -22,7 +22,7 @@ function FlashcardsActivity({
   const [lastKeyPressTime, setLastKeyPressTime] = useState(0)
   const [currentIndex, setCurrentIndex] = useState(0)
   const [direction, setDirection] = useState<'left' | 'right' | null>(null);
-  const cooldownDuration = 600
+  const cooldownDuration = 500
 
   // TODO: commentt
   useEffect(() => {
@@ -57,13 +57,15 @@ function FlashcardsActivity({
         setAnimationClass(styles.moveLeft)
         setLastKeyPressTime(Date.now())
         setDirection(null)
-  
-        if (currentIndex == 0) {
-          setCurrentIndex(flashcardContents!.length - 1)
-        }
-        else {
-          setCurrentIndex(currentIndex - 1)
-        }      
+        
+        setTimeout(() => {
+          if (currentIndex == 0) {
+            setCurrentIndex(flashcardContents!.length - 1)
+          }
+          else {
+            setCurrentIndex(currentIndex - 1)
+          }   
+        }, cooldownDuration / 2)
       } 
       // Move the flashcards to the right and update their contents accordingly
       else if (direction == 'right') {
@@ -71,8 +73,10 @@ function FlashcardsActivity({
         setAnimationClass(styles.moveRight)
         setLastKeyPressTime(Date.now())
         setDirection(null)
-  
-        setCurrentIndex((currentIndex + 1) % flashcardContents!.length)
+        
+        setTimeout(() => {
+          setCurrentIndex((currentIndex + 1) % flashcardContents!.length)
+        }, cooldownDuration / 2)
       }
     }
   }, [enableInput, direction]); 
@@ -99,7 +103,7 @@ function FlashcardsActivity({
     <main className={`main-center ${styles.main}`}>
       <h1 className='text-5xl font-semibold'>{selectedChapterStr} {selectedTopicStr} Flashcards</h1>
       <div className={styles.flashcardArea}>
-        <div className={`${animationClass} ${styles.flashcardDiv}`}>
+        <div className={animationClass}>
           <Flashcard frontContent={flashcardContents![currentIndex].japanese} backContent={flashcardContents![currentIndex].english}></Flashcard>
         </div>
         <div className='flex justify-center mt-10'>
