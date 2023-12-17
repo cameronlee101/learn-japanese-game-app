@@ -9,7 +9,7 @@ export enum Topics {
   Kanji = 'Kanji',
 }
 
-interface FlashcardContent {
+export interface FlashcardContent {
   japanese: string
   english: string
   example?: string

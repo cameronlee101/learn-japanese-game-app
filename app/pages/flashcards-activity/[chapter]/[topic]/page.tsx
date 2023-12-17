@@ -1,10 +1,14 @@
 'use client'
-import React, { useEffect, useRef, useState } from 'react'
-import { ContentClass } from "@/app/utils/utils"
+import React, { useEffect, useState } from 'react'
+import { ContentClass, FlashcardContent } from "@/app/utils/utils"
 import Flashcard from '@/app/components/Flashcard/Flashcard'
 import styles from './FlashcardsActivity.module.css'
-import { FaArrowCircleLeft, FaArrowCircleRight  } from "react-icons/fa";
+import { FaArrowCircleLeft, FaArrowCircleRight  } from "react-icons/fa"
 import { useRouter } from 'next/navigation'
+
+const ARROW_LEFT = 'ArrowLeft';
+const ARROW_RIGHT = 'ArrowRight';
+const COOLDOWN_DURATION = 800
 
 function FlashcardsActivity({ 
   params,
@@ -15,37 +19,42 @@ function FlashcardsActivity({
   const selectedChapterStr = params.chapter.replaceAll('%20', ' ')
   const selectedTopicStr = params.topic.replaceAll('%20', ' ')
 
-  const flashcardContents = new ContentClass().get(selectedChapterStr, selectedTopicStr)
-
   const [animationClass, setAnimationClass] = useState('')
   const [enableInput, setEnableInput] = useState(true)
   const [lastKeyPressTime, setLastKeyPressTime] = useState(0)
   const [currentIndex, setCurrentIndex] = useState(0)
-  const [direction, setDirection] = useState<'left' | 'right' | null>(null);
-  const cooldownDuration = 500
+  const [direction, setDirection] = useState<'left' | 'right' | null>(null)
+  const [flashcardContents, setFlashcardContents] = useState<FlashcardContent[]|undefined>([{japanese: 'Loading...', english: 'Loading...'}])
 
-  // Checks that flashcard contents are defined, then shuffles the elements
+  // Gets the flashcard contents, checks that they are defined, then shuffles the elements
   useEffect(() => {
-    if (flashcardContents == undefined) {
-      alert('Error retriving flashcard contents, returning to home page')
+    // Fetch flashcard contents
+    const fetchedContents = new ContentClass().get(selectedChapterStr, selectedTopicStr)
+
+    // Check if contents are undefined
+    if (fetchedContents === undefined) {
+      alert('Error retrieving flashcard contents, returning to home page')
       router.push('/')
-    }
-    else {
-      for (let i = flashcardContents.length - 1; i > 0; i--) {
+    } else {
+      // Shuffle the contents
+      const shuffledContents = [...fetchedContents]
+      for (let i = shuffledContents.length - 1; i > 0; i--) {
         const j = Math.floor(Math.random() * (i + 1));
-        [flashcardContents[i], flashcardContents[j]] = [flashcardContents[j], flashcardContents[i]];
+        [shuffledContents[i], shuffledContents[j]] = [shuffledContents[j], shuffledContents[i]]
       }
+
+      // Update the state with shuffled contents
+      setFlashcardContents(shuffledContents)
     }
-    // TODO: need to somehow update flashcard to use new 0th index element  
   }, [])
 
   // Creates keypress event listener on the window which uses the enableInput and lastKeyPressTime states
   useEffect(() => {
     const handleKeyPress = (event: KeyboardEvent) => {
-      if (event.key == 'ArrowLeft') {
+      if (event.key == ARROW_LEFT) {
         flashcardLeft()
       }
-      else if (event.key == 'ArrowRight') {
+      else if (event.key == ARROW_RIGHT) {
         flashcardRight()
       }
     }
@@ -57,55 +66,45 @@ function FlashcardsActivity({
     }
   }, [enableInput, lastKeyPressTime])
 
-  // Run this effect whenever enableInput or direction changes
+  // Run this effect whenever enableInput or direction states change
   useEffect(() => {
-    // If input was enabled, do something
-    if (enableInput) {
-      // If direction state is set to left, move the flashcards to the left and update their contents accordingly
-      if (direction == 'left') {
-        setEnableInput(false)
+    if (enableInput && (direction === 'left' || direction === 'right')) {
+      setEnableInput(false);
+      setLastKeyPressTime(Date.now());
+      setDirection(null);
+
+      if (direction === 'left') {
         setAnimationClass(styles.moveLeft)
-        setLastKeyPressTime(Date.now())
-        setDirection(null)
-        
-        setTimeout(() => {
-          if (currentIndex == 0) {
-            setCurrentIndex(flashcardContents!.length - 1)
-          }
-          else {
-            setCurrentIndex(currentIndex - 1)
-          }   
-        }, cooldownDuration / 2)
-      } 
-      // If direction state is set to right, move the flashcards to the right and update their contents accordingly
-      else if (direction == 'right') {
-        setEnableInput(false)
-        setAnimationClass(styles.moveRight)
-        setLastKeyPressTime(Date.now())
-        setDirection(null)
-        
-        setTimeout(() => {
-          setCurrentIndex((currentIndex + 1) % flashcardContents!.length)
-        }, cooldownDuration / 2)
       }
+      else if (direction === 'right') {
+        setAnimationClass(styles.moveRight)
+      }
+  
+      setTimeout(() => {
+        if (direction === 'left') {
+          setCurrentIndex(currentIndex === 0 ? flashcardContents!.length - 1 : currentIndex - 1);
+        } else if (direction === 'right') {
+          setCurrentIndex((currentIndex + 1) % flashcardContents!.length);
+        }
+      }, COOLDOWN_DURATION / 2);
     }
-  }, [enableInput, direction]); 
+  }, [enableInput, direction]);
 
   const flashcardLeft = () => {
     // If enough time has passed, allow input and queue the flashcards to move left (which will execute in useEffect)
-    if (Date.now() - lastKeyPressTime >= cooldownDuration) {
+    if (Date.now() - lastKeyPressTime >= COOLDOWN_DURATION) {
       setEnableInput(true)
       setAnimationClass('')
-      setDirection('left');
+      setDirection('left')
     }
   }
 
   const flashcardRight = () => {
     // If enough time has passed, allow input and queue the flashcards to move right (which will execute in useEffect)
-    if (Date.now() - lastKeyPressTime >= cooldownDuration) {
+    if (Date.now() - lastKeyPressTime >= COOLDOWN_DURATION) {
       setEnableInput(true)
       setAnimationClass('')
-      setDirection('right');
+      setDirection('right')
     }
   }
 
