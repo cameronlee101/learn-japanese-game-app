@@ -20,7 +20,6 @@ function FlashcardsActivity({
   const selectedTopicStr = params.topic.replaceAll('%20', ' ')
 
   const [animationClass, setAnimationClass] = useState('')
-  const [enableInput, setEnableInput] = useState(true)
   const [lastKeyPressTime, setLastKeyPressTime] = useState(0)
   const [currentIndex, setCurrentIndex] = useState(0)
   const [direction, setDirection] = useState<'left' | 'right' | null>(null)
@@ -48,7 +47,7 @@ function FlashcardsActivity({
     }
   }, [])
 
-  // Creates keypress event listener on the window which uses the enableInput and lastKeyPressTime states
+  // Creates keypress event listener on the window which uses the lastKeyPressTime state
   useEffect(() => {
     const handleKeyPress = (event: KeyboardEvent) => {
       if (event.key == ARROW_LEFT) {
@@ -64,13 +63,12 @@ function FlashcardsActivity({
     return () => {
       window.removeEventListener('keydown', handleKeyPress)
     }
-  }, [enableInput, lastKeyPressTime])
+  }, [lastKeyPressTime])
 
   // Run this effect whenever enableInput or direction states change
   useEffect(() => {
-    if (enableInput && (direction === 'left' || direction === 'right')) {
+    if (direction === 'left' || direction === 'right') {
       // Disable input for a time and assign the animation class to the flashcard to animate it moving
-      setEnableInput(false);
       setLastKeyPressTime(Date.now());
       setDirection(null);
 
@@ -90,12 +88,11 @@ function FlashcardsActivity({
         }
       }, COOLDOWN_DURATION / 2);
     }
-  }, [enableInput, direction]);
+  }, [direction]);
 
   const flashcardLeft = () => {
     // If enough time has passed, allow input and queue the flashcards to move left (which will execute in useEffect)
     if (Date.now() - lastKeyPressTime >= COOLDOWN_DURATION) {
-      setEnableInput(true)
       setAnimationClass('')
       setDirection('right')
     }
@@ -104,7 +101,6 @@ function FlashcardsActivity({
   const flashcardRight = () => {
     // If enough time has passed, allow input and queue the flashcards to move right (which will execute in useEffect)
     if (Date.now() - lastKeyPressTime >= COOLDOWN_DURATION) {
-      setEnableInput(true)
       setAnimationClass('')
       setDirection('left')
     }
