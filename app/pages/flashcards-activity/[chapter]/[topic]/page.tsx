@@ -115,7 +115,7 @@ function FlashcardsActivity({
       <h1 className='text-5xl font-semibold'>{selectedChapterStr} {selectedTopicStr} Flashcards</h1>
       <div className={styles.flashcardArea}>
         <div className={animationClass}>
-          <Flashcard frontContent={flashcardContents![currentIndex].japanese} backContent={flashcardContents![currentIndex].english}></Flashcard>
+          <Flashcard contents={flashcardContents![currentIndex]}></Flashcard>
         </div>
         <div className='flex justify-center mt-10'>
           <FaArrowCircleLeft className={styles.flashcardButton} onClick={flashcardLeft}/>
