@@ -1,12 +1,15 @@
 'use client';
 import React, { useEffect, useState } from 'react';
 import styles from './Flashcard.module.css';
-import { FlashcardContent } from '@/app/utils/utils';
+import { VocabFlashcardContent, isVocabFlashcardContent } from '@/app/utils/utils';
+import { useRouter } from 'next/navigation'
 
 const SPACE = ' '
 const COOLDOWN_DURATION = 300
 
-const Flashcard = (props: { contents:FlashcardContent }) => {
+const Flashcard = (props: { contents:VocabFlashcardContent }) => {
+  const router = useRouter()
+
   const [isFlipped, setIsFlipped] = useState(false)
   const [lastKeyPressTime, setLastKeyPressTime] = useState(0)
   const [flippingCard, setFlippingCard] = useState(false)
@@ -43,12 +46,18 @@ const Flashcard = (props: { contents:FlashcardContent }) => {
     }
   };
 
-  return (
-    <div className={`${styles.flashcard} ${isFlipped ? styles.flipped : ''}`} onClick={handleFlip}>
-      <div className={styles.front}>{props.contents.japanese}</div>
-      <div className={styles.back}>{props.contents.english}</div>
-    </div>
-  );
+  if (isVocabFlashcardContent(props.contents)) {
+    return (
+      <div className={`${styles.flashcard} ${isFlipped ? styles.flipped : ''}`} onClick={handleFlip}>
+        <div className={styles.front}>{props.contents.japanese}</div>
+        <div className={styles.back}>{props.contents.english}{props.contents.example && ', ex. '} {props.contents.example}</div>
+      </div>
+    );
+  }
+  else {
+    alert('Error occurred when confirming type of flashcard contents, returning to home page (you may need to press "ok" on this alert multiple times)')
+    router.push('/')
+  }
 };
 
 export default Flashcard;

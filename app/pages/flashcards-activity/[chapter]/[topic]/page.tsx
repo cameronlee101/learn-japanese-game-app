@@ -1,6 +1,6 @@
 'use client'
 import React, { useEffect, useState } from 'react'
-import { ContentClass, FlashcardContent } from "@/app/utils/utils"
+import { ContentClass, VocabFlashcardContent } from "@/app/utils/utils"
 import Flashcard from '@/app/components/Flashcard/Flashcard'
 import styles from './FlashcardsActivity.module.css'
 import { FaArrowCircleLeft, FaArrowCircleRight  } from "react-icons/fa"
@@ -24,7 +24,7 @@ function FlashcardsActivity({
   const [lastKeyPressTime, setLastKeyPressTime] = useState(0)
   const [currentIndex, setCurrentIndex] = useState(0)
   const [direction, setDirection] = useState<'left' | 'right' | null>(null)
-  const [flashcardContents, setFlashcardContents] = useState<FlashcardContent[]|undefined>([{japanese: 'Loading...', english: 'Loading...'}])
+  const [flashcardContents, setFlashcardContents] = useState<VocabFlashcardContent[]|undefined>([{japanese: 'Loading...', english: 'Loading...'}])
 
   // Gets the flashcard contents, checks that they are defined, then shuffles the elements
   useEffect(() => {
@@ -33,7 +33,7 @@ function FlashcardsActivity({
 
     // Check if contents are undefined
     if (fetchedContents === undefined) {
-      alert('Error retrieving flashcard contents, returning to home page')
+      alert('Error retrieving flashcard contents, returning to home page (you may need to press "ok" on this alert multiple times)')
       router.push('/')
     } else {
       // Shuffle the contents

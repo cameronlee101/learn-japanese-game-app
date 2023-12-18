@@ -9,7 +9,7 @@ export enum Topics {
   Kanji = 'Kanji',
 }
 
-export interface FlashcardContent {
+export interface VocabFlashcardContent {
   japanese: string
   english: string
   example?: string
@@ -20,7 +20,7 @@ export class ContentClass {
   textbookData = require('./content.json')
 
   // Retrieves content based on chapter and topic from storage
-  get (chapter: string, topic: string):undefined|FlashcardContent[] {
+  get (chapter: string, topic: string):undefined|VocabFlashcardContent[] {
     const numberPattern: RegExp = /\d+/
     const chapterNum = parseInt(chapter.match(numberPattern)![0])
 
@@ -38,4 +38,12 @@ export class ContentClass {
   
     return undefined
   }
+}
+
+// Function used to check if the given object is of type VocabFlashcardContent
+export function isVocabFlashcardContent(obj:any) {
+  return obj && 
+  typeof obj === 'object' && 
+  'japanese' in obj && 
+  'english' in obj
 }
