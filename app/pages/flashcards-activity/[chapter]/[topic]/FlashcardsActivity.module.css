@@ -8,7 +8,6 @@
   flex-direction: column;
   justify-content: center;
   min-height: 100%;
-  padding-bottom: 10vh;
 }
 
 .flashcardButton {
@@ -26,11 +25,11 @@
 }
 
 .moveRight {
-  animation: moveRightAnimation 1s ease-in-out 1;
+  animation: moveRightAnimation 0.8s ease-in-out 1;
 }
 
 .moveLeft {
-  animation: moveLeftAnimation 1s ease-in-out 1;
+  animation: moveLeftAnimation 0.8s ease-in-out 1;
 }
 
 @keyframes moveRightAnimation {
@@ -38,10 +37,10 @@
     transform: translateX(0);
   }
   50% {
-    transform: translateX(80vw);
+    transform: translateX(60vw);
   }
   51% {
-    transform: translateX(-80vw);
+    transform: translateX(-60vw);
   }
 }
 
@@ -50,9 +49,9 @@
     transform: translateX(0);
   }
   50% {
-    transform: translateX(-80vw);
+    transform: translateX(-60vw);
   }
   51% {
-    transform: translateX(80vw);
+    transform: translateX(60vw);
   }
 }

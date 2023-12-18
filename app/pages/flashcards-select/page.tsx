@@ -48,7 +48,9 @@ function FlashcardsSelect() {
               className={styles.select}
             >
               {chapters.map((item) => (
-                <option key={item} value={item}>{item}</option>
+                <option key={item} value={item} disabled={selectedTopic === Topics.Kanji.valueOf() && (item === 'Chapter 1' || item === 'Chapter 2')}>
+                  {item}
+                </option>
               ))}
             </select>
           </div>
@@ -61,7 +63,9 @@ function FlashcardsSelect() {
               className={styles.select}
             >
               {topics.map((item) => (
-                <option key={item} value={item}>{item}</option>
+                <option key={item} value={item} disabled={(selectedChapter === 'Chapter 1' || selectedChapter === 'Chapter 2') && item === Topics.Kanji.valueOf()}>
+                  {item}
+                </option>
               ))}
             </select>
           </div>

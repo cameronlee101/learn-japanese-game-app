@@ -8,7 +8,7 @@ import { useRouter } from 'next/navigation'
 
 const ARROW_LEFT = 'ArrowLeft';
 const ARROW_RIGHT = 'ArrowRight';
-const COOLDOWN_DURATION = 800
+const COOLDOWN_DURATION = 600
 
 function FlashcardsActivity({ 
   params,
@@ -69,6 +69,7 @@ function FlashcardsActivity({
   // Run this effect whenever enableInput or direction states change
   useEffect(() => {
     if (enableInput && (direction === 'left' || direction === 'right')) {
+      // Disable input for a time and assign the animation class to the flashcard to animate it moving
       setEnableInput(false);
       setLastKeyPressTime(Date.now());
       setDirection(null);
@@ -79,12 +80,13 @@ function FlashcardsActivity({
       else if (direction === 'right') {
         setAnimationClass(styles.moveRight)
       }
-  
+      
+      // Creates timeout that changes the flashcard's contents when it is off the screen during its animation
       setTimeout(() => {
         if (direction === 'left') {
-          setCurrentIndex(currentIndex === 0 ? flashcardContents!.length - 1 : currentIndex - 1);
-        } else if (direction === 'right') {
           setCurrentIndex((currentIndex + 1) % flashcardContents!.length);
+        } else if (direction === 'right') {
+          setCurrentIndex(currentIndex === 0 ? flashcardContents!.length - 1 : currentIndex - 1);
         }
       }, COOLDOWN_DURATION / 2);
     }
@@ -95,7 +97,7 @@ function FlashcardsActivity({
     if (Date.now() - lastKeyPressTime >= COOLDOWN_DURATION) {
       setEnableInput(true)
       setAnimationClass('')
-      setDirection('left')
+      setDirection('right')
     }
   }
 
@@ -104,7 +106,7 @@ function FlashcardsActivity({
     if (Date.now() - lastKeyPressTime >= COOLDOWN_DURATION) {
       setEnableInput(true)
       setAnimationClass('')
-      setDirection('right')
+      setDirection('left')
     }
   }
 
@@ -119,6 +121,7 @@ function FlashcardsActivity({
           <FaArrowCircleLeft className={styles.flashcardButton} onClick={flashcardLeft}/>
           <FaArrowCircleRight className={styles.flashcardButton} onClick={flashcardRight}/>
         </div>
+        <p className='mt-10 text-2xl font-semibold'>{currentIndex+1}/{flashcardContents!.length}</p>
       </div>
     </main>
   )
