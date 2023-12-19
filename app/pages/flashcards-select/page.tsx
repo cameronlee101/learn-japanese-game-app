@@ -1,6 +1,6 @@
 'use client'
 import React, { useEffect, useState } from 'react'
-import { Chapters, Topics } from '@/app/utils/utils'
+import { Chapters, Topics, isSelectionValid } from '@/app/utils/utils'
 import { useRouter } from 'next/navigation'
 import { useLocalStorage } from "@uidotdev/usehooks"
 import styles from './flashcards-select.module.css'
@@ -30,8 +30,13 @@ function FlashcardsSelect() {
   const submitForm = (event: React.FormEvent) => {
     // Updates localstorage on user's previous chapter and topic choice and changes page
     event.preventDefault()
-    setSelection([selectedChapter, selectedTopic])
-    router.push('/pages/flashcards-activity/' + selectedChapter + '/' + selectedTopic)
+    if (isSelectionValid(selectedChapter, selectedTopic)) {
+      setSelection([selectedChapter, selectedTopic])
+      router.push('/pages/flashcards-activity/' + selectedChapter + '/' + selectedTopic)
+    }
+    else {
+      alert('Current chapter and topics selection is not valid, please change one or more selection')
+    } 
   }
 
   return (
@@ -48,7 +53,7 @@ function FlashcardsSelect() {
               className={styles.select}
             >
               {chapters.map((item) => (
-                <option key={item} value={item} disabled={selectedTopic === Topics.Kanji.valueOf() && (item === 'Chapter 1' || item === 'Chapter 2')}>
+                <option key={item} value={item} disabled={!isSelectionValid(item, selectedTopic)}>
                   {item}
                 </option>
               ))}
@@ -63,7 +68,7 @@ function FlashcardsSelect() {
               className={styles.select}
             >
               {topics.map((item) => (
-                <option key={item} value={item} disabled={(selectedChapter === 'Chapter 1' || selectedChapter === 'Chapter 2') && item === Topics.Kanji.valueOf()}>
+                <option key={item} value={item} disabled={!isSelectionValid(selectedChapter, item)}>
                   {item}
                 </option>
               ))}

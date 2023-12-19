@@ -7,7 +7,17 @@ export enum Chapters {
 export enum Topics {
   Vocabulary = 'Vocabulary',
   Kanji = 'Kanji',
+  Numbers = 'Numbers',
+  Conjugations = 'Conjugations',
 }
+
+const validContentSelections = [
+  [Chapters.Ch1, Topics.Vocabulary],
+  [Chapters.Ch1, Topics.Numbers],
+  [Chapters.Ch2, Topics.Vocabulary],
+  [Chapters.Ch3, Topics.Vocabulary],
+  [Chapters.Ch3, Topics.Kanji],
+]
 
 export interface VocabFlashcardContent {
   japanese: string
@@ -46,4 +56,11 @@ export function isVocabFlashcardContent(obj:any) {
   typeof obj === 'object' && 
   'japanese' in obj && 
   'english' in obj
+}
+
+// Function used to check if the combination of selections is valid and thus have content
+export function isSelectionValid(chapter: string, topic: string): boolean {
+  return validContentSelections.some(([selectedChapter, selectedTopic]) => {
+    return selectedChapter === chapter && selectedTopic === topic;
+  })
 }
