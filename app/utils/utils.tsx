@@ -21,6 +21,8 @@ const validContentSelections = [
 
 export interface VocabFlashcardContent {
   japanese: string
+  alternate?: string
+  kanji?: string
   english: string
   example?: string
 }

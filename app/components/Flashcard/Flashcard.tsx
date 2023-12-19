@@ -8,6 +8,8 @@ const SPACE = ' '
 const COOLDOWN_DURATION = 300
 
 const Flashcard = (props: { contents:VocabFlashcardContent }) => {
+  const { contents } = props
+
   const router = useRouter()
 
   const [isFlipped, setIsFlipped] = useState(false)
@@ -46,11 +48,15 @@ const Flashcard = (props: { contents:VocabFlashcardContent }) => {
     }
   };
 
-  if (isVocabFlashcardContent(props.contents)) {
+  if (isVocabFlashcardContent(contents)) {
     return (
       <div className={`${styles.flashcard} ${isFlipped ? styles.flipped : ''}`} onClick={handleFlip}>
-        <div className={styles.front}>{props.contents.japanese}</div>
-        <div className={styles.back}>{props.contents.english}{props.contents.example && ', ex. '} {props.contents.example}</div>
+        <div className={styles.front}>
+          {contents.japanese}{contents.alternate && ('/' + contents.alternate)} {contents.kanji && ('(' + contents.kanji + ')')}
+        </div>
+        <div className={styles.back}>
+          {contents.english}{contents.example && (', ex. ' + contents.example)}
+        </div>
       </div>
     );
   }
