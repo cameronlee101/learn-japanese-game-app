@@ -111,7 +111,19 @@
         { "japanese": "ななじゅう", "english": "70" },
         { "japanese": "はちじゅう", "english": "80" },
         { "japanese": "きゅうじゅう", "english": "90" },
-        { "japanese": "ひゃく", "english": "100" }
+        { "japanese": "いちじ", "english": "100" },
+        { "japanese": "にじ", "english": "2:00" },
+        { "japanese": "さんじ", "english": "3:00" },
+        { "japanese": "よじ", "english": "4:00" },
+        { "japanese": "ごじ", "english": "5:00" },
+        { "japanese": "ろくじ", "english": "6:00" },
+        { "japanese": "しちじ", "english": "7:00" },
+        { "japanese": "はちじ", "english": "8:00" },
+        { "japanese": "くじ", "english": "9:00" },
+        { "japanese": "じゅうじ", "english": "10:00" },
+        { "japanese": "じゅういちじ", "english": "11:00" },
+        { "japanese": "じゅうにじ", "english": "12:00" },
+        { "japanese": "いちじはん", "english": "1:30" }
       ]
     },
     {
