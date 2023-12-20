@@ -1,7 +1,7 @@
 'use client';
 import React, { useEffect, useState } from 'react';
 import styles from './Flashcard.module.css';
-import { VocabContent, isVocabFlashcardContent } from '@/app/utils/utils';
+import { VocabContent, isVocabContent } from '@/app/utils/utils';
 import { useRouter } from 'next/navigation'
 
 const SPACE = ' '
@@ -48,7 +48,7 @@ const Flashcard = (props: { contents:VocabContent }) => {
     }
   };
 
-  if (isVocabFlashcardContent(contents)) {
+  if (isVocabContent(contents)) {
     return (
       <div className={`${styles.flashcard} ${isFlipped ? styles.flipped : ''}`} onClick={handleFlip}>
         <div className={styles.front}>

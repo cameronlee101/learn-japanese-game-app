@@ -61,8 +61,8 @@ export class ContentClass {
   }
 }
 
-// Function used to check if the given object is of type VocabFlashcardContent
-export function isVocabFlashcardContent(obj:any):boolean {
+// Function used to check if the given object is of type VocabdContent
+export function isVocabContent(obj:any):boolean {
   return obj && 
   typeof obj === 'object' && 
   'japanese' in obj && 
@@ -78,7 +78,7 @@ export function isSelectionValid(chapter: string, topic: string): boolean {
 
 // Function used to return an object of the same type as passed in argument that has values for all parameters
 export function getExampleFullObject(obj:any):VocabContent|undefined {
-  if (isVocabFlashcardContent(obj)) {
+  if (isVocabContent(obj)) {
     return {
       japanese: 'a',
       alternate: 'a',
