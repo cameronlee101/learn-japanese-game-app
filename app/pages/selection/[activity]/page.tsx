@@ -5,7 +5,11 @@ import { useRouter } from 'next/navigation'
 import { useLocalStorage } from "@uidotdev/usehooks"
 import styles from './flashcards-select.module.css'
 
-function FlashcardsSelect() {
+function FlashcardsSelect({ 
+  params,
+}: {
+  params: { activity:string }
+}) {
   const chapters = Object.values(Chapters)
   const topics = Object.values(Topics)
   const router = useRouter()
@@ -32,7 +36,7 @@ function FlashcardsSelect() {
     event.preventDefault()
     if (isSelectionValid(selectedChapter, selectedTopic)) {
       setSelection([selectedChapter, selectedTopic])
-      router.push('/pages/flashcards-activity/' + selectedChapter + '/' + selectedTopic)
+      router.push('/pages/' + params.activity + '/' + selectedChapter + '/' + selectedTopic)
     }
     else {
       alert('Current chapter and topics selection is not valid, please change one or more selection')
@@ -41,7 +45,7 @@ function FlashcardsSelect() {
 
   return (
     <main className='main-center'>
-      <h1 className='text-5xl font-semibold'>Select Flashcard Level</h1>
+      <h1 className='text-5xl font-semibold'>Select Chapter and Topic</h1>
       <div>
         <form className='flex flex-col mt-6' onSubmit={submitForm}>
           <div className={styles.selectArea}>

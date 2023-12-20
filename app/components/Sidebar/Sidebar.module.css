@@ -41,6 +41,7 @@
     justify-content: center;
     -webkit-user-select: none;
     user-select: none;
+    white-space: nowrap;
 }
 .li.closed {
     display: none;

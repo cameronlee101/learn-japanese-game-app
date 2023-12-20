@@ -11,7 +11,11 @@ const sidebarItems = [
     },
     {
         name: 'Flashcards',
-        href: '/pages/flashcards-select',
+        href: '/pages/selection/flashcards-activity',
+    },
+    {
+        name: 'See Contents',
+        href: '/pages/selection/contents-of',
     },
 ]
 
