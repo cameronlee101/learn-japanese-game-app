@@ -1,13 +1,13 @@
 'use client';
 import React, { useEffect, useState } from 'react';
 import styles from './Flashcard.module.css';
-import { VocabFlashcardContent, isVocabFlashcardContent } from '@/app/utils/utils';
+import { VocabContent, isVocabFlashcardContent } from '@/app/utils/utils';
 import { useRouter } from 'next/navigation'
 
 const SPACE = ' '
 const COOLDOWN_DURATION = 300
 
-const Flashcard = (props: { contents:VocabFlashcardContent }) => {
+const Flashcard = (props: { contents:VocabContent }) => {
   const { contents } = props
 
   const router = useRouter()

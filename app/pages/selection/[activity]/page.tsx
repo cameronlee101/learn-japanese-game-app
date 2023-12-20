@@ -3,7 +3,7 @@ import React, { useEffect, useState } from 'react'
 import { Chapters, Topics, isSelectionValid } from '@/app/utils/utils'
 import { useRouter } from 'next/navigation'
 import { useLocalStorage } from "@uidotdev/usehooks"
-import styles from './flashcards-select.module.css'
+import styles from './selection.module.css'
 
 function FlashcardsSelect({ 
   params,

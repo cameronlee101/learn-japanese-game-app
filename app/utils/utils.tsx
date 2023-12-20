@@ -19,12 +19,21 @@ const validContentSelections = [
   [Chapters.Ch3, Topics.Kanji],
 ]
 
-export interface VocabFlashcardContent {
+export interface VocabContent {
   japanese: string
   alternate?: string
   kanji?: string
   english: string
   example?: string
+  [key: string]: string | undefined;
+}
+
+export interface KanjiContent {
+  kanji: string
+  readings: string[]
+  english: string
+  examples: string[]
+  [key: string]: string | string[];
 }
 
 export class ContentClass {
@@ -32,7 +41,7 @@ export class ContentClass {
   textbookData = require('./content.json')
 
   // Retrieves content based on chapter and topic from storage
-  get (chapter: string, topic: string):undefined|VocabFlashcardContent[] {
+  get (chapter: string, topic: string):undefined|VocabContent[] {
     const numberPattern: RegExp = /\d+/
     const chapterNum = parseInt(chapter.match(numberPattern)![0])
 
@@ -53,7 +62,7 @@ export class ContentClass {
 }
 
 // Function used to check if the given object is of type VocabFlashcardContent
-export function isVocabFlashcardContent(obj:any) {
+export function isVocabFlashcardContent(obj:any):boolean {
   return obj && 
   typeof obj === 'object' && 
   'japanese' in obj && 
@@ -65,4 +74,18 @@ export function isSelectionValid(chapter: string, topic: string): boolean {
   return validContentSelections.some(([selectedChapter, selectedTopic]) => {
     return selectedChapter === chapter && selectedTopic === topic;
   })
+}
+
+// Function used to return an object of the same type as passed in argument that has values for all parameters
+export function getExampleFullObject(obj:any):VocabContent|undefined {
+  if (isVocabFlashcardContent(obj)) {
+    return {
+      japanese: 'a',
+      alternate: 'a',
+      kanji: 'a',
+      english: 'a',
+      example: 'a',
+    }
+  }
+  return undefined
 }
