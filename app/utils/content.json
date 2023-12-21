@@ -266,8 +266,7 @@
         { "japanese": "どうですか", "english": "How about ...?; How is...?" }
       ],
       "kanji": [
-        { "japanese": "漢字5", "english": "Kanji1" },
-        { "japanese": "漢字6", "english": "Kanji2" }
+        { "kanji": "一", "readings": ["いち", "ひと", "いっ"], "english": "one", "examples": ["一（いち）one", "一時（いちじ）one o'clock"]}
       ]
     }
   ]

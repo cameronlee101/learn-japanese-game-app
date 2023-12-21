@@ -1,5 +1,5 @@
 'use client'
-import { ContentClass, VocabContent, getExampleFullObject } from "@/app/utils/utils"
+import { ContentClass, KanjiContent, VocabContent, getExampleFullObject, isVocabContent } from "@/app/utils/utils"
 import { useEffect, useState } from "react"
 import { useRouter } from 'next/navigation'
 import styles from './styles-of.module.css'
@@ -12,8 +12,8 @@ function ContentsOf({
   const router = useRouter()
   const selectedChapterStr = params.chapter.replaceAll('%20', ' ')
   const selectedTopicStr = params.topic.replaceAll('%20', ' ')
-  // TODO: may need to change based on topic
-  const [contents, setContents] = useState<VocabContent[]>([{japanese: 'Loading...', english: 'Loading...'}])
+
+  const [contents, setContents] = useState<VocabContent[]|KanjiContent[]>([{japanese: 'Loading...', english: 'Loading...'}])
 
   // Gets the contents for given chapter and topic, and checks that they are defined
   useEffect(() => {
@@ -26,7 +26,7 @@ function ContentsOf({
       router.push('/')
     }
     else {
-      setContents(fetchedContents)
+      setContents(fetchedContents as (VocabContent[] | KanjiContent[]))
     }
   }, [])
 
@@ -56,7 +56,11 @@ function ContentsOf({
           {contents.map((item, rowIndex) => (
             <tr key={rowIndex}>
               {allParameters.map((parameter, columnIndex) => (
-                <td key={columnIndex}>{item[parameter] || ''}</td>
+                <td key={columnIndex} className='whitespace-pre'>
+                  {Array.isArray(item[parameter])
+                  ? (item[parameter] as string[]).join(',   ') 
+                  : item[parameter] || ''}
+                </td>
               ))}
             </tr>
           ))}

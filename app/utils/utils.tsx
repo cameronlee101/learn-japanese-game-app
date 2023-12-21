@@ -41,12 +41,12 @@ export class ContentClass {
   textbookData = require('./content.json')
 
   // Retrieves content based on chapter and topic from storage
-  get (chapter: string, topic: string):undefined|VocabContent[] {
+  get (chapter: string, topic: string):undefined|VocabContent[]|KanjiContent[] {
     const numberPattern: RegExp = /\d+/
     const chapterNum = parseInt(chapter.match(numberPattern)![0])
 
     if (isNaN(chapterNum)) {
-      console.error(`Error getting number from "${chapter}" when retrieving content`)
+      console.error(`Error getting chapter number from "${chapter}" when retrieving content`)
     }
     else {
       const content = this.textbookData.chapters[chapterNum - 1][topic.toLowerCase()]
@@ -61,12 +61,22 @@ export class ContentClass {
   }
 }
 
-// Function used to check if the given object is of type VocabdContent
+// Function used to check if the given object is of type VocabContent
 export function isVocabContent(obj:any):boolean {
+  console.log(obj)
   return obj && 
   typeof obj === 'object' && 
   'japanese' in obj && 
   'english' in obj
+}
+// Function used to check if the given object is of type KanjiContent
+export function isKanjiContent(obj:any):boolean {
+  return obj && 
+  typeof obj === 'object' && 
+  'kanji' in obj && 
+  'readings' in obj && 
+  'english' in obj &&
+  'examples' in obj
 }
 
 // Function used to check if the combination of selections is valid and thus have content
@@ -77,7 +87,8 @@ export function isSelectionValid(chapter: string, topic: string): boolean {
 }
 
 // Function used to return an object of the same type as passed in argument that has values for all parameters
-export function getExampleFullObject(obj:any):VocabContent|undefined {
+// Returned object used to see all types contained in an interface
+export function getExampleFullObject(obj:any):VocabContent|KanjiContent|undefined {
   if (isVocabContent(obj)) {
     return {
       japanese: 'a',
@@ -87,5 +98,15 @@ export function getExampleFullObject(obj:any):VocabContent|undefined {
       example: 'a',
     }
   }
-  return undefined
+  else if (isKanjiContent(obj)) {
+    return {
+      kanji: 'a',
+      readings: ['a'],
+      english: 'a',
+      examples: ['a'],
+    }
+  }
+  else {
+    return undefined
+  } 
 }

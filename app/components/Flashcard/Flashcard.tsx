@@ -1,13 +1,13 @@
 'use client';
 import React, { useEffect, useState } from 'react';
 import styles from './Flashcard.module.css';
-import { VocabContent, isVocabContent } from '@/app/utils/utils';
+import { KanjiContent, VocabContent, isKanjiContent, isVocabContent } from '@/app/utils/utils';
 import { useRouter } from 'next/navigation'
 
 const SPACE = ' '
 const COOLDOWN_DURATION = 300
 
-const Flashcard = (props: { contents:VocabContent }) => {
+const Flashcard = (props: { contents:VocabContent|KanjiContent }) => {
   const { contents } = props
 
   const router = useRouter()
@@ -49,13 +49,35 @@ const Flashcard = (props: { contents:VocabContent }) => {
   };
 
   if (isVocabContent(contents)) {
+    const data = contents as VocabContent
     return (
       <div className={`${styles.flashcard} ${isFlipped ? styles.flipped : ''}`} onClick={handleFlip}>
         <div className={styles.front}>
-          {contents.japanese}{contents.alternate && ('/' + contents.alternate)} {contents.kanji && ('(' + contents.kanji + ')')}
+          {data.japanese}{data.alternate && ('/' + data.alternate)} {data.kanji && ('(' + data.kanji + ')')}
         </div>
         <div className={styles.back}>
-          {contents.english}{contents.example && (', ex. ' + contents.example)}
+          {data.english}{data.example && (', ex. ' + data.example)}
+        </div>
+      </div>
+    );
+  }
+  else if (isKanjiContent(contents)) {
+    const data = contents as KanjiContent
+    return (
+      <div className={`${styles.flashcard} ${isFlipped ? styles.flipped : ''}`} onClick={handleFlip}>
+        <div className={styles.front}>
+          {data.kanji}
+        </div>
+        <div className={`${styles.back} flex flex-col`}>
+          <div>
+            Meaning: {data.english}
+          </div>
+          <div>
+            Readings: {data.readings.join(', ')}
+          </div>
+          <div>
+            Examples: {data.examples.join(',\n')}
+          </div>
         </div>
       </div>
     );
