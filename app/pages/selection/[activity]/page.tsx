@@ -57,7 +57,12 @@ function FlashcardsSelect({
               className={styles.select}
             >
               {chapters.map((item) => (
-                <option key={item} value={item} disabled={!isSelectionValid(item, selectedTopic)}>
+                <option 
+                  key={item} 
+                  value={item} 
+                  disabled={!isSelectionValid(item, selectedTopic)}
+                  className={styles.option}  
+                >
                   {item}
                 </option>
               ))}
@@ -72,7 +77,12 @@ function FlashcardsSelect({
               className={styles.select}
             >
               {topics.map((item) => (
-                <option key={item} value={item} disabled={!isSelectionValid(selectedChapter, item)}>
+                <option 
+                  key={item} 
+                  value={item} 
+                  disabled={!isSelectionValid(selectedChapter, item)}
+                  className={styles.option}
+                >
                   {item}
                 </option>
               ))}
