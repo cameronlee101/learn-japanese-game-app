@@ -1,5 +1,5 @@
 'use client';
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import styles from './Flashcard.module.css';
 import { KanjiContent, VocabContent, isKanjiContent, isVocabContent } from '@/app/utils/utils';
 import { useRouter } from 'next/navigation'
@@ -15,6 +15,34 @@ const Flashcard = (props: { contents:VocabContent|KanjiContent }) => {
   const [isFlipped, setIsFlipped] = useState(false)
   const [lastKeyPressTime, setLastKeyPressTime] = useState(0)
   const [flippingCard, setFlippingCard] = useState(false)
+
+  const flashcardFrontRef = useRef<HTMLDivElement>(null);
+  const flashcardBackRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const handleOverflow = () => {
+      const front = flashcardFrontRef.current
+      if (front) {
+        const hasOverflow = front.scrollHeight > front.clientHeight;
+        front.style.justifyContent = hasOverflow ? 'start' : 'center';
+      }
+      const back = flashcardBackRef.current
+      if (back) {
+        const hasOverflow = back.scrollHeight > back.clientHeight;
+        back.style.justifyContent = hasOverflow ? 'start' : 'center';
+      }
+    };
+
+    handleOverflow(); // Initial check
+
+    // Attach event listener for dynamic changes
+    window.addEventListener('resize', handleOverflow);
+
+    return () => {
+      // Clean up the event listener on component unmount
+      window.removeEventListener('resize', handleOverflow);
+    };
+  }, [props]);
 
   // Creates keypress event listener on the window which uses the enableInput and lastKeyPressTime states
   useEffect(() => {
@@ -52,10 +80,10 @@ const Flashcard = (props: { contents:VocabContent|KanjiContent }) => {
     const data = contents as VocabContent
     return (
       <div className={`${styles.flashcard} ${isFlipped ? styles.flipped : ''}`} onClick={handleFlip}>
-        <div className={styles.front}>
+        <div ref={flashcardFrontRef} className={styles.front}>
           {data.japanese}{data.alternate && ('/' + data.alternate)} {data.kanji && ('(' + data.kanji + ')')}
         </div>
-        <div className={styles.back}>
+        <div ref={flashcardBackRef} className={styles.back}>
           {data.english}{data.example && (', ex. ' + data.example)}
         </div>
       </div>
@@ -65,18 +93,18 @@ const Flashcard = (props: { contents:VocabContent|KanjiContent }) => {
     const data = contents as KanjiContent
     return (
       <div className={`${styles.flashcard} ${isFlipped ? styles.flipped : ''}`} onClick={handleFlip}>
-        <div className={styles.front}>
+        <div ref={flashcardFrontRef} className={styles.front}>
           {data.kanji}
         </div>
-        <div className={`${styles.back} flex flex-col`}>
+        <div ref={flashcardBackRef} className={`${styles.back}`}>
           <div>
-            Meaning: {data.english}
+            <span className='font-semibold'>Meaning</span>: {data.english}
           </div>
           <div>
-            Readings: {data.readings.join(', ')}
+            <span className='font-semibold'>Readings</span>: {data.readings.join(', ')}
           </div>
           <div>
-            Examples: {data.examples.join(',\n')}
+            <span className='font-semibold'>Examples</span>: {data.examples.join(',\n')}
           </div>
         </div>
       </div>

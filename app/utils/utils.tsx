@@ -63,7 +63,6 @@ export class ContentClass {
 
 // Function used to check if the given object is of type VocabContent
 export function isVocabContent(obj:any):boolean {
-  console.log(obj)
   return obj && 
   typeof obj === 'object' && 
   'japanese' in obj && 

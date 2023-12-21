@@ -266,7 +266,21 @@
         { "japanese": "どうですか", "english": "How about ...?; How is...?" }
       ],
       "kanji": [
-        { "kanji": "一", "readings": ["いち", "ひと", "いっ"], "english": "one", "examples": ["一（いち）one", "一時（いちじ）one o'clock"]}
+        { "kanji": "一", "readings": ["いち"], "english": "one", "examples": ["一（いち）one", "一時（いちじ）one o'clock"]},
+        { "kanji": "二", "readings": ["に"], "english": "two", "examples": ["二（に）two", "二時（にじ）two o'clock"]},
+        { "kanji": "三", "readings": ["さん"], "english": "three", "examples": ["三（さん）three", "三時（さんじ）three o'clock"]},
+        { "kanji": "四", "readings": ["よん", "よ"], "english": "four", "examples": ["四（よん）four", "四時（よじ）four o'clock"]},
+        { "kanji": "五", "readings": ["ご"], "english": "five", "examples": ["五（ご）five", "五時（ごじ）five o'clock"]},
+        { "kanji": "六", "readings": ["ろく", "ろっ"], "english": "six", "examples": ["六（ろく）six", "六時（ろくじ）six o'clock"]},
+        { "kanji": "七", "readings": ["しち", "なな"], "english": "seven", "examples": ["七（しち/なな）seven", "七時（しちじ）seven o'clock"]},
+        { "kanji": "八", "readings": ["はち", "はっ"], "english": "eight", "examples": ["八（はち）eight", "八時（はちじ）eight o'clock", "八百（はっぴゃく）eight hundred"]},
+        { "kanji": "九", "readings": ["きゅう", "く"], "english": "nine", "examples": ["九（きゅう）nine", "九時（きゅうじ）nine o'clock"]},
+        { "kanji": "十", "readings": ["じゅう"], "english": "ten", "examples": ["十（じゅう）ten", "十時（じゅうじ）ten o'clock"]},
+        { "kanji": "百", "readings": ["ひゃく", "ぴゃく", "びゃく"], "english": "hundred", "examples": ["百（ひゃく）hundred", "三百（さんびゃく）three hundred", "六百（ろっぴゃく）six hundred", "八百（はっぴゃく）eight hundred"]},
+        { "kanji": "千", "readings": ["せん", "ぜん"], "english": "thousand", "examples": ["千（せん）thousand", "三千（さんぜん）three thousand", "八千（はっせん）eight thousand", "千円（せんえん）one thousand yen"]},
+        { "kanji": "万", "readings": ["まん"], "english": "ten thousand", "examples": ["一万（いちまん）ten thousand", "十万（じゅうまん）hundred thousand", "百万（ひゃくまん）one million", "百万円（ひゃくまんえん）one million yen"]},
+        { "kanji": "円", "readings": ["えん"], "english": "yen; circle", "examples": ["百円（ひゃくえん）one hundred yen"]},
+        { "kanji": "時", "readings": ["じ"], "english": "time", "examples": ["一時（いちじ）one o'clock"]}        
       ]
     }
   ]
