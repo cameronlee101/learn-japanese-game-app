@@ -14,6 +14,10 @@ const sidebarItems = [
         href: '/pages/selection/flashcards-activity',
     },
     {
+        name: 'M.C. Quiz',
+        href: '/pages/selection/mc-quiz',
+    },
+    {
         name: 'See Contents',
         href: '/pages/selection/contents-of',
     },

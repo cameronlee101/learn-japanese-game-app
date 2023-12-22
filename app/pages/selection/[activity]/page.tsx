@@ -5,6 +5,21 @@ import { useRouter } from 'next/navigation'
 import { useLocalStorage } from "@uidotdev/usehooks"
 import styles from './selection.module.css'
 
+const titleSuffixes = [
+  {
+    activity: 'flashcards-activity',
+    suffix: 'for Flashcards',
+  },
+  {
+    activity: 'mc-quiz',
+    suffix: 'for Multiple Choice Quiz'
+  },
+  {
+    activity: 'contents-of',
+    suffix: 'to See The Contents of'
+  }
+]
+
 function FlashcardsSelect({ 
   params,
 }: {
@@ -13,6 +28,7 @@ function FlashcardsSelect({
   const chapters = Object.values(Chapters)
   const topics = Object.values(Topics)
   const router = useRouter()
+  const selectedSuffix = titleSuffixes.find((item) => { if (item.activity === params.activity) return item.suffix });
 
   const [selection, setSelection] = useLocalStorage('selection', [chapters[0].valueOf(), topics[0].valueOf()])
   const [selectedChapter, setSelectedChapter] = useState<string>(chapters[0])
@@ -45,7 +61,9 @@ function FlashcardsSelect({
 
   return (
     <main className='main-center'>
-      <h1 className='text-5xl font-semibold'>Select Chapter and Topic</h1>
+      <h1 className='text-5xl font-semibold'>
+        Select Chapter and Topic {selectedSuffix ? selectedSuffix.suffix : ''}
+      </h1>      
       <div>
         <form className='flex flex-col mt-6' onSubmit={submitForm}>
           <div className={styles.selectArea}>
