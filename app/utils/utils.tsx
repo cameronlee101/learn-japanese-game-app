@@ -47,11 +47,13 @@ export class ContentClass {
 
     if (isNaN(chapterNum)) {
       console.error(`Error getting chapter number from "${chapter}" when retrieving content`)
+      console.trace()
     }
     else {
       const content = this.textbookData.chapters[chapterNum - 1][topic.toLowerCase()]
       if (content == undefined) {
-        console.error(`Topic '${topic}' not found in chapter ${chapterNum}`);
+        console.error(`Topic '${topic}' not found in chapter ${chapterNum}`)
+        console.trace()
       } else {
         return content;
       }
@@ -106,6 +108,8 @@ export function getExampleFullObject(obj:any):VocabContent|KanjiContent|undefine
     }
   }
   else {
+    console.error('Error occurred when attempting to retrieve content object')
+    console.trace()
     return undefined
   } 
 }

@@ -52,10 +52,10 @@ function FlashcardsActivity({
   useEffect(() => {
     const handleKeyPress = (event: KeyboardEvent) => {
       if (event.key == ARROW_LEFT) {
-        flashcardLeft()
+        flashcardPrev()
       }
       else if (event.key == ARROW_RIGHT) {
-        flashcardRight()
+        flashcardNext()
       }
     }
 
@@ -83,24 +83,24 @@ function FlashcardsActivity({
       // Creates timeout that changes the flashcard's contents when it is off the screen during its animation
       setTimeout(() => {
         if (direction === 'left') {
-          setCurrentIndex((currentIndex + 1) % flashcardContents!.length);
+          setCurrentIndex((currentIndex + 1) % flashcardContents.length);
         } else if (direction === 'right') {
-          setCurrentIndex(currentIndex === 0 ? flashcardContents!.length - 1 : currentIndex - 1);
+          setCurrentIndex(currentIndex === 0 ? flashcardContents.length - 1 : currentIndex - 1);
         }
       }, COOLDOWN_DURATION / 2);
     }
   }, [direction]);
 
-  const flashcardLeft = () => {
-    // If enough time has passed, allow input and queue the flashcards to move left (which will execute in useEffect)
+  const flashcardPrev = () => {
+    // If enough time has passed, allow input and queue to move to the previous flashcard (which will execute in useEffect)
     if (Date.now() - lastKeyPressTime >= COOLDOWN_DURATION) {
       setAnimationClass('')
       setDirection('right')
     }
   }
 
-  const flashcardRight = () => {
-    // If enough time has passed, allow input and queue the flashcards to move right (which will execute in useEffect)
+  const flashcardNext = () => {
+    // If enough time has passed, allow input and queue to move to the next flashcard (which will execute in useEffect)
     if (Date.now() - lastKeyPressTime >= COOLDOWN_DURATION) {
       setAnimationClass('')
       setDirection('left')
@@ -108,17 +108,18 @@ function FlashcardsActivity({
   }
 
   return (    
-    <main className={`main-center ${styles.main}`}>
+    <main className='main-center overflow-hidden user-select-none'>
       <h1 className='text-5xl font-semibold'>{selectedChapterStr} {selectedTopicStr} Flashcards</h1>
-      <div className={styles.flashcardArea}>
+      <div className={styles.centerArea}>
         <div className={animationClass}>
-          <Flashcard contents={flashcardContents![currentIndex]}></Flashcard>
+          {/* TODO: fix flashcard rendering over sidebar */}
+          <Flashcard contents={flashcardContents[currentIndex]}></Flashcard>
         </div>
-        <div className='flex justify-center mt-10'>
-          <FaArrowCircleLeft className={styles.flashcardButton} onClick={flashcardLeft}/>
-          <FaArrowCircleRight className={styles.flashcardButton} onClick={flashcardRight}/>
+        <div className='flex mt-10'>
+          <FaArrowCircleLeft className={styles.flashcardButton} onClick={flashcardPrev}/>
+          <FaArrowCircleRight className={styles.flashcardButton} onClick={flashcardNext}/>
         </div>
-        <p className='mt-10 text-2xl font-semibold'>{currentIndex+1}/{flashcardContents!.length}</p>
+        <p className='my-10 text-2xl font-semibold'>{currentIndex+1}/{flashcardContents.length}</p>
       </div>
     </main>
   )

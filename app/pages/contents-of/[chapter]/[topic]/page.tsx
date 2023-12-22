@@ -33,7 +33,13 @@ function ContentsOf({
   // Extracts parameters names from an example object for the table headers
   let allParameters = ['']
   if (getExampleFullObject(contents[0])) {
-    allParameters = Object.keys(getExampleFullObject(contents[0])!);
+    if (getExampleFullObject(contents[0])) {
+      allParameters = Object.keys(getExampleFullObject(contents[0])!)
+    }
+    else {
+      console.error('Error occurred when retrieving example object containing all attributes')
+      console.trace()
+    }
   }
 
   return (

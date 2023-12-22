@@ -1,0 +1,17 @@
+.MCOptionArea {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(20vw, 300px));
+  grid-gap: 20px;
+  justify-content: center;
+  align-items: center;
+  min-width: 75vw;
+}
+
+.MCOption {
+  background-color: rgb(196, 196, 196);
+  padding: 20px;
+  border-radius: 0.5rem;
+}
+.MCOption:active {
+  transform: translateY(5px);
+}

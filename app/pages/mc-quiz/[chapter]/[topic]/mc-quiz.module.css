@@ -1,0 +1,13 @@
+.centerArea {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  min-height: 100%;
+}
+
+.progressIndicator {
+  margin-left: 1rem;
+  margin-right: 1rem;
+  min-width: 10rem;
+}
