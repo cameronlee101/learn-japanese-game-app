@@ -19,6 +19,7 @@ const Flashcard = (props: { contents:VocabContent|KanjiContent }) => {
   const flashcardFrontRef = useRef<HTMLDivElement>(null);
   const flashcardBackRef = useRef<HTMLDivElement>(null);
 
+  // Changes how content is justified on flashcard when props for flashcard changes (start when there is overflow, center when there isn't)
   useEffect(() => {
     const handleOverflow = () => {
       const front = flashcardFrontRef.current
@@ -33,13 +34,13 @@ const Flashcard = (props: { contents:VocabContent|KanjiContent }) => {
       }
     };
 
-    handleOverflow(); // Initial check
+    // Initial check
+    handleOverflow(); 
 
     // Attach event listener for dynamic changes
     window.addEventListener('resize', handleOverflow);
 
     return () => {
-      // Clean up the event listener on component unmount
       window.removeEventListener('resize', handleOverflow);
     };
   }, [props]);
@@ -104,7 +105,10 @@ const Flashcard = (props: { contents:VocabContent|KanjiContent }) => {
             <span className='font-semibold'>Readings</span>: {data.readings.join(', ')}
           </div>
           <div>
-            <span className='font-semibold'>Examples</span>: {data.examples.join(',\n')}
+            <span className='font-semibold'>Examples</span>: <br/>
+            {data.examples.map((example) => (
+              <span key={example}>{example}<br/></span>
+            ))}
           </div>
         </div>
       </div>
