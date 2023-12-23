@@ -11,8 +11,8 @@ function MCQuiz({
   params: { chapter: string, topic: string }
 }) {
   const router = useRouter()
-  const selectedChapterStr = params.chapter.replaceAll('%20', ' ')
-  const selectedTopicStr = params.topic.replaceAll('%20', ' ')
+  const selectedChapterStr = decodeURI(params.chapter)
+  const selectedTopicStr = decodeURI(params.topic)
 
   let hasSelectedIncorrect:boolean = false;
 
@@ -30,19 +30,24 @@ function MCQuiz({
       alert('Error retrieving contents, returning to home page (you may need to press "ok" on this alert multiple times)')
       router.push('/')
     } else {
-      // Shuffle the contents
-      const shuffledContents = [...fetchedContents]
-      for (let i = shuffledContents.length - 1; i > 0; i--) {
-        const j = Math.floor(Math.random() * (i + 1));
-        [shuffledContents[i], shuffledContents[j]] = [shuffledContents[j], shuffledContents[i]]
-      }
+      const shuffledContents = shuffleArray(fetchedContents)
 
       // Update the state with shuffled contents
       setContents(shuffledContents as (VocabContent[] | KanjiContent[]))
     }
   }, [])
 
-  const handleOptionChosen = (isCorrect: boolean) => {
+  // Shuffles the given array
+  function shuffleArray(array:any[]):any[] {
+    for (let i = array.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [array[i], array[j]] = [array[j], array[i]];
+    }
+    return array
+  }
+
+  // Performs logic based on the option the user chose
+  function handleOptionChosen(isCorrect: boolean) {
     // Option chosen is correct
     if (isCorrect) {
       if (currentIndex < contents.length) {
@@ -64,25 +69,23 @@ function MCQuiz({
       hasSelectedIncorrect = true
     }
   }
-    
 
-  function getQuizQuestion() {
+  // TODO: refactor or change to passing entire object
+  function getQuizQuestion():string|undefined {
     if (isVocabContent(contents[0])) {
-      return (
-        contents[currentIndex].japanese
-      )
-    }
+      return (contents[currentIndex] as VocabContent).japanese;
+    } 
     else if (isKanjiContent(contents[0])) {
-      return (
-        contents[currentIndex].kanji
-      )
-    }
+      return (contents[currentIndex] as KanjiContent).kanji;
+    } 
     else {
-      console.error('Error: unrecognized content type')
-      console.trace()
+      console.error('Error: unrecognized content type');
+      console.trace();
+      return 'Error';
     }
   }
 
+  // TODO: refactor or change to passing entire object
   function getQuizOptions():{answer:string, others:string[]}|undefined {
     if (isVocabContent(contents[0])) {
       const othersArray: string[] = contents.map(obj => obj.english);

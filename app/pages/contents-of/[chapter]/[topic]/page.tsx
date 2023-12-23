@@ -1,5 +1,5 @@
 'use client'
-import { ContentClass, KanjiContent, VocabContent, getExampleFullObject, isVocabContent } from "@/app/utils/utils"
+import { ContentClass, KanjiContent, VocabContent, getExampleFullObject } from "@/app/utils/utils"
 import { useEffect, useState } from "react"
 import { useRouter } from 'next/navigation'
 import styles from './styles-of.module.css'
@@ -10,8 +10,8 @@ function ContentsOf({
   params: { chapter: string, topic: string }
 }) {
   const router = useRouter()
-  const selectedChapterStr = params.chapter.replaceAll('%20', ' ')
-  const selectedTopicStr = params.topic.replaceAll('%20', ' ')
+  const selectedChapterStr = decodeURI(params.chapter)
+  const selectedTopicStr = decodeURI(params.topic)
 
   const [contents, setContents] = useState<VocabContent[]|KanjiContent[]>([{japanese: 'Loading...', english: 'Loading...'}])
 

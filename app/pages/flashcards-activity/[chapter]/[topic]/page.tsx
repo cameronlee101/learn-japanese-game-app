@@ -16,8 +16,8 @@ function FlashcardsActivity({
   params: { chapter: string, topic: string }
 }) {
   const router = useRouter()
-  const selectedChapterStr = params.chapter.replaceAll('%20', ' ')
-  const selectedTopicStr = params.topic.replaceAll('%20', ' ')
+  const selectedChapterStr = decodeURI(params.chapter)
+  const selectedTopicStr = decodeURI(params.topic)
 
   const [animationClass, setAnimationClass] = useState('')
   const [lastKeyPressTime, setLastKeyPressTime] = useState(0)
@@ -36,17 +36,21 @@ function FlashcardsActivity({
       alert('Error retrieving flashcard contents, returning to home page (you may need to press "ok" on this alert multiple times)')
       router.push('/')
     } else {
-      // Shuffle the contents
-      const shuffledContents = [...fetchedContents]
-      for (let i = shuffledContents.length - 1; i > 0; i--) {
-        const j = Math.floor(Math.random() * (i + 1));
-        [shuffledContents[i], shuffledContents[j]] = [shuffledContents[j], shuffledContents[i]]
-      }
+      const shuffledContents = shuffleArray(fetchedContents)
 
       // Update the state with shuffled contents
       setFlashcardContents(shuffledContents as (VocabContent[] | KanjiContent[]))
     }
   }, [])
+
+  // Shuffles the given array
+  function shuffleArray(array:any[]):any[] {
+    for (let i = array.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [array[i], array[j]] = [array[j], array[i]];
+    }
+    return array
+  }
 
   // Creates keypress event listener on the window which uses the lastKeyPressTime state
   useEffect(() => {
@@ -89,7 +93,7 @@ function FlashcardsActivity({
         }
       }, COOLDOWN_DURATION / 2);
     }
-  }, [direction]);
+  }, [direction])
 
   const flashcardPrev = () => {
     // If enough time has passed, allow input and queue to move to the previous flashcard (which will execute in useEffect)
