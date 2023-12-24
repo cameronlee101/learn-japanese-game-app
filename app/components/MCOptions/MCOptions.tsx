@@ -1,6 +1,6 @@
 'use client'
 import React, { useEffect, useState } from 'react'
-import styles from './MCOptions.module.css'
+import './MCOptions.css'
 import CheckOrX, { symbolOptions } from '../CheckOrX/CheckOrX'
 
 enum validOptionStates {
@@ -55,7 +55,7 @@ const MCOptions = (props: {
     // remove, then add class to reset fading up animation
     setCheckOrXClass('');
     setTimeout(() => {
-      setCheckOrXClass(styles.fadeUp);
+      setCheckOrXClass('fadeUp');
     }, 1)
   }
 
@@ -71,11 +71,11 @@ const MCOptions = (props: {
 
   return (
     <>
-      <div className={styles.MCOptionArea}>
+      <div className='MCOptionArea'>
         {options.map((option, index) => 
           <div 
             key={index}
-            className={`${styles.MCOption} ${options[index].state === validOptionStates.incorrect ? styles.incorrect : '' }`} 
+            className={`MCOption ${options[index].state === validOptionStates.incorrect ? 'incorrect' : '' }`} 
             onClick={options[index].state === validOptionStates.incorrect ? ()=>{} : (e) => handleClick(option.text, index, e)}
           >
             {option.text}

@@ -3,7 +3,7 @@ import React, { useEffect, useState } from 'react'
 import { Chapters, Topics, isSelectionValid } from '@/app/utils/utils'
 import { useRouter } from 'next/navigation'
 import { useLocalStorage } from "@uidotdev/usehooks"
-import styles from './selection.module.css'
+import './selection.css'
 
 const titleSuffixes = [
   {
@@ -66,40 +66,36 @@ function FlashcardsSelect({
       </h1>      
       <div>
         <form className='flex flex-col mt-6' onSubmit={submitForm}>
-          <div className={styles.selectArea}>
+          <div className='selectArea'>
             <label htmlFor='chapter' className='text-xl'>Chapter</label>
             <select 
               id='chapter'
               value={selectedChapter}
               onChange={(e) => {setSelectedChapter(e.target.value)}}
-              className={styles.select}
             >
               {chapters.map((item) => (
                 <option 
                   key={item} 
                   value={item} 
                   disabled={!isSelectionValid(item, selectedTopic)}
-                  className={styles.option}  
                 >
                   {item}
                 </option>
               ))}
             </select>
           </div>
-          <div className={styles.selectArea}>
+          <div className='selectArea'>
             <label htmlFor='topic' className='text-xl'>Topic</label>
             <select 
               id='topic'
               value={selectedTopic}
               onChange={(e) => {setSelectedTopic(e.target.value)}}
-              className={styles.select}
             >
               {topics.map((item) => (
                 <option 
                   key={item} 
                   value={item} 
                   disabled={!isSelectionValid(selectedChapter, item)}
-                  className={styles.option}
                 >
                   {item}
                 </option>

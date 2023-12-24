@@ -1,6 +1,6 @@
 'use client'
 import Link from 'next/link'
-import styles from './Sidebar.module.css'
+import './Sidebar.css'
 import { useState } from 'react'
 import { GiHamburgerMenu } from "react-icons/gi";
 
@@ -31,23 +31,23 @@ const Sidebar = () => {
     }
 
     return (
-        <div className={styles.sidebarContainer}>
+        <div className='sidebarContainer'>
             <GiHamburgerMenu 
-                className={`${styles.menuButton} ${isOpen ? '' : styles.closed}`}
+                className={`menuButton ${isOpen ? '' : 'closed'}`}
                 onClick={toggleSidebar}
             />
             <aside 
-                className={`${styles.sidebar} ${isOpen ? '' : styles.closed}`}
+                className={`sidebar ${isOpen ? '' : 'closed'}`}
             >
                 <ul className='mx-auto flex justify-between flex-col'>
                     {sidebarItems.map((item) => (
                         <li 
-                            className={`${styles.li} ${isOpen ? '' : styles.closed}`}
+                            className={`${isOpen ? '' : 'closed'}`}
                             key={item.name}
                         >
                             <Link 
                                 href={item.href} 
-                                className={styles.sidebarLink}
+                                className='sidebarLink'
                                 onClick={toggleSidebar}
                             >
                                 {item.name}

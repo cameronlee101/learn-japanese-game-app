@@ -20,7 +20,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body className={`${roboto.className} bg-color flex min-h-screen relative gap-8`}>
+      <body className={`${roboto.className} bg-color flex min-h-screen relative`}>
         <Sidebar/>
         {children}
       </body>

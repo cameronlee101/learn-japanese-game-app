@@ -2,7 +2,6 @@
 import { ContentClass, KanjiContent, VocabContent, getExampleFullObject } from "@/app/utils/utils"
 import { useEffect, useState } from "react"
 import { useRouter } from 'next/navigation'
-import styles from './styles-of.module.css'
 
 function ContentsOf({ 
   params,
@@ -51,7 +50,7 @@ function ContentsOf({
             {allParameters.map((parameter, index) => (
               <th 
                 key={index}
-                className={styles.th}
+                style={{ minWidth:'100px' }}
               >
                 {parameter.charAt(0).toUpperCase() + parameter.slice(1)}
               </th>
