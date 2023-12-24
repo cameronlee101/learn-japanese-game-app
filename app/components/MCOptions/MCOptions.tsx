@@ -18,7 +18,6 @@ const MCOptions = (props: {
 
   const [options, setOptions] = useState<{text:string, state:validOptionStates}[]>([])
 
-  let needToResetClass = false
   const [checkOrXClass, setCheckOrXClass] = useState('')
   const [checkOrXPos, setCheckOrXPos] = useState({ x: 0, y: 0 });
   const [checkOrXSymbol, setCheckOrXSymbol] = useState(symbolOptions.xMark)
@@ -35,35 +34,29 @@ const MCOptions = (props: {
     setOptions(shuffledOptions.map((text) => ({ text, state: validOptionStates.none })))
   }, [props])
 
-  // Handles logic when an option is clicked
+  // Handles logic when an option is clicked for the first time
   const handleClick = (choice:string, index:number, e:React.MouseEvent) => {
     // Option chosen is correct
-    // TODO: refactor
     if (choice === correctOption) {
       setCheckOrXSymbol(symbolOptions.checkMark)
-      setCheckOrXPos({ x: e.clientX - 32, y: e.clientY - 32 })
-      setCheckOrXClass(styles.fadeUp)
-
-      setTimeout(() => {
-        setCheckOrXClass('')
-      }, 1500)
-
       onOptionChosen(true)
       updateOptionState(index, validOptionStates.correct)
     }
     // Option chosen is incorrect
     else {
       setCheckOrXSymbol(symbolOptions.xMark)
-      setCheckOrXPos({ x: e.clientX - 32, y: e.clientY - 32 })
-      setCheckOrXClass(styles.fadeUp)
-
-      setTimeout(() => {
-        setCheckOrXClass('')
-      }, 1500)
-
       onOptionChosen(false)
       updateOptionState(index, validOptionStates.incorrect)
     }
+    
+    // Set the check or X symbol to the cursor position
+    setCheckOrXPos({ x: e.clientX - 32, y: e.clientY - 32 })
+
+    // remove, then add class to reset fading up animation
+    setCheckOrXClass('');
+    setTimeout(() => {
+      setCheckOrXClass(styles.fadeUp);
+    }, 1)
   }
 
   // Updates an attribute in the 'options' array at the given index to indicate that that option was selected and indicate it's correctness 

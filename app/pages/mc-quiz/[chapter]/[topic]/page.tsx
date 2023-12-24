@@ -70,6 +70,7 @@ function MCQuiz({
     }    
   }
 
+
   // TODO: refactor or change to passing entire object
   function getQuizQuestion():string|undefined {
     if (isVocabContent(contents[0])) {
