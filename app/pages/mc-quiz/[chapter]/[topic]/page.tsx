@@ -64,10 +64,10 @@ function MCQuiz({
         console.error('unimplemented')
       }
     }
-    // Option chosen is correct
+    // Option chosen is incorrect
     else {
       hasSelectedIncorrect = true
-    }
+    }    
   }
 
   // TODO: refactor or change to passing entire object
@@ -128,7 +128,7 @@ function MCQuiz({
         Quiz
       </h1>
       <div className={styles.centerArea}>
-        <div className='bg-blue-200 flex justify-center items-center mb-20 w-96 h-40 px-10 py-7 rounded-lg'>
+        <div className='flex bg-orange-200 justify-center items-center mb-20 w-96 h-52 px-10 py-7 rounded-lg text-2xl shadow-md'>
           {getQuizQuestion()}
         </div>
         <div className='flex justify-center items-center'>

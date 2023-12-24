@@ -116,7 +116,6 @@ function FlashcardsActivity({
       <h1 className='text-5xl font-semibold'>{selectedChapterStr} {selectedTopicStr} Flashcards</h1>
       <div className={styles.centerArea}>
         <div className={animationClass}>
-          {/* TODO: fix flashcard rendering over sidebar */}
           <Flashcard contents={flashcardContents[currentIndex]}></Flashcard>
         </div>
         <div className='flex mt-10'>
