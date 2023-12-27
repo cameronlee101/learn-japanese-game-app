@@ -21,6 +21,7 @@ const MCOptions = (props: {
   const [checkOrXClass, setCheckOrXClass] = useState('')
   const [checkOrXPos, setCheckOrXPos] = useState({ x: 0, y: 0 });
   const [checkOrXSymbol, setCheckOrXSymbol] = useState(symbolOptions.xMark)
+  const [inputEnalbed, setInputEnabled] = useState(true)
 
   // Creates 4 randomly ordered options using the 1 correct option and 3 other incorrect options 
   useEffect(() => {
@@ -32,6 +33,7 @@ const MCOptions = (props: {
     const shuffledOptions = selectedOptions.sort(() => Math.random() - 0.5) 
   
     setOptions(shuffledOptions.map((text) => ({ text, state: validOptionStates.none })))
+    setInputEnabled(true)
   }, [props])
 
   // Handles logic when an option is clicked for the first time
@@ -41,6 +43,7 @@ const MCOptions = (props: {
       setCheckOrXSymbol(symbolOptions.checkMark)
       onOptionChosen(true)
       updateOptionState(index, validOptionStates.correct)
+      setInputEnabled(false)
     }
     // Option chosen is incorrect
     else {
@@ -76,7 +79,8 @@ const MCOptions = (props: {
           <div 
             key={index}
             className={`MCOption ${options[index].state === validOptionStates.incorrect ? 'incorrect' : '' }`} 
-            onClick={options[index].state === validOptionStates.incorrect ? ()=>{} : (e) => handleClick(option.text, index, e)}
+            // Element only has click event listener if hasn't been clicked yet
+            onClick={inputEnalbed && options[index].state === validOptionStates.none ? (e) => handleClick(option.text, index, e) : ()=>{}}  
           >
             {option.text}
           </div>
