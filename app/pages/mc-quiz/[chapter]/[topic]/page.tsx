@@ -25,9 +25,23 @@ function MCQuiz({
 
   const [playingGame, setPlayingGame] = useState(true)
 
-  // Gets the contents for given chapter and topic, and checks that they are defined
+  // Gets content for the quiz on component mount
   useEffect(() => {
-    // Fetch flashcard contents
+    getContent()
+  }, [])
+
+  // Resets all the states (effectively resetting the game)
+  const resetStates = () => {
+    setCurrentIndex(0)
+    setCorrectAnswersNum(0)
+    setWrongAnswersState([])
+    wrongAnswersRef.current = []
+    setPlayingGame(true)
+  }
+
+  // Gets the contents for given chapter and topic, and checks that they are defined
+  const getContent = () => {
+    // Fetches contents
     const fetchedContents = new ContentClass().get(selectedChapterStr, selectedTopicStr)
 
     // Check if contents are undefined
@@ -40,7 +54,7 @@ function MCQuiz({
       // Update the state with shuffled contents
       setContents(shuffledContents as (VocabContent[] | KanjiContent[]))
     }
-  }, [])
+  }
 
   // Shuffles the given array
   const shuffleArray = (array:any[]):any[] => {
@@ -70,7 +84,7 @@ function MCQuiz({
         else {
           setCorrectAnswersNum(correctAnswersNum+1)
         }
-      }, 1000)
+      }, 700)
     }
     // Option chosen is incorrect
     else {
@@ -154,7 +168,7 @@ function MCQuiz({
             />
           </div>
           <div className='flex flex-col mt-10 items-center justify-center'>
-            <p className='progressIndicator'>First-Time Correct Answers: {correctAnswersNum}</p>
+            <p className='progressIndicator'>First Guess Correct Answers: {correctAnswersNum}</p>
             <p className='progressIndicator'>Progress: {currentIndex}/{contents.length}</p>
           </div>
         </div>
@@ -162,7 +176,7 @@ function MCQuiz({
       {!playingGame && <>
         <p className='text-xl mt-8'>
           Game Over! <br/>
-          Total First-Time Correct Answers: {correctAnswersNum}/{contents.length}  
+          Total First Guess Correct Answers: {correctAnswersNum}/{contents.length}  
         </p>
         <div className='mt-8'>
           {correctAnswersNum === contents.length ? (
@@ -171,7 +185,7 @@ function MCQuiz({
             </p>
           ) : (<>
             <p className='text-xl mb-4'>
-              Here is a list of question you got incorrect the first time:
+              Here is a list of question you got incorrect on the first guess:
             </p>
             <table className='table table-striped-columns table-hover table-bordered table-sm'>
               <thead>
@@ -190,6 +204,15 @@ function MCQuiz({
               </tbody>
             </table>
           </>)}
+          <button 
+            className='bg-slate-500 hover:bg-slate-700 text-white text-xl font-bold py-1 px-8 rounded-full mt-20'
+            onClick={() => {
+              resetStates()
+              getContent()
+            }}
+          >
+            Play Again
+          </button>
         </div>
       </>}
       
