@@ -16,7 +16,7 @@ function MCQuiz({
 
   let hasSelectedIncorrect:boolean = false;
 
-  const [contents, setContents] = useState<VocabContent[]|KanjiContent[]>([{japanese: 'Loading...', english: 'Loading...'}])
+  const [contents, setContents] = useState<VocabContent[]|KanjiContent[]>([{japanese: 'Loading...', english: 'Loading...'}, {japanese: 'Loading...', english: 'Loading...'}, {japanese: 'Loading...', english: 'Loading...'}, {japanese: 'Loading...', english: 'Loading...'}])
   const [currentIndex, setCurrentIndex] = useState(0)
   const [correctAnswersNum, setCorrectAnswersNum] = useState(0)
 
@@ -25,9 +25,9 @@ function MCQuiz({
 
   const [playingGame, setPlayingGame] = useState(true)
 
-  // Gets content for the quiz on component mount
+  // Gets contents for activity on page load
   useEffect(() => {
-    getContent()
+    getShuffledContent()
   }, [])
 
   // Resets all the states (effectively resetting the game)
@@ -39,21 +39,22 @@ function MCQuiz({
     setPlayingGame(true)
   }
 
-  // Gets the contents for given chapter and topic, and checks that they are defined
-  const getContent = () => {
+  // Gets the contents for given chapter and topic checks that they are defined, and shuffles them
+  const getShuffledContent = () => {
     // Fetches contents
-    const fetchedContents = new ContentClass().get(selectedChapterStr, selectedTopicStr)
+    new ContentClass().getContent(selectedChapterStr, selectedTopicStr).then((fetchedContents) => {
+      // Check if contents are undefined
+      if (fetchedContents === undefined) {
+        alert('Error retrieving contents, returning to home page (you may need to press "ok" on this alert multiple times)')
+        router.push('/')
+      } else {
+        // Shuffles contents
+        const shuffledContents = shuffleArray(fetchedContents)
 
-    // Check if contents are undefined
-    if (fetchedContents === undefined) {
-      alert('Error retrieving contents, returning to home page (you may need to press "ok" on this alert multiple times)')
-      router.push('/')
-    } else {
-      const shuffledContents = shuffleArray(fetchedContents)
-
-      // Update the state with shuffled contents
-      setContents(shuffledContents as (VocabContent[] | KanjiContent[]))
-    }
+        // Update the state with shuffled contents
+        setContents(shuffledContents as (VocabContent[] | KanjiContent[]))
+      }
+    })
   }
 
   // Shuffles the given array
@@ -78,12 +79,7 @@ function MCQuiz({
           setPlayingGame(false)
         }
 
-        if (hasSelectedIncorrect) {
-          hasSelectedIncorrect = false
-        }
-        else {
-          setCorrectAnswersNum(correctAnswersNum+1)
-        }
+        hasSelectedIncorrect ? hasSelectedIncorrect = false : setCorrectAnswersNum(correctAnswersNum+1)
       }, 700)
     }
     // Option chosen is incorrect
@@ -96,7 +92,6 @@ function MCQuiz({
       }
     }    
   }
-
 
   // TODO: refactor or change to passing entire object
   const getQuizQuestion = ():string|undefined => {
@@ -208,7 +203,7 @@ function MCQuiz({
             className='bg-slate-500 hover:bg-slate-700 text-white text-xl font-bold py-1 px-8 rounded-full mt-20'
             onClick={() => {
               resetStates()
-              getContent()
+              getShuffledContent()
             }}
           >
             Play Again

@@ -1,3 +1,5 @@
+import { RealmAppService } from './realm-app-service'
+
 export enum Chapters {
   Ch1 = 'Chapter 1',
   Ch2 = 'Chapter 2',
@@ -37,28 +39,40 @@ export interface KanjiContent {
 }
 
 export class ContentClass {
-  // TODO: switch to storing data on external server
-  textbookData = require('./content.json')
+  private async getCollection() {
+    const app = await new RealmAppService().getAppInstance()
+    const client = await app?.currentUser?.mongoClient('mongodb-atlas')
 
-  // Retrieves content based on chapter and topic from storage
-  get (chapter: string, topic: string):undefined|VocabContent[]|KanjiContent[] {
-    const numberPattern: RegExp = /\d+/
-    const chapterNum = parseInt(chapter.match(numberPattern)![0])
+    const collection = await client?.db('Japanese-content')?.collection('Genki-I')
 
-    if (isNaN(chapterNum)) {
-      console.error(`Error getting chapter number from "${chapter}" when retrieving content`)
+    if (!collection) {
+      throw new Error('Failed to connect to server')
+    }
+
+    return collection
+  }
+
+  async getContent(chapter: string, topic: string):Promise<undefined|VocabContent[]|KanjiContent[]> {
+    const collection:[] = await (await this.getCollection()).aggregate([])
+    const chapterKey = chapter.toLowerCase().replaceAll(' ', '')
+    const topicKey = topic.toLowerCase()
+
+    const chapterResult = collection.find((item) => chapterKey in item)
+    if (!chapterResult) {
+      console.error(`Error retrieving chapter content for ${chapter}`)
       console.trace()
     }
     else {
-      const content = this.textbookData.chapters[chapterNum - 1][topic.toLowerCase()]
-      if (content == undefined) {
-        console.error(`Topic '${topic}' not found in chapter ${chapterNum}`)
+      const topicResult = chapterResult[chapterKey][topicKey]
+      if (!topicResult) {
+        console.error(`Topic '${topic}' not found in ${chapter}`)
         console.trace()
-      } else {
-        return content;
+      }
+      else {
+        return topicResult
       }
     }
-  
+
     return undefined
   }
 }

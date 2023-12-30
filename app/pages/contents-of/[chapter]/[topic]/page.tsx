@@ -14,22 +14,7 @@ function ContentsOf({
 
   const [contents, setContents] = useState<VocabContent[]|KanjiContent[]>([{japanese: 'Loading...', english: 'Loading...'}])
 
-  // Gets the contents for given chapter and topic, and checks that they are defined
-  useEffect(() => {
-    // Fetch flashcard contents
-    const fetchedContents = new ContentClass().get(selectedChapterStr, selectedTopicStr)
-
-    // Check if contents are undefined
-    if (fetchedContents === undefined) {
-      alert('Error retrieving contents, returning to home page (you may need to press "ok" on this alert multiple times)')
-      router.push('/')
-    }
-    else {
-      setContents(fetchedContents as (VocabContent[] | KanjiContent[]))
-    }
-  }, [])
-
-  // Extracts parameters names from an example object for the table headers
+  // Extracts parameter names from an example object for the table headers
   let allParameters = ['']
   if (getExampleFullObject(contents[0])) {
     if (getExampleFullObject(contents[0])) {
@@ -39,6 +24,26 @@ function ContentsOf({
       console.error('Error occurred when retrieving example object containing all attributes')
       console.trace()
     }
+  }
+
+  // Gets contents for the table on page load
+  useEffect(() => {
+    getContent()
+  }, [])
+
+  // Gets the contents for given chapter and topic checks that they are defined
+  const getContent = () => {
+    // Fetches contents
+    new ContentClass().getContent(selectedChapterStr, selectedTopicStr).then((fetchedContents) => {
+      // Check if contents are undefined
+      if (fetchedContents === undefined) {
+        alert('Error retrieving contents, returning to home page (you may need to press "ok" on this alert multiple times)')
+        router.push('/')
+      } else {
+        // Update the state with contents
+        setContents(fetchedContents as (VocabContent[] | KanjiContent[]))
+      }
+    })
   }
 
   return (

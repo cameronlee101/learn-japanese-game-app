@@ -24,24 +24,30 @@ function FlashcardsActivity({
   const [currentIndex, setCurrentIndex] = useState(0)
   const [direction, setDirection] = useState<'left' | 'right' | null>(null)
 
-  const [flashcardContents, setFlashcardContents] = useState<VocabContent[]|KanjiContent[]>([{japanese: 'Loading...', english: 'Loading...'}])
+  const [contents, setContents] = useState<VocabContent[]|KanjiContent[]>([{japanese: 'Loading...', english: 'Loading...'}])
 
-  // Gets the flashcard contents for given chapter and topic, checks that they are defined, then shuffles the elements
+  // Gets contents for activity on page load
   useEffect(() => {
-    // Fetch flashcard contents
-    const fetchedContents = new ContentClass().get(selectedChapterStr, selectedTopicStr)
-
-    // Check if contents are undefined
-    if (fetchedContents === undefined) {
-      alert('Error retrieving flashcard contents, returning to home page (you may need to press "ok" on this alert multiple times)')
-      router.push('/')
-    } else {
-      const shuffledContents = shuffleArray(fetchedContents)
-
-      // Update the state with shuffled contents
-      setFlashcardContents(shuffledContents as (VocabContent[] | KanjiContent[]))
-    }
+    getShuffledContent()
   }, [])
+
+  // Gets the contents for given chapter and topic checks that they are defined, then shuffles the elements
+  const getShuffledContent = () => {
+    // Fetches contents
+    new ContentClass().getContent(selectedChapterStr, selectedTopicStr).then((fetchedContents) => {
+      // Check if contents are undefined
+      if (fetchedContents === undefined) {
+        alert('Error retrieving contents, returning to home page (you may need to press "ok" on this alert multiple times)')
+        router.push('/')
+      } else {
+        // Shuffles contents
+        const shuffledContents = shuffleArray(fetchedContents)
+
+        // Update the state with shuffled contents
+        setContents(shuffledContents as (VocabContent[] | KanjiContent[]))
+      }
+    })
+  }
 
   // Shuffles the given array
   const shuffleArray = (array:any[]):any[] => {
@@ -87,9 +93,9 @@ function FlashcardsActivity({
       // Creates timeout that changes the flashcard's contents when it is off the screen during its animation
       setTimeout(() => {
         if (direction === 'left') {
-          setCurrentIndex((currentIndex + 1) % flashcardContents.length);
+          setCurrentIndex((currentIndex + 1) % contents.length);
         } else if (direction === 'right') {
-          setCurrentIndex(currentIndex === 0 ? flashcardContents.length - 1 : currentIndex - 1);
+          setCurrentIndex(currentIndex === 0 ? contents.length - 1 : currentIndex - 1);
         }
       }, COOLDOWN_DURATION / 2);
     }
@@ -116,13 +122,13 @@ function FlashcardsActivity({
       <h1 className='text-5xl font-semibold'>{selectedChapterStr} {selectedTopicStr} Flashcards</h1>
       <div className='centerArea'>
         <div className={animationClass}>
-          <Flashcard contents={flashcardContents[currentIndex]}></Flashcard>
+          <Flashcard contents={contents[currentIndex]}></Flashcard>
         </div>
         <div className='flex mt-10'>
           <FaArrowCircleLeft className='flashcardButton' onClick={flashcardPrev}/>
           <FaArrowCircleRight className='flashcardButton' onClick={flashcardNext}/>
         </div>
-        <p className='my-10 text-2xl font-semibold'>{currentIndex+1}/{flashcardContents.length}</p>
+        <p className='my-10 text-2xl font-semibold'>{currentIndex+1}/{contents.length}</p>
       </div>
     </main>
   )
