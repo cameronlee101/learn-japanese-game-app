@@ -96,15 +96,14 @@ function MCQuiz({
   // TODO: refactor or change to passing entire object
   const getQuizQuestion = ():string|undefined => {
     if (isVocabContent(contents[0])) {
-      return (contents[currentIndex] as VocabContent).japanese;
+      return (contents[currentIndex] as VocabContent).japanese
     } 
     else if (isKanjiContent(contents[0])) {
-      return (contents[currentIndex] as KanjiContent).kanji;
+      return (contents[currentIndex] as KanjiContent).kanji
     } 
     else {
-      console.error('Error: unrecognized content type');
-      console.trace();
-      return 'Error';
+      console.error('Error: could not retrieve quiz question from unrecognized content type')
+      return 'Error'
     }
   }
 
@@ -139,8 +138,7 @@ function MCQuiz({
       }
     }
     else {
-      console.error('Error: unrecognized content type')
-      console.trace()
+      console.error('Error: could not retrieve quiz options from unrecognized content type');
       return undefined
     }
   }

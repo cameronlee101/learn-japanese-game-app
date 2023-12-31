@@ -22,7 +22,6 @@ function ContentsOf({
     }
     else {
       console.error('Error occurred when retrieving example object containing all attributes')
-      console.trace()
     }
   }
 

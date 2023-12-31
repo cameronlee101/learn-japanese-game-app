@@ -60,13 +60,11 @@ export class ContentClass {
     const chapterResult = collection.find((item) => chapterKey in item)
     if (!chapterResult) {
       console.error(`Error retrieving chapter content for ${chapter}`)
-      console.trace()
     }
     else {
       const topicResult = chapterResult[chapterKey][topicKey]
       if (!topicResult) {
         console.error(`Topic '${topic}' not found in ${chapter}`)
-        console.trace()
       }
       else {
         return topicResult
@@ -122,8 +120,7 @@ export function getExampleFullObject(obj:any):VocabContent|KanjiContent|undefine
     }
   }
   else {
-    console.error('Error occurred when attempting to retrieve content object')
-    console.trace()
+    console.error('Error occurred when attempting to retrieve example content object')
     return undefined
   } 
 }

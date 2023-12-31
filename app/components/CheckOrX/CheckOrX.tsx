@@ -19,8 +19,7 @@ const CheckOrX = (props: { symbol: symbolOptions }) => {
         setImage('/xmark.png')
         break
       default:
-        console.error('Err')
-        console.trace()
+        console.error('Error: could not set CheckOrX component image')
     }
   }, [props.symbol, image])
   
