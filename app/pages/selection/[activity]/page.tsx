@@ -20,7 +20,7 @@ const titleSuffixes = [
   }
 ]
 
-function FlashcardsSelect({ 
+function Selection({ 
   params,
 }: {
   params: { activity:string }
@@ -109,4 +109,4 @@ function FlashcardsSelect({
   )
 }
 
-export default FlashcardsSelect
+export default Selection

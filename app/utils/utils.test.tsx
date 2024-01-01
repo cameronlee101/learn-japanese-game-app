@@ -1,4 +1,4 @@
-import { Chapters, Topics, ContentClass, isVocabContent, isKanjiContent, isSelectionValid, getExampleFullObject } from '@/app/utils/utils';
+import { Chapters, Topics, ContentClass, isVocabContent, isKanjiContent, isSelectionValid, getExampleFullObject } from './utils';
 
 test('isVocabContent function', () => {
   expect(isVocabContent({japanese:'テスト', english: 'test'})).toBe(true)
