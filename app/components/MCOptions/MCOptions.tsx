@@ -1,6 +1,6 @@
 'use client'
 import React, { useEffect, useState } from 'react'
-import './MCOptions.css'
+import styles from './MCOptions.module.css'
 import CheckOrX, { symbolOptions } from '../CheckOrX/CheckOrX'
 
 enum validOptionStates {
@@ -58,7 +58,7 @@ const MCOptions = (props: {
     // remove, then add class to reset fading up animation
     setCheckOrXClass('');
     setTimeout(() => {
-      setCheckOrXClass('fadeUp');
+      setCheckOrXClass(styles.fadeUp);
     }, 1)
   }
 
@@ -74,11 +74,11 @@ const MCOptions = (props: {
 
   return (
     <>
-      <div className='MCOptionArea'>
+      <div className={`${styles.MCOptionArea}`}>
         {options.map((option, index) => 
           <div 
             key={index}
-            className={`MCOption ${options[index].state === validOptionStates.incorrect ? 'incorrect' : '' }`} 
+            className={`${styles.MCOption} ${options[index].state === validOptionStates.incorrect ? styles.incorrect : '' }`} 
             // Element only has click event listener if hasn't been clicked yet
             onClick={inputEnalbed && options[index].state === validOptionStates.none ? (e) => handleClick(option.text, index, e) : ()=>{}}  
           >

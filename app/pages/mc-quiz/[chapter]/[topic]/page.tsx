@@ -2,7 +2,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { ContentClass, KanjiContent, VocabContent, isKanjiContent, isVocabContent } from '@/app/utils/utils';
-import './mc-quiz.css'
+import styles from './mc-quiz.module.css'
 import MCOptions from '@/app/components/MCOptions/MCOptions';
 
 function MCQuiz({ 
@@ -149,7 +149,7 @@ function MCQuiz({
         Quiz
       </h1>
       {playingGame && 
-        <div className='centerArea'>
+        <div className={`${styles.centerArea}`}>
           <div className='flex bg-orange-200 justify-center items-center mb-20 w-96 h-52 px-10 py-7 rounded-lg text-2xl shadow-md'>
             {getQuizQuestion()}
           </div>
@@ -161,8 +161,8 @@ function MCQuiz({
             />
           </div>
           <div className='flex flex-col mt-10 items-center justify-center'>
-            <p className='progressIndicator'>First Guess Correct Answers: {correctAnswersNum}</p>
-            <p className='progressIndicator'>Progress: {currentIndex}/{contents.length}</p>
+            <p className={`${styles.progressIndicator}`}>First Guess Correct Answers: {correctAnswersNum}</p>
+            <p className={`${styles.progressIndicator}`}>Progress: {currentIndex}/{contents.length}</p>
           </div>
         </div>
       }

@@ -2,7 +2,7 @@
 import React, { useEffect, useState } from 'react'
 import { ContentClass, KanjiContent, VocabContent } from "@/app/utils/utils"
 import Flashcard from '@/app/components/Flashcard/Flashcard'
-import'./flashcards-activity.css'
+import styles from './flashcards-activity.module.css'
 import { FaArrowCircleLeft, FaArrowCircleRight  } from "react-icons/fa"
 import { useRouter } from 'next/navigation'
 
@@ -84,10 +84,10 @@ function FlashcardsActivity({
       setDirection(null);
 
       if (direction === 'left') {
-        setAnimationClass('moveLeft')
+        setAnimationClass(styles.moveLeft)
       }
       else if (direction === 'right') {
-        setAnimationClass('moveRight')
+        setAnimationClass(styles.moveRight)
       }
       
       // Creates timeout that changes the flashcard's contents when it is off the screen during its animation
@@ -120,15 +120,15 @@ function FlashcardsActivity({
   return (    
     <main className='main-center overflow-hidden user-select-none'>
       <h1 className='text-5xl font-semibold'>{selectedChapterStr} {selectedTopicStr} Flashcards</h1>
-      <div className='centerArea'>
+      <div className={`${styles.centerArea}`}>
         <div className={animationClass}>
           <Flashcard contents={contents[currentIndex]}></Flashcard>
         </div>
         <div className='flex mt-10'>
-          <FaArrowCircleLeft className='flashcardButton' onClick={flashcardPrev}/>
-          <FaArrowCircleRight className='flashcardButton' onClick={flashcardNext}/>
+          <FaArrowCircleLeft className={`${styles.flashcardButton}`} onClick={flashcardPrev}/>
+          <FaArrowCircleRight className={`${styles.flashcardButton}`} onClick={flashcardNext}/>
         </div>
-        <p className='my-10 text-2xl font-semibold'>{currentIndex+1}/{contents.length}</p>
+        <p id='flashcardCounter' className='my-10 text-2xl font-semibold'>{currentIndex+1}/{contents.length}</p>
       </div>
     </main>
   )

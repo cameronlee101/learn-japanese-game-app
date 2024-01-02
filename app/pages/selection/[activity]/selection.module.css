@@ -2,7 +2,7 @@
   @apply flex flex-col space-y-1 mt-8
 }
 
-select {
+.select {
   font-size: 1.2rem;
   line-height: 1.75rem;
   padding: 0.5rem 2rem;
@@ -18,11 +18,11 @@ select {
   background-repeat: no-repeat;
   background-size: 10px;
 }
-select:focus,
-select:hover {
+.select:focus,
+.select:hover {
   outline: none;
 }
 
-option:disabled {
+.option:disabled {
   background-color: rgb(165, 165, 165);
 }
