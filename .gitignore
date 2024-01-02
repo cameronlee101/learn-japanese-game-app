@@ -37,3 +37,8 @@ next-env.d.ts
 
 # jest testing
 .swc
+
+# cypress example files
+cypress/e2e/examples
+cypress/fixtures
+cypress/support
