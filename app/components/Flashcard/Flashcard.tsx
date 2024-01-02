@@ -1,6 +1,6 @@
 'use client';
 import React, { useEffect, useRef, useState } from 'react';
-import styles from './Flashcard.module.css';
+import './Flashcard.css';
 import { KanjiContent, VocabContent, isKanjiContent, isVocabContent } from '@/app/utils/utils';
 import { useRouter } from 'next/navigation'
 
@@ -80,11 +80,11 @@ const Flashcard = (props: { contents:VocabContent|KanjiContent }) => {
   if (isVocabContent(contents)) {
     const data = contents as VocabContent
     return (
-      <div className={`${styles.flashcard} ${isFlipped ? styles.flipped : ''}`} onClick={handleFlip}>
-        <div ref={flashcardFrontRef} className={styles.front}>
+      <div className={`flashcard ${isFlipped ? 'flipped' : ''}`} onClick={handleFlip}>
+        <div ref={flashcardFrontRef} className='front'>
           {data.japanese}{data.alternate && ('/' + data.alternate)} {data.kanji && ('(' + data.kanji + ')')}
         </div>
-        <div ref={flashcardBackRef} className={styles.back}>
+        <div ref={flashcardBackRef} className='back'>
           {data.english}{data.example && (', ex. ' + data.example)}
         </div>
       </div>
@@ -93,11 +93,11 @@ const Flashcard = (props: { contents:VocabContent|KanjiContent }) => {
   else if (isKanjiContent(contents)) {
     const data = contents as KanjiContent
     return (
-      <div className={`${styles.flashcard} ${isFlipped ? styles.flipped : ''}`} onClick={handleFlip}>
-        <div ref={flashcardFrontRef} className={styles.front}>
+      <div className={`flashcard ${isFlipped ? 'flipped' : ''}`} onClick={handleFlip}>
+        <div ref={flashcardFrontRef} className='front'>
           {data.kanji}
         </div>
-        <div ref={flashcardBackRef} className={`${styles.back}`}>
+        <div ref={flashcardBackRef} className='back'>
           <div>
             <span className='font-semibold'>Meaning</span>: {data.english}
           </div>
