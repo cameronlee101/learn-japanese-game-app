@@ -1,5 +1,5 @@
 'use client'
-import { ConjugationContent, ContentClass, KanjiContent, VocabContent, getExampleFullObject, isConjugationContent, isKanjiContent, isVocabContent } from "@/app/utils/utils"
+import { ContentArray, ContentClass, getExampleFullObject } from "@/app/utils/utils"
 import { useEffect, useState } from "react"
 import { useRouter } from 'next/navigation'
 
@@ -14,7 +14,7 @@ function ContentsOf({
 
   const [allParameters, setAllParameters] = useState<string[]>([])
   const [tableHeaders, setTableHeaders] = useState<string[]>([])
-  const [contents, setContents] = useState<VocabContent[]|KanjiContent[]|ConjugationContent[]>([{japanese: 'Loading...', english: 'Loading...'}])
+  const [contents, setContents] = useState<ContentArray>([{japanese: 'Loading...', english: 'Loading...'}])
 
   // Gets contents for the table on page load
   useEffect(() => {
@@ -50,7 +50,7 @@ function ContentsOf({
         router.push('/')
       } else {
         // Update the state with contents
-        setContents(fetchedContents as (VocabContent[]|KanjiContent[]|ConjugationContent[]))
+        setContents(fetchedContents)
       }
     })
   }
@@ -72,7 +72,7 @@ function ContentsOf({
           </tr>
         </thead>
         <tbody className='table-group-divider'>
-          {(contents as (VocabContent[]|KanjiContent[]|ConjugationContent[])).map((item, rowIndex) => (
+          {(contents as (ContentArray)).map((item, rowIndex) => (
             <tr key={rowIndex}>
               {allParameters.map((parameter, columnIndex) => (
                 <td key={columnIndex} className='whitespace-pre'>

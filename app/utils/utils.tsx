@@ -22,7 +22,7 @@ const validContentSelections = [
   [Chapters.Ch3, Topics.Conjugations],
 ]
 
-export interface VocabContent {
+export type VocabContent = {
   japanese: string
   alternate?: string
   kanji?: string
@@ -31,7 +31,7 @@ export interface VocabContent {
   [key: string]: string | undefined
 }
 
-export interface KanjiContent {
+export type KanjiContent = {
   kanji: string
   readings: string[]
   english: string
@@ -39,7 +39,7 @@ export interface KanjiContent {
   [key: string]: string | string[]
 }
 
-export interface ConjugationContent {
+export type ConjugationContent = {
   dictionary_hiragana: string,
   dictionary_kanji?: string,
   english: string,
@@ -47,6 +47,9 @@ export interface ConjugationContent {
   conjugation: string,
   [key: string]: string | undefined
 }
+
+export type ContentArray = VocabContent[] | KanjiContent[] | ConjugationContent[]
+export type Content = VocabContent | KanjiContent | ConjugationContent
 
 export class ContentClass {
   private async getCollection() {
@@ -62,7 +65,7 @@ export class ContentClass {
     return collection
   }
 
-  async getContent(chapter: string, topic: string):Promise<undefined|VocabContent[]|KanjiContent[]|ConjugationContent[]> {
+  async getContent(chapter: string, topic: string):Promise<undefined|ContentArray> {
     const collection:[] = await (await this.getCollection()).aggregate([])
     const chapterKey = chapter.toLowerCase().replaceAll(' ', '')
     const topicKey = topic.toLowerCase()
@@ -144,7 +147,7 @@ export function isSelectionValid(chapter: string, topic: string): boolean {
 
 // Function used to return an object of the same type as passed in argument that has values for all parameters
 // Returned object used to see all types contained in an interface
-export function getExampleFullObject(obj:any):VocabContent|KanjiContent|ConjugationContent|undefined {
+export function getExampleFullObject(obj:any):undefined|Content {
   if (isVocabContent(obj)) {
     return {
       japanese: 'a',
@@ -165,7 +168,6 @@ export function getExampleFullObject(obj:any):VocabContent|KanjiContent|Conjugat
   else if (isConjugationContent(obj)) {
     return {
       dictionary_hiragana: 'a',
-      dictionary_kanji: 'a',
       english: 'a',
       conjugate_to: 'a', 
       conjugation: 'a',

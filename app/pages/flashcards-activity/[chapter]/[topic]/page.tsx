@@ -1,6 +1,6 @@
 'use client'
 import React, { useEffect, useState } from 'react'
-import { ConjugationContent, ContentClass, KanjiContent, VocabContent } from "@/app/utils/utils"
+import { ContentArray, ContentClass } from "@/app/utils/utils"
 import Flashcard from '@/app/components/Flashcard/Flashcard'
 import styles from './flashcards-activity.module.css'
 import { FaArrowCircleLeft, FaArrowCircleRight  } from "react-icons/fa"
@@ -24,7 +24,7 @@ function FlashcardsActivity({
   const [currentIndex, setCurrentIndex] = useState(0)
   const [direction, setDirection] = useState<'left' | 'right' | null>(null)
 
-  const [contents, setContents] = useState<VocabContent[]|KanjiContent[]|ConjugationContent[]>([{japanese: 'Loading...', english: 'Loading...'}])
+  const [contents, setContents] = useState<ContentArray>([{japanese: 'Loading...', english: 'Loading...'}])
 
   // Gets contents for activity on page load
   useEffect(() => {
@@ -44,7 +44,7 @@ function FlashcardsActivity({
         const shuffledContents = shuffleArray(fetchedContents)
 
         // Update the state with shuffled contents
-        setContents(shuffledContents as (VocabContent[]|KanjiContent[]|ConjugationContent[]))
+        setContents(shuffledContents)
       }
     })
   }

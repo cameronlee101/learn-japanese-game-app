@@ -1,7 +1,7 @@
 'use client'
 import React, { useEffect, useRef, useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { ConjugationContent, ContentClass, KanjiContent, VocabContent, isConjugationContent, isKanjiContent, isVocabContent } from '@/app/utils/utils';
+import { ConjugationContent, ContentArray, ContentClass, KanjiContent, VocabContent, isConjugationContent, isKanjiContent, isVocabContent } from '@/app/utils/utils';
 import styles from './mc-quiz.module.css'
 import MCOptions from '@/app/components/MCOptions/MCOptions';
 
@@ -16,7 +16,7 @@ function MCQuiz({
 
   let hasSelectedIncorrect:boolean = false;
 
-  const [contents, setContents] = useState<VocabContent[]|KanjiContent[]|ConjugationContent[]>([{japanese: 'Loading...', english: 'Loading...'}, {japanese: 'Loading...', english: 'Loading...'}, {japanese: 'Loading...', english: 'Loading...'}, {japanese: 'Loading...', english: 'Loading...'}])
+  const [contents, setContents] = useState<ContentArray>([{japanese: 'Loading...', english: 'Loading...'}, {japanese: 'Loading...', english: 'Loading...'}, {japanese: 'Loading...', english: 'Loading...'}, {japanese: 'Loading...', english: 'Loading...'}])
   const [currentIndex, setCurrentIndex] = useState(0)
   const [correctAnswersNum, setCorrectAnswersNum] = useState(0)
 
@@ -52,7 +52,7 @@ function MCQuiz({
         const shuffledContents = shuffleArray(fetchedContents)
 
         // Update the state with shuffled contents
-        setContents(shuffledContents as (VocabContent[]|KanjiContent[]|ConjugationContent[]))
+        setContents(shuffledContents)
       }
     })
   }
