@@ -1,5 +1,5 @@
 'use client'
-import { ContentClass, KanjiContent, VocabContent, getExampleFullObject } from "@/app/utils/utils"
+import { ConjugationContent, ContentClass, KanjiContent, VocabContent, getExampleFullObject, isConjugationContent, isKanjiContent, isVocabContent } from "@/app/utils/utils"
 import { useEffect, useState } from "react"
 import { useRouter } from 'next/navigation'
 
@@ -12,23 +12,33 @@ function ContentsOf({
   const selectedChapterStr = decodeURI(params.chapter)
   const selectedTopicStr = decodeURI(params.topic)
 
-  const [contents, setContents] = useState<VocabContent[]|KanjiContent[]>([{japanese: 'Loading...', english: 'Loading...'}])
-
-  // Extracts parameter names from an example object for the table headers
-  let allParameters = ['']
-  if (getExampleFullObject(contents[0])) {
-    if (getExampleFullObject(contents[0])) {
-      allParameters = Object.keys(getExampleFullObject(contents[0])!)
-    }
-    else {
-      console.error('Error occurred when retrieving example object containing all attributes')
-    }
-  }
+  const [allParameters, setAllParameters] = useState<string[]>([])
+  const [tableHeaders, setTableHeaders] = useState<string[]>([])
+  const [contents, setContents] = useState<VocabContent[]|KanjiContent[]|ConjugationContent[]>([{japanese: 'Loading...', english: 'Loading...'}])
 
   // Gets contents for the table on page load
   useEffect(() => {
     getContent()
   }, [])
+
+  // Extracts parameter names from an example object for the table headers and to align table data
+  useEffect(() => {
+    if (getExampleFullObject(contents[0])) {
+      if (getExampleFullObject(contents[0])) {
+        setAllParameters(Object.keys(getExampleFullObject(contents[0])!))
+
+        let objAttributes = Object.keys(getExampleFullObject(contents[0])!)
+        for (let i in objAttributes) {
+          const no_spaces = objAttributes[i].replaceAll('_', ' ')
+          objAttributes[i] = no_spaces.charAt(0).toUpperCase() +  no_spaces.slice(1)
+        }
+        setTableHeaders(objAttributes)
+      }
+      else {
+        console.error('Error occurred when retrieving example object containing all attributes')
+      }
+    }
+  }, [contents])
 
   // Gets the contents for given chapter and topic checks that they are defined
   const getContent = () => {
@@ -40,7 +50,7 @@ function ContentsOf({
         router.push('/')
       } else {
         // Update the state with contents
-        setContents(fetchedContents as (VocabContent[] | KanjiContent[]))
+        setContents(fetchedContents as (VocabContent[]|KanjiContent[]|ConjugationContent[]))
       }
     })
   }
@@ -51,18 +61,18 @@ function ContentsOf({
       <table className='table table-striped-columns table-hover table-bordered table-sm'>
         <thead >
           <tr>
-            {allParameters.map((parameter, index) => (
+            {tableHeaders.map((parameter, index) => (
               <th 
                 key={index}
                 style={{ minWidth:'100px' }}
               >
-                {parameter.charAt(0).toUpperCase() + parameter.slice(1)}
+                {parameter}
               </th>
             ))}
           </tr>
         </thead>
         <tbody className='table-group-divider'>
-          {contents.map((item, rowIndex) => (
+          {(contents as (VocabContent[]|KanjiContent[]|ConjugationContent[])).map((item, rowIndex) => (
             <tr key={rowIndex}>
               {allParameters.map((parameter, columnIndex) => (
                 <td key={columnIndex} className='whitespace-pre'>

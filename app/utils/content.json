@@ -281,6 +281,34 @@
         { "kanji": "万", "readings": ["まん"], "english": "ten thousand", "examples": ["一万（いちまん）ten thousand", "十万（じゅうまん）hundred thousand", "百万（ひゃくまん）one million", "百万円（ひゃくまんえん）one million yen"]},
         { "kanji": "円", "readings": ["えん"], "english": "yen; circle", "examples": ["百円（ひゃくえん）one hundred yen"]},
         { "kanji": "時", "readings": ["じ"], "english": "time", "examples": ["一時（いちじ）one o'clock"]}        
+      ],
+      "conjugations": [
+        {"dictionary_hiragana": "いく", "dictionary_kanji": "行く", "english": "to go (destination に/へ)", "conjugate_to": "present, affirmative", "conjugation": "行きます"},
+        {"dictionary_hiragana": "いく", "dictionary_kanji": "行く", "english": "to go (destination に/へ)", "conjugate_to": "present, negative", "conjugation": "行きません"},
+        {"dictionary_hiragana": "かえる", "dictionary_kanji": "帰る", "english": "to go back; to return (destination に/へ)", "conjugate_to": "present, affirmative", "conjugation": "帰ります"},
+        {"dictionary_hiragana": "かえる", "dictionary_kanji": "帰る", "english": "to go back; to return (destination に/へ)", "conjugate_to": "present, negative", "conjugation": "帰りません"},
+        {"dictionary_hiragana": "きく", "dictionary_kanji": "聞く", "english": "to listen; to hear (～を)", "conjugate_to": "present, affirmative", "conjugation": "聞きます"},
+        {"dictionary_hiragana": "きく", "dictionary_kanji": "聞く", "english": "to listen; to hear (～を)", "conjugate_to": "present, negative", "conjugation": "聞きません"},
+        {"dictionary_hiragana": "のむ", "dictionary_kanji": "飲む", "english": "to drink (～を)", "conjugate_to": "present, affirmative", "conjugation": "飲みます"},
+        {"dictionary_hiragana": "のむ", "dictionary_kanji": "飲む", "english": "to drink (～を)", "conjugate_to": "present, negative", "conjugation": "飲みません"},
+        {"dictionary_hiragana": "はなす", "dictionary_kanji": "話す", "english": "to speak; to talk (language を/で)", "conjugate_to": "present, affirmative", "conjugation": "話します"},
+        {"dictionary_hiragana": "はなす", "dictionary_kanji": "話す", "english": "to speak; to talk (language を/で)", "conjugate_to": "present, negative", "conjugation": "話しません"},
+        {"dictionary_hiragana": "よむ", "dictionary_kanji": "読む", "english": "to read (～を)", "conjugate_to": "present, affirmative", "conjugation": "読みます"},
+        {"dictionary_hiragana": "よむ", "dictionary_kanji": "読む", "english": "to read (～を)", "conjugate_to": "present, negative", "conjugation": "読みません"},
+        {"dictionary_hiragana": "おきる", "dictionary_kanji": "起きる", "english": "to get up", "conjugate_to": "present, affirmative", "conjugation": "起きます"},
+        {"dictionary_hiragana": "おきる", "dictionary_kanji": "起きる", "english": "to get up", "conjugate_to": "present, negative", "conjugation": "起きません"},
+        {"dictionary_hiragana": "たべる", "dictionary_kanji": "食べる", "english": "to eat (～を)", "conjugate_to": "present, affirmative", "conjugation": "食べます"},
+        {"dictionary_hiragana": "たべる", "dictionary_kanji": "食べる", "english": "to eat (～を)", "conjugate_to": "present, negative", "conjugation": "食べません"},
+        {"dictionary_hiragana": "ねる", "dictionary_kanji": "寝る", "english": "to sleep; to go to sleep", "conjugate_to": "present, affirmative", "conjugation": "寝ます"},
+        {"dictionary_hiragana": "ねる", "dictionary_kanji": "寝る", "english": "to sleep; to go to sleep", "conjugate_to": "present, negative", "conjugation": "寝ません"},
+        {"dictionary_hiragana": "みる", "dictionary_kanji": "見る", "english": "to see; to look at; to watch (～を)", "conjugate_to": "present, affirmative", "conjugation": "見ます"},
+        {"dictionary_hiragana": "みる", "dictionary_kanji": "見る", "english": "to see; to look at; to watch (～を)", "conjugate_to": "present, negative", "conjugation": "見ません"},
+        {"dictionary_hiragana": "くる", "dictionary_kanji": "来る", "english": "to come (destination に/へ)", "conjugate_to": "present, affirmative", "conjugation": "来ます"},
+        {"dictionary_hiragana": "くる", "dictionary_kanji": "来る", "english": "to come (destination に/へ)", "conjugate_to": "present, negative", "conjugation": "来ません"},
+        {"dictionary_hiragana": "する", "english": "to do (～を)", "conjugate_to": "present, affirmative", "conjugation": "します"},
+        {"dictionary_hiragana": "する", "english": "to do (～を)", "conjugate_to": "present, negative", "conjugation": "しません"},
+        {"dictionary_hiragana": "べんきょうする", "dictionary_kanji": "勉強する", "english": "to study (～を)", "conjugate_to": "present, affirmative", "conjugation": "勉強します"},
+        {"dictionary_hiragana": "べんきょうする", "dictionary_kanji": "勉強する", "english": "to study (～を)", "conjugate_to": "present, negative", "conjugation": "勉強しません"}
       ]
     }
   ]

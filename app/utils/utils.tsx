@@ -19,6 +19,7 @@ const validContentSelections = [
   [Chapters.Ch2, Topics.Vocabulary],
   [Chapters.Ch3, Topics.Vocabulary],
   [Chapters.Ch3, Topics.Kanji],
+  [Chapters.Ch3, Topics.Conjugations],
 ]
 
 export interface VocabContent {
@@ -27,7 +28,7 @@ export interface VocabContent {
   kanji?: string
   english: string
   example?: string
-  [key: string]: string | undefined;
+  [key: string]: string | undefined
 }
 
 export interface KanjiContent {
@@ -35,7 +36,16 @@ export interface KanjiContent {
   readings: string[]
   english: string
   examples: string[]
-  [key: string]: string | string[];
+  [key: string]: string | string[]
+}
+
+export interface ConjugationContent {
+  dictionary_hiragana: string,
+  dictionary_kanji?: string,
+  english: string,
+  conjugate_to: string, 
+  conjugation: string,
+  [key: string]: string | undefined
 }
 
 export class ContentClass {
@@ -52,7 +62,7 @@ export class ContentClass {
     return collection
   }
 
-  async getContent(chapter: string, topic: string):Promise<undefined|VocabContent[]|KanjiContent[]> {
+  async getContent(chapter: string, topic: string):Promise<undefined|VocabContent[]|KanjiContent[]|ConjugationContent[]> {
     const collection:[] = await (await this.getCollection()).aggregate([])
     const chapterKey = chapter.toLowerCase().replaceAll(' ', '')
     const topicKey = topic.toLowerCase()
@@ -75,21 +85,54 @@ export class ContentClass {
   }
 }
 
-// Function used to check if the given object is of type VocabContent
+// Function used to check if the given object is of type VocabContent or is an array with VocabContent
 export function isVocabContent(obj:any):boolean {
-  return obj && 
-  typeof obj === 'object' && 
-  'japanese' in obj && 
-  'english' in obj
+  if (Array.isArray(obj) && (obj as []).length > 0) {
+    return isVocabContent(obj[0])
+  }
+  else if (Array.isArray(obj) && (obj as []).length == 0) {
+    return false
+  }
+  else {
+    return obj && 
+    typeof obj === 'object' && 
+    'japanese' in obj && 
+    'english' in obj
+  }
 }
-// Function used to check if the given object is of type KanjiContent
+// Function used to check if the given object is of type KanjiContent or is an array with KanjiContent
 export function isKanjiContent(obj:any):boolean {
-  return obj && 
-  typeof obj === 'object' && 
-  'kanji' in obj && 
-  'readings' in obj && 
-  'english' in obj &&
-  'examples' in obj
+  if (Array.isArray(obj) && (obj as []).length > 0) {
+    return isKanjiContent(obj[0])
+  }
+  else if (Array.isArray(obj) && (obj as []).length == 0) {
+    return false
+  }
+  else {
+    return obj && 
+    typeof obj === 'object' && 
+    'kanji' in obj && 
+    'readings' in obj && 
+    'english' in obj &&
+    'examples' in obj
+  }
+}
+// Function used to check if the given object is of type ConjugationContent or is an array with ConjugationContent
+export function isConjugationContent(obj:any):boolean {
+  if (Array.isArray(obj) && (obj as []).length > 0) {
+    return isConjugationContent(obj[0])
+  }
+  else if (Array.isArray(obj) && (obj as []).length == 0) {
+    return false
+  }
+  else {
+    return obj && 
+    typeof obj === 'object' && 
+    'dictionary_hiragana' in obj && 
+    'english' in obj &&
+    'conjugate_to' in obj &&
+    'conjugation' in obj
+  }
 }
 
 // Function used to check if the combination of selections is valid and thus have content
@@ -101,7 +144,7 @@ export function isSelectionValid(chapter: string, topic: string): boolean {
 
 // Function used to return an object of the same type as passed in argument that has values for all parameters
 // Returned object used to see all types contained in an interface
-export function getExampleFullObject(obj:any):VocabContent|KanjiContent|undefined {
+export function getExampleFullObject(obj:any):VocabContent|KanjiContent|ConjugationContent|undefined {
   if (isVocabContent(obj)) {
     return {
       japanese: 'a',
@@ -117,6 +160,15 @@ export function getExampleFullObject(obj:any):VocabContent|KanjiContent|undefine
       readings: ['a'],
       english: 'a',
       examples: ['a'],
+    }
+  }
+  else if (isConjugationContent(obj)) {
+    return {
+      dictionary_hiragana: 'a',
+      dictionary_kanji: 'a',
+      english: 'a',
+      conjugate_to: 'a', 
+      conjugation: 'a',
     }
   }
   else {
