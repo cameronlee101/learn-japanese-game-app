@@ -47,9 +47,9 @@ test('isConjugationContent function', () => {
 
   // missing 1 attribute so returns false
   expect(isConjugationContent({english: 'test', conjugate_to: 'テスト', conjugation: 'テスト',})).toBe(false)
-  expect(isConjugationContent({dictionary_hiragana: 'テスト', conjugate_to: 'テスト', conjugation: 'テスト'})).toBe(true)
-  expect(isConjugationContent({dictionary_hiragana: 'テスト', english: 'test', conjugation: 'テスト'})).toBe(true)
-  expect(isConjugationContent({dictionary_hiragana: 'テスト', english: 'test', conjugate_to: 'テスト'})).toBe(true)
+  expect(isConjugationContent({dictionary_hiragana: 'テスト', conjugate_to: 'テスト', conjugation: 'テスト'})).toBe(false)
+  expect(isConjugationContent({dictionary_hiragana: 'テスト', english: 'test', conjugation: 'テスト'})).toBe(false)
+  expect(isConjugationContent({dictionary_hiragana: 'テスト', english: 'test', conjugate_to: 'テスト'})).toBe(false)
 
   // empty, returns false
   expect(isConjugationContent({})).toBe(false)
@@ -87,12 +87,13 @@ test('getExampleFullObject function', () => {
   expect(getExampleFullObject({kanji: 'テスト', readings: ['テスト', 'テスト'], english: 'test', examples: ['テスト', 'テスト']})).toBeDefined()
 
   // Should return object of ConjugationContent type
-  expect(getExampleFullObject({dictionary_hiragana: 'テスト', dictionary_kanji: 'テスト', english: 'test', conjugate_to: 'テスト', conjugation: 'テスト',}))
+  expect(getExampleFullObject({dictionary_hiragana: 'テスト', dictionary_kanji: 'テスト', english: 'test', conjugate_to: 'テスト', conjugation: 'テスト',})).toBeDefined()
 
   // Should return undefined
   expect(getExampleFullObject({})).toBeUndefined()
 })
 
+// TODO: expand test case
 test('ContentClass class getContent method', async () => {
   const data = await new ContentClass().getContent(Chapters.Ch1, Topics.Vocabulary)
   
