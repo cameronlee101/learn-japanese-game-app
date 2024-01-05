@@ -1,9 +1,11 @@
 'use client'
 import React, { useEffect, useRef, useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { ConjugationContent, ContentArray, ContentClass, KanjiContent, VocabContent, isConjugationContent, isKanjiContent, isVocabContent } from '@/app/utils/utils';
+import { Content, ContentClass } from '@/app/utils/utils';
 import styles from './mc-quiz.module.css'
-import MCOptions from '@/app/components/MCOptions/MCOptions';
+import MCOptions from '@/app/components/MCQuiz/MCOptions/MCOptions';
+import MCQuestion from '@/app/components/MCQuiz/MCQuestion/MCQuestion';
+import { getMCOptionText, getMCQuestionText } from '@/app/components/MCQuiz/MCQuiz-utils';
 
 function MCQuiz({ 
   params,
@@ -16,7 +18,7 @@ function MCQuiz({
 
   let hasSelectedIncorrect:boolean = false;
 
-  const [contents, setContents] = useState<ContentArray>([{japanese: 'Loading...', english: 'Loading...'}, {japanese: 'Loading...', english: 'Loading...'}, {japanese: 'Loading...', english: 'Loading...'}, {japanese: 'Loading...', english: 'Loading...'}])
+  const [contents, setContents] = useState<Content[]>([{japanese: 'Loading...', english: 'Loading...'}, {japanese: 'Loading...', english: 'Loading...'}, {japanese: 'Loading...', english: 'Loading...'}, {japanese: 'Loading...', english: 'Loading...'}])
   const [currentIndex, setCurrentIndex] = useState(0)
   const [correctAnswersNum, setCorrectAnswersNum] = useState(0)
 
@@ -85,86 +87,25 @@ function MCQuiz({
     // Option chosen is incorrect
     else {
       hasSelectedIncorrect = true
-      const quizQuestion = getQuizQuestion()
-      const quizOptions = getQuizOptions()
-      if (quizQuestion && quizOptions && !wrongAnswersRef.current.find(item => item.question === quizQuestion)) {
-        wrongAnswersRef.current = [...wrongAnswersRef.current, {question:quizQuestion, answer:quizOptions.answer}]
+      const curContent = contents[currentIndex]
+      
+      if (curContent && !wrongAnswersRef.current.find(item => item.question === getMCQuestionText(curContent))) {
+        wrongAnswersRef.current = [...wrongAnswersRef.current, {question: getMCQuestionText(curContent), answer: getMCOptionText(curContent)}]
       }
     }    
   }
 
-  // TODO: refactor or change to passing entire object
-  const getQuizQuestion = ():string => {
-    if (isVocabContent(contents)) {
-      return (contents[currentIndex] as VocabContent).japanese
-    } 
-    else if (isKanjiContent(contents)) {
-      return (contents[currentIndex] as KanjiContent).kanji
-    } 
-    else if (isConjugationContent(contents)) {
+  // Returns an object containing the current correct Content object, and an array with the other Content objects
+  const getMCOptions = () => {
+    if (currentIndex == contents.length - 1) {
       return (
-        (contents[currentIndex] as ConjugationContent).dictionary_kanji + '<br/>' + 
-        (contents[currentIndex] as ConjugationContent).dictionary_hiragana + '<br/>' + 
-        (contents[currentIndex] as ConjugationContent).conjugate_to
+        {correct: contents[currentIndex], incorrect: contents.slice(0, currentIndex)}
       )
     }
     else {
-      console.error('Error: could not retrieve quiz question from unrecognized content type')
-      return 'Error'
-    }
-  }
-
-  // TODO: refactor or change to passing entire object
-  // TODO: for conjugations, only return those that use the same verb
-  const getQuizOptions = ():{answer:string, others:string[]}|undefined => {
-    if (isVocabContent(contents)) {
-      const castContents = (contents as VocabContent[])
-      const othersArray: string[] = castContents.map(obj => obj.english)
-
-      if (currentIndex == castContents.length - 1) {
-        return (
-          {answer: castContents[currentIndex].english, others: othersArray.slice(0, currentIndex)}
-        )
-      }
-      else {
-        return (
-          {answer: castContents[currentIndex].english, others: [...othersArray.slice(0, currentIndex), ...othersArray.slice(currentIndex+1)]} 
-        )
-      }
-    }
-    else if (isKanjiContent(contents)) {
-      const castContents = (contents as KanjiContent[])
-      const othersArray: string[] = castContents.map(obj => obj.english)
-      
-      if (currentIndex == castContents.length - 1) {
-        return (
-          {answer: castContents[currentIndex].english, others: othersArray.slice(0, currentIndex)}
-        )
-      }
-      else {
-        return (
-          {answer: castContents[currentIndex].english, others: [...othersArray.slice(0, currentIndex), ...othersArray.slice(currentIndex+1)]} 
-        )
-      }
-    }
-    else if (isConjugationContent(contents)) {
-      const castContents = (contents as ConjugationContent[])
-      const othersArray: string[] = castContents.map(obj => obj.conjugation)
-
-      if (currentIndex == castContents.length - 1) {
-        return (
-          {answer: castContents[currentIndex].conjugation, others: othersArray.slice(0, currentIndex)}
-        )
-      }
-      else {
-        return (
-          {answer: castContents[currentIndex].conjugation, others: [...othersArray.slice(0, currentIndex), ...othersArray.slice(currentIndex+1)]} 
-        )
-      }
-    }
-    else {
-      console.error('Error: could not retrieve quiz options from unrecognized content type');
-      return undefined
+      return (
+        {correct: contents[currentIndex], incorrect: [...contents.slice(0, currentIndex), ...contents.slice(currentIndex+1)]} 
+      )
     }
   }
 
@@ -175,14 +116,14 @@ function MCQuiz({
       </h1>
       {playingGame && 
         <div className={`${styles.centerArea}`}>
-          <div className='flex bg-orange-200 justify-center items-center mb-20 w-96 h-52 px-10 py-7 rounded-lg text-2xl shadow-md'>
-            <div dangerouslySetInnerHTML={{ __html: getQuizQuestion() }} />
+          <div className='flex mb-20'>
+            <MCQuestion content={getMCOptions().correct}/>
           </div>
           <div className='flex justify-center items-center'>
             <MCOptions 
               onOptionChosen={handleOptionChosen}
-              correctOption={getQuizOptions()?.answer || 'Error'}
-              otherOptions={getQuizOptions()?.others || ['Error']}
+              correctOption={getMCOptions().correct}
+              otherOptions={getMCOptions().incorrect}
             />
           </div>
           <div className='flex flex-col mt-10 items-center justify-center'>
@@ -197,13 +138,13 @@ function MCQuiz({
           Total First Guess Correct Answers: {correctAnswersNum}/{contents.length}  
         </p>
         <div className='mt-8'>
-          {correctAnswersNum === contents.length ? (
+          {correctAnswersNum === contents.length ? (<>
             <p className='text-xl'>
               Congratulations! You got all questions perfect!
             </p>
-          ) : (<>
+          </>) : (<>
             <p className='text-xl mb-4'>
-              Here is a list of question you got incorrect on the first guess:
+              Here is the list of questions you got incorrect on the first guess:
             </p>
             <table className='table table-striped-columns table-hover table-bordered table-sm'>
               <thead>

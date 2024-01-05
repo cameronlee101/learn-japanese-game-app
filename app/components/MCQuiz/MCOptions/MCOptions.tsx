@@ -1,7 +1,9 @@
 'use client'
 import React, { useEffect, useState } from 'react'
 import styles from './MCOptions.module.css'
-import CheckOrX, { symbolOptions } from '../CheckOrX/CheckOrX'
+import CheckOrX, { IMAGE_SIZE, symbolOptions } from '../../CheckOrX/CheckOrX'
+import { Content } from '@/app/utils/utils'
+import { getMCOptionText } from '../MCQuiz-utils'
 
 enum validOptionStates {
   none,
@@ -9,35 +11,37 @@ enum validOptionStates {
   correct
 }
 
+const NUM_OF_OPTIONS = 4
+
 const MCOptions = (props: {
   onOptionChosen: (isCorrect: boolean) => void
-  correctOption: string
-  otherOptions: string[]
+  correctOption: Content
+  otherOptions: Content[]
 }) => {  
   const { onOptionChosen, correctOption, otherOptions } = props
 
-  const [options, setOptions] = useState<{text:string, state:validOptionStates}[]>([])
+  const [options, setOptions] = useState<{content:Content, state:validOptionStates}[]>([])
 
   const [checkOrXClass, setCheckOrXClass] = useState('')
   const [checkOrXPos, setCheckOrXPos] = useState({ x: 0, y: 0 });
   const [checkOrXSymbol, setCheckOrXSymbol] = useState(symbolOptions.xMark)
   const [inputEnalbed, setInputEnabled] = useState(true)
 
-  // Creates 4 randomly ordered options using the 1 correct option and 3 other incorrect options 
+  // Creates NUM_OF_OPTIONS randomly ordered options using the 1 correct option and NUM_OF_OPTIONS-1 other incorrect options 
   useEffect(() => {
     const shuffledIncorrectArray = otherOptions.sort(() => Math.random() - 0.5)
 
-    const selectedStrings = shuffledIncorrectArray.slice(0, 3);
+    const selectedStrings = shuffledIncorrectArray.slice(0, NUM_OF_OPTIONS - 1)
     const selectedOptions = [...selectedStrings, correctOption]
 
     const shuffledOptions = selectedOptions.sort(() => Math.random() - 0.5) 
   
-    setOptions(shuffledOptions.map((text) => ({ text, state: validOptionStates.none })))
+    setOptions(shuffledOptions.map((content) => ({ content, state: validOptionStates.none })))
     setInputEnabled(true)
   }, [props])
 
   // Handles logic when an option is clicked for the first time
-  const handleClick = (choice:string, index:number, e:React.MouseEvent) => {
+  const handleClick = (choice:Content, index:number, e:React.MouseEvent) => {
     // Option chosen is correct
     if (choice === correctOption) {
       setCheckOrXSymbol(symbolOptions.checkMark)
@@ -53,7 +57,7 @@ const MCOptions = (props: {
     }
     
     // Set the check or X symbol to the cursor position
-    setCheckOrXPos({ x: e.clientX - 32, y: e.clientY - 32 })
+    setCheckOrXPos({ x: e.clientX - IMAGE_SIZE / 2, y: e.clientY - IMAGE_SIZE / 2 })
 
     // remove, then add class to reset fading up animation
     setCheckOrXClass('');
@@ -80,9 +84,9 @@ const MCOptions = (props: {
             key={index}
             className={`${styles.MCOption} ${options[index].state === validOptionStates.incorrect ? styles.incorrect : '' }`} 
             // Element only has click event listener if hasn't been clicked yet
-            onClick={inputEnalbed && options[index].state === validOptionStates.none ? (e) => handleClick(option.text, index, e) : ()=>{}}  
+            onClick={inputEnalbed && options[index].state === validOptionStates.none ? (e) => handleClick(option.content, index, e) : ()=>{}}  
           >
-            {option.text}
+            {getMCOptionText(option.content)}
           </div>
         )}
       </div>

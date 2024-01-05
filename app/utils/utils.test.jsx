@@ -1,4 +1,4 @@
-import { Chapters, Topics, ContentClass, isVocabContent, isKanjiContent, isSelectionValid, getExampleFullObject, isConjugationContent } from './utils';
+import { Chapters, Topics, ContentClass, isVocabContent, isKanjiContent, isSelectionValid, getFullExampleContentObject, isConjugationContent } from './utils';
 
 test('isVocabContent function', () => {
   // minimum attributes needed to be true
@@ -81,16 +81,16 @@ test('isSelectionValid function', () => {
 
 test('getExampleFullObject function', () => {
   // Should return object of VocabContent type
-  expect(getExampleFullObject({japanese: 'テスト', english: 'test'})).toBeDefined()
+  expect(getFullExampleContentObject({japanese: 'テスト', english: 'test'})).toBeDefined()
 
   // Should return object of KanjiContent type
-  expect(getExampleFullObject({kanji: 'テスト', readings: ['テスト', 'テスト'], english: 'test', examples: ['テスト', 'テスト']})).toBeDefined()
+  expect(getFullExampleContentObject({kanji: 'テスト', readings: ['テスト', 'テスト'], english: 'test', examples: ['テスト', 'テスト']})).toBeDefined()
 
   // Should return object of ConjugationContent type
-  expect(getExampleFullObject({dictionary_hiragana: 'テスト', dictionary_kanji: 'テスト', english: 'test', conjugate_to: 'テスト', conjugation: 'テスト',})).toBeDefined()
+  expect(getFullExampleContentObject({dictionary_hiragana: 'テスト', dictionary_kanji: 'テスト', english: 'test', conjugate_to: 'テスト', conjugation: 'テスト',})).toBeDefined()
 
   // Should return undefined
-  expect(getExampleFullObject({})).toBeUndefined()
+  expect(getFullExampleContentObject({})).toBeUndefined()
 })
 
 // TODO: expand test case

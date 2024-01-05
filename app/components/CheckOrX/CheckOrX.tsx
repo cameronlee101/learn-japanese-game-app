@@ -5,6 +5,8 @@ export enum symbolOptions {
   xMark,
 }
 
+export const IMAGE_SIZE = 64
+
 const CheckOrX = (props: { symbol: symbolOptions }) => {
   const { symbol } = props
 

@@ -48,7 +48,6 @@ export type ConjugationContent = {
   [key: string]: string | undefined
 }
 
-export type ContentArray = VocabContent[] | KanjiContent[] | ConjugationContent[]
 export type Content = VocabContent | KanjiContent | ConjugationContent
 
 export class ContentClass {
@@ -65,19 +64,19 @@ export class ContentClass {
     return collection
   }
 
-  async getContent(chapter: string, topic: string):Promise<undefined|ContentArray> {
+  async getContent(chapter: string, topic: string):Promise<undefined|Content[]> {
     const collection:[] = await (await this.getCollection()).aggregate([])
     const chapterKey = chapter.toLowerCase().replaceAll(' ', '')
     const topicKey = topic.toLowerCase()
 
     const chapterResult = collection.find((item) => chapterKey in item)
     if (!chapterResult) {
-      console.error(`Error retrieving chapter content for ${chapter}`)
+      console.error(`Error: could not retrieve chapter content for ${chapter}`)
     }
     else {
       const topicResult = chapterResult[chapterKey][topicKey]
       if (!topicResult) {
-        console.error(`Topic '${topic}' not found in ${chapter}`)
+        console.error(`Error: topic '${topic}' not found in ${chapter}`)
       }
       else {
         return topicResult
@@ -147,7 +146,7 @@ export function isSelectionValid(chapter: string, topic: string): boolean {
 
 // Function used to return an object of the same type as passed in argument that has values for all parameters
 // Returned object used to see all types contained in an interface
-export function getExampleFullObject(obj:any):undefined|Content {
+export function getFullExampleContentObject(obj:any):undefined|Content {
   if (isVocabContent(obj)) {
     return {
       japanese: 'a',
@@ -168,13 +167,14 @@ export function getExampleFullObject(obj:any):undefined|Content {
   else if (isConjugationContent(obj)) {
     return {
       dictionary_hiragana: 'a',
+      dictionary_kanji: 'a',
       english: 'a',
       conjugate_to: 'a', 
       conjugation: 'a',
     }
   }
   else {
-    console.error('Error occurred when attempting to retrieve example content object')
+    console.error('Error: could not retrieve full example content object')
     return undefined
   } 
 }

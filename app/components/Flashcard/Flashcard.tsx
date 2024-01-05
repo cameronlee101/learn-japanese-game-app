@@ -1,16 +1,14 @@
 'use client';
 import React, { useEffect, useRef, useState } from 'react';
 import styles from './Flashcard.module.css';
-import { ConjugationContent, KanjiContent, VocabContent, isConjugationContent, isKanjiContent, isVocabContent } from '@/app/utils/utils';
-import { useRouter } from 'next/navigation'
+import { Content } from '@/app/utils/utils';
+import { getFlashcardBack, getFlashcardFront } from './Flashcard-utils';
 
 const SPACE = ' '
 const COOLDOWN_DURATION = 300
 
-const Flashcard = (props: { contents:VocabContent|KanjiContent|ConjugationContent }) => {
+const Flashcard = (props: { contents:Content }) => {
   const { contents } = props
-
-  const router = useRouter()
 
   const [isFlipped, setIsFlipped] = useState(false)
   const [lastKeyPressTime, setLastKeyPressTime] = useState(0)
@@ -77,62 +75,17 @@ const Flashcard = (props: { contents:VocabContent|KanjiContent|ConjugationConten
     }
   }
 
-  if (isVocabContent(contents)) {
-    const data = contents as VocabContent
-    return (
-      <div className={`${styles.flashcard} ${isFlipped ? styles.flipped : ''}`} onClick={handleFlip}>
-        <div ref={flashcardFrontRef} className={styles.front}>
-          {data.japanese}{data.alternate && ('/' + data.alternate)} {data.kanji && ('(' + data.kanji + ')')}
-        </div>
-        <div ref={flashcardBackRef} className={styles.back}>
-          {data.english}{data.example && (', ex. ' + data.example)}
-        </div>
+  return (
+    <div className={`${styles.flashcard} ${isFlipped ? styles.flipped : ''}`} onClick={handleFlip}>
+      <div ref={flashcardFrontRef} className={styles.front}>
+        {getFlashcardFront(contents)}
       </div>
-    )
-  }
-  else if (isKanjiContent(contents)) {
-    const data = contents as KanjiContent
-    return (
-      <div className={`${styles.flashcard} ${isFlipped ? styles.flipped : ''}`} onClick={handleFlip}>
-        <div ref={flashcardFrontRef} className={styles.front}>
-          {data.kanji}
-        </div>
-        <div ref={flashcardBackRef} className={styles.back}>
-          <div>
-            <span className='font-semibold'>Meaning</span>: {data.english}
-          </div>
-          <div>
-            <span className='font-semibold'>Readings</span>: {data.readings.join(', ')}
-          </div>
-          <div>
-            <span className='font-semibold'>Examples</span>: <br/>
-            {data.examples.map((example) => (
-              <span key={example}>{example}<br/></span>
-            ))}
-          </div>
-        </div>
+      <div ref={flashcardBackRef} className={styles.back}>
+        {getFlashcardBack(contents)}
       </div>
-    )
-  }
-  else if (isConjugationContent(contents)) {
-    const data = contents as ConjugationContent
-    return (
-      <div className={`${styles.flashcard} ${isFlipped ? styles.flipped : ''}`} onClick={handleFlip}>
-        <div ref={flashcardFrontRef} className={styles.front}>
-          <p>{data.dictionary_kanji}</p>
-          <p>{data.dictionary_hiragana}</p>
-          <p>{data.conjugate_to}</p>
-        </div>
-        <div ref={flashcardBackRef} className={styles.back}>
-          {data.conjugation}
-        </div>
-      </div>
-    )
-  }
-  else {
-    alert('Error occurred when confirming type of flashcard contents, returning to home page (you may need to press "ok" on this alert multiple times)')
-    router.push('/')
-  }
+    </div>
+  )
+
 };
 
 export default Flashcard;
