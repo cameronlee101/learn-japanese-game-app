@@ -42,3 +42,6 @@ next-env.d.ts
 cypress/e2e/examples
 cypress/fixtures
 cypress/support
+
+# misc
+content.json
