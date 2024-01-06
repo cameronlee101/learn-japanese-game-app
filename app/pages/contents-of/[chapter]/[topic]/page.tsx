@@ -58,33 +58,35 @@ function ContentsOf({
   return (
     <main className='main-center'>
       <h1 className='text-5xl font-semibold mb-8'>Contents of {selectedChapterStr} {selectedTopicStr}</h1>
-      <table className='table table-striped-columns table-hover table-bordered table-sm'>
-        <thead >
-          <tr>
-            {tableHeaders.map((parameter, index) => (
-              <th 
-                key={index}
-                style={{ minWidth:'100px' }}
-              >
-                {parameter}
-              </th>
-            ))}
-          </tr>
-        </thead>
-        <tbody className='table-group-divider'>
-          {contents.map((item, rowIndex) => (
-            <tr key={rowIndex}>
-              {allParameters.map((parameter, columnIndex) => (
-                <td key={columnIndex} className='whitespace-pre'>
-                  {Array.isArray(item[parameter])
-                  ? (item[parameter] as string[]).join(',   ') 
-                  : item[parameter] || ''}
-                </td>
+      <div className='overflow-x-auto w-full'>
+        <table className='table table-striped-columns table-hover table-bordered table-sm'>
+          <thead>
+            <tr>
+              {tableHeaders.map((parameter, index) => (
+                <th 
+                  key={index}
+                  style={{ minWidth:'200px' }}
+                >
+                  {parameter}
+                </th>
               ))}
             </tr>
-          ))}
-        </tbody>
-      </table>
+          </thead>
+          <tbody className='table-group-divider'>
+            {contents.map((item, rowIndex) => (
+              <tr key={rowIndex}>
+                {allParameters.map((parameter, columnIndex) => (
+                  <td key={columnIndex} className='whitespace-pre'>
+                    {Array.isArray(item[parameter])
+                    ? (item[parameter] as string[]).join(',   ') 
+                    : item[parameter] || ''}
+                  </td>
+                ))}
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
     </main>
   );
 }

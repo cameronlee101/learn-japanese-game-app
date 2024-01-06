@@ -14,5 +14,5 @@
     text-align: center;
     min-height: 100vh;
     min-width: 100%;
-    padding: 3rem;
+    @apply py-16 px-4 sm:px-12
 }

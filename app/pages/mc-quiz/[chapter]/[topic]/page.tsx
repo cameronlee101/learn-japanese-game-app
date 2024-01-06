@@ -116,7 +116,7 @@ function MCQuiz({
       </h1>
       {playingGame && 
         <div className={`${styles.centerArea}`}>
-          <div className='flex mb-20'>
+          <div className='flex sm:mb-20 mb-10'>
             <MCQuestion content={getMCOptions().correct}/>
           </div>
           <div className='flex justify-center items-center'>
@@ -146,22 +146,24 @@ function MCQuiz({
             <p className='text-xl mb-4'>
               Here is the list of questions you got incorrect on the first guess:
             </p>
-            <table className='table table-striped-columns table-hover table-bordered table-sm'>
-              <thead>
-                <tr>
-                  <th className='w-1/2'>Question</th>
-                  <th className='w-1/2'>Answer</th>
-                </tr>
-              </thead>
-              <tbody className='table-group-divider'>
-                {wrongAnswersState.map(item => (
-                  <tr key={item.question}>
-                    <td>{item.question}</td>
-                    <td>{item.answer}</td>
+            <div className='overflow-x-auto w-full'>
+              <table className='table table-striped-columns table-hover table-bordered table-sm'>
+                <thead>
+                  <tr>
+                    <th className='w-1/2'>Question</th>
+                    <th className='w-1/2'>Answer</th>
                   </tr>
-                ))}
-              </tbody>
-            </table>
+                </thead>
+                <tbody className='table-group-divider'>
+                  {wrongAnswersState.map(item => (
+                    <tr key={item.question}>
+                      <td>{item.question}</td>
+                      <td>{item.answer}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
           </>)}
           <button 
             className='bg-slate-500 hover:bg-slate-700 text-white text-xl font-bold py-1 px-8 rounded-full mt-20'

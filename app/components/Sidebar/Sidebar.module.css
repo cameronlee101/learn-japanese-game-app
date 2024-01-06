@@ -32,7 +32,12 @@
     cursor: pointer;
 }
 .menuButton.closed {   
-    transform: translateX(-30px);
+    transform: translateX(-53px) translateY(-20px);
+}
+@media (min-width: 640px) {
+    .menuButton.closed {
+        transform: translateX(-30px);
+    }
 }
 
 .navLink {

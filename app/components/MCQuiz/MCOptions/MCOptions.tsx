@@ -23,7 +23,7 @@ const MCOptions = (props: {
   const [options, setOptions] = useState<{content:Content, state:validOptionStates}[]>([])
 
   const [checkOrXClass, setCheckOrXClass] = useState('')
-  const [checkOrXPos, setCheckOrXPos] = useState({ x: 0, y: 0 });
+  const [checkOrXPos, setCheckOrXPos] = useState({ x: 0, y: 0 })
   const [checkOrXSymbol, setCheckOrXSymbol] = useState(symbolOptions.xMark)
   const [inputEnalbed, setInputEnabled] = useState(true)
 
@@ -60,9 +60,9 @@ const MCOptions = (props: {
     setCheckOrXPos({ x: e.clientX - IMAGE_SIZE / 2, y: e.clientY - IMAGE_SIZE / 2 })
 
     // remove, then add class to reset fading up animation
-    setCheckOrXClass('');
+    setCheckOrXClass('')
     setTimeout(() => {
-      setCheckOrXClass(styles.fadeUp);
+      setCheckOrXClass(styles.fadeUp)
     }, 1)
   }
 
@@ -84,13 +84,13 @@ const MCOptions = (props: {
             key={index}
             className={`${styles.MCOption} ${options[index].state === validOptionStates.incorrect ? styles.incorrect : '' }`} 
             // Element only has click event listener if hasn't been clicked yet
-            onClick={inputEnalbed && options[index].state === validOptionStates.none ? (e) => handleClick(option.content, index, e) : ()=>{}}  
+            onMouseUp={inputEnalbed && options[index].state === validOptionStates.none ? (e) => handleClick(option.content, index, e) : ()=>{}}  
           >
             {getMCOptionText(option.content)}
           </div>
         )}
       </div>
-      <div className={`${checkOrXClass} absolute`} style={{left:checkOrXPos.x, top:checkOrXPos.y, opacity:0}}>
+      <div className={`${checkOrXClass} absolute pointer-events-none`} style={{left:checkOrXPos.x, top:checkOrXPos.y, opacity:0}}>
         <CheckOrX symbol={checkOrXSymbol}/>
       </div>
     </>
