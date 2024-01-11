@@ -1,3 +1,4 @@
+import Image from 'next/image'
 import React, { useEffect, useState } from 'react'
 
 export enum symbolOptions {
@@ -23,11 +24,11 @@ const CheckOrX = (props: { symbol: symbolOptions }) => {
       default:
         console.error('Error: could not set CheckOrX component image')
     }
-  }, [props.symbol, image])
+  }, [symbol, image])
   
   return (
     <main className='w-16 h-auto pointer-events-none user-select-none'>
-      <img src={image} alt="correctness symbol"/>
+      <Image src={image} alt="correctness symbol" width={64} height={64}/>
     </main>
   )
 }

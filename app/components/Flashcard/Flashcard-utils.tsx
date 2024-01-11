@@ -1,4 +1,4 @@
-import { ConjugationContent, Content, KanjiContent, VocabContent, isConjugationContent, isKanjiContent, isVocabContent } from '@/app/utils/utils';
+import { ConjugationContent, Content, KanjiContent, VocabContent, isConjugationContent, isKanjiContent, isVocabContent } from '@/app/utils/content-utils';
 
 export const getFlashcardFront = (contents:Content):React.JSX.Element => {
   if (isVocabContent(contents)) {

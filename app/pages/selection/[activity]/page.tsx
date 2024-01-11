@@ -1,6 +1,6 @@
 'use client'
 import React, { useEffect, useState } from 'react'
-import { Chapters, Topics, isSelectionValid } from '@/app/utils/utils'
+import { Chapters, Topics, isSelectionValid } from '@/app/utils/content-utils'
 import { useRouter } from 'next/navigation'
 import { useLocalStorage } from "@uidotdev/usehooks"
 import styles from './selection.module.css'
@@ -37,13 +37,9 @@ function Selection({
   useEffect(() => {
     // Gets chapter and topic from localstorage and sets the relevant hooks (used for remembering
     // chapter and topic the user previously selected)
-    const storedValue = localStorage.getItem('selection')
-    
-    if (storedValue) {
-      const [storedChapter, storedTopic] = JSON.parse(storedValue)
-  
-      setSelectedChapter(storedChapter);
-      setSelectedTopic(storedTopic);
+    if (selection) {  
+      setSelectedChapter(selection[0])
+      setSelectedTopic(selection[1])
     }
   }, [])
   

@@ -1,7 +1,7 @@
 'use client';
 import React, { useEffect, useRef, useState } from 'react';
 import styles from './Flashcard.module.css';
-import { Content } from '@/app/utils/utils';
+import { Content } from '@/app/utils/content-utils';
 import { getFlashcardBack, getFlashcardFront } from './Flashcard-utils';
 
 const SPACE = ' '
@@ -76,11 +76,23 @@ const Flashcard = (props: { contents:Content }) => {
   }
 
   return (
-    <div className={`${styles.flashcard} ${isFlipped ? styles.flipped : ''}`} onClick={handleFlip}>
-      <div ref={flashcardFrontRef} className={styles.front}>
+    <div 
+      className={`${styles.flashcard} ${isFlipped ? styles.flipped : ''}`} 
+      onClick={handleFlip}
+      data-test='flashcard'
+    >
+      <div 
+        ref={flashcardFrontRef} 
+        className={styles.front}
+        data-test='flashcard-front'
+      >
         {getFlashcardFront(contents)}
       </div>
-      <div ref={flashcardBackRef} className={styles.back}>
+      <div 
+        ref={flashcardBackRef} 
+        className={styles.back}
+        data-test='flashcard-back'
+      >
         {getFlashcardBack(contents)}
       </div>
     </div>

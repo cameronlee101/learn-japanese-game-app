@@ -1,5 +1,5 @@
 'use client'
-import { Content, ContentClass, getFullExampleContentObject } from "@/app/utils/utils"
+import { Content, ContentClass, getFullExampleContentObject } from "@/app/utils/content-utils"
 import { useEffect, useState } from "react"
 import { useRouter } from 'next/navigation'
 

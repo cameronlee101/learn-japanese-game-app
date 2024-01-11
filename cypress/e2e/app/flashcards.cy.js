@@ -3,8 +3,8 @@
 describe('Flashcards activity', () => {
   beforeEach(() => {
     // Start from the flashcards topic selection page
-    cy.visit('http://localhost:3000')
-    cy.get('[class*="Sidebar_menuButton"]').click()
+    cy.visit('/')
+    cy.getDataTest('sidemenu-button').click()
     cy.get('a').contains('Flashcards').click()
   })
 
@@ -26,22 +26,26 @@ describe('Flashcards activity', () => {
     cy.get('button').click()
   })
 
-  it('flashcard exists, and can be flipped', () => {
+  it('flashcard can be flipped', () => {
     cy.get('select#chapter').select('Chapter 1')
     cy.get('select#topic').select('Vocabulary')
     cy.get('button').click()
     cy.wait(1000) // wait for server to respond
     
-    cy.get('[class*="Flashcard_front"]').should('exist')
-    cy.get('[class*="Flashcard_back"]').should('exist')
-    cy.get('[class*="Flashcard_flipped"]').should('not.exist')
+    cy.getDataTest('flashcard-front').should('be.visible')
+    cy.getDataTest('flashcard-back').should('not.be.visible')
 
-    cy.get('[class*="Flashcard_flashcard"]').click()
-    cy.get('[class*="Flashcard_flipped"]').should('exist')
+    cy.getDataTest('flashcard').click()
     cy.wait(500) // wait for animation
 
-    cy.get('[class*="Flashcard_flashcard"]').click()
-    cy.get('[class*="Flashcard_flipped"]').should('not.exist')
+    cy.getDataTest('flashcard-front').should('not.be.visible')
+    cy.getDataTest('flashcard-back').should('be.visible')
+
+    cy.getDataTest('flashcard').click()
+    cy.wait(500) // wait for animation
+    
+    cy.getDataTest('flashcard-front').should('be.visible')
+    cy.getDataTest('flashcard-back').should('not.be.visible')
   })
 
   it('go next and previous flashcards multiple times', () => {
@@ -52,17 +56,26 @@ describe('Flashcards activity', () => {
     cy.wait(1000) // wait for server to respond
     
     for (let i = 0; i < 2; i++) {
-      cy.get('[class*=flashcards-activity_flashcardButton]').eq(1).click()
+      cy.getDataTest('flashcard-next-button').click()
       cy.wait(600) // wait for animation
     }
     for (let i = 0; i < 4; i++) {
-      cy.get('[class*=flashcards-activity_flashcardButton]').eq(0).click()
+      cy.getDataTest('flashcard-prev-button').click()
       cy.wait(600) // wait for animation
     }
     for (let i = 0; i < 2; i++) {
-      cy.get('[class*=flashcards-activity_flashcardButton]').eq(1).click()
+      cy.getDataTest('flashcard-next-button').click()
       cy.wait(600) // wait for animation
     }
+  })
+
+  it('chapter 1 vocabulary has 77 flashcards', () => {
+    cy.get('select#chapter').select('Chapter 1')
+    cy.get('select#topic').select('Vocabulary')
+    cy.get('button').click()
+    cy.wait(1000) // wait for server to respond
+
+    cy.get('p#flashcardCounter').should('contain.text', '1/77')
   })
 
   it('flashcard counter accurately displays current flashcard number', () => {
@@ -72,15 +85,21 @@ describe('Flashcards activity', () => {
     cy.wait(1000) // wait for server to respond
     
     for (let i = 0; i < 3; i++) {
-      cy.get('[class*=flashcards-activity_flashcardButton]').eq(1).click()
+      cy.getDataTest('flashcard-next-button').click()
       cy.wait(600) // wait for animation
     }
-    cy.get('p#flashcardCounter').should('contain.text', '4/')
+    cy.get('p#flashcardCounter').should('contain.text', '4/77')
 
     for (let i = 0; i < 2; i++) {
-      cy.get('[class*=flashcards-activity_flashcardButton]').eq(0).click()
+      cy.getDataTest('flashcard-prev-button').click()
       cy.wait(600) // wait for animation
     }
-    cy.get('p#flashcardCounter').should('contain.text', '2/')
+    cy.get('p#flashcardCounter').should('contain.text', '2/77')
+
+    for (let i = 0; i < 3; i++) {
+      cy.getDataTest('flashcard-prev-button').click()
+      cy.wait(600) // wait for animation
+    }
+    cy.get('p#flashcardCounter').should('contain.text', '76/77')
   })
 })

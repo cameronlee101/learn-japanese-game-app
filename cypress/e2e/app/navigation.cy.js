@@ -1,26 +1,36 @@
 /// <reference types="cypress" />
 
-describe('Navigation', () => {
+describe('Navigation (sidebar)', () => {
   beforeEach(() => {
-    // Start from the index page
-    cy.visit('http://localhost:3000/')
+    cy.visit('/')
+  })
+
+  it('sidebar exists', () => {
+    cy.getDataTest('sidemenu-button').should('have.length', 1)
+    cy.getDataTest('sidemenu').should('have.length', 1)
   })
 
   it('sidebar opens and closes when pressing hamburger button', () => {
-    cy.get('svg[class*="Sidebar_menuButton"]').should('have.length', 1)
+    cy.getDataTest('sidemenu-button').should('be.visible')
+    cy.getDataTest('sidemenu').should('not.be.visible')
+    cy.get('aside li').should('not.be.visible')
 
-    cy.get('svg[class*="Sidebar_closed"]').should('have.length', 1)
-    cy.get('aside[class*="Sidebar_closed"]').should('have.length', 1)
-    cy.get('li[class*="Sidebar_closed"]').should('exist')
+    cy.getDataTest('sidemenu-button').click()
 
-    cy.get('svg[class*="Sidebar_menuButton"]').click()
-    cy.get('svg[class*="Sidebar_closed"]').should('not.exist')
-    cy.get('aside[class*="Sidebar_closed"]').should('not.exist')
-    cy.get('li[class*="Sidebar_closed"]').should('not.exist')
+    cy.getDataTest('sidemenu-button').should('be.visible')
+    cy.getDataTest('sidemenu').should('be.visible')
+    cy.get('aside li').should('be.visible')
+
+    cy.getDataTest('sidemenu-button').click()
+
+    cy.getDataTest('sidemenu-button').should('be.visible')
+    cy.getDataTest('sidemenu').should('not.be.visible')
+    cy.get('aside li').should('not.be.visible')
+
   })
 
-  it('has a sidebar with 4 links to click', () => {
-    cy.get('svg[class*="Sidebar_menuButton"]').click()
+  it('has a sidebar with 4 specific links to click', () => {
+    cy.getDataTest('sidemenu-button').click()
 
     cy.get('aside li').should('have.length', 4)
       .get('aside li').contains('Home').should('have.length', 1)
@@ -30,21 +40,21 @@ describe('Navigation', () => {
   })
 
   it('navigate to Home page when on Home page', () => {
-    cy.get('svg[class*="Sidebar_menuButton"]').click()
+    cy.getDataTest('sidemenu-button').click()
 
     cy.get('a').contains('Home').click()
 
-    cy.location('pathname').should('not.include', 'selection')
+    cy.location('pathname').should('equal', '/')
   })
 
   it('navigate to flashcard activity, and go back and forth in the browser\'s history', () => {
-    cy.get('svg[class*="Sidebar_menuButton"]').click()
+    cy.getDataTest('sidemenu-button').click()
     cy.get('a').contains('Flashcards').click()
     cy.location('pathname').should('include', 'pages')
       .location('pathname').should('include', 'selection')
       .location('pathname').should('include', 'flashcards-activity')
 
-    cy.get('button').click()
+    cy.get('button').contains(/submit/i).click()
     cy.location('pathname').should('include', 'pages')
       .location('pathname').should('not.include', 'selection')
       .location('pathname').should('include', 'flashcards-activity')
@@ -73,18 +83,18 @@ describe('Navigation', () => {
   })
 
   it('navigate to multiple choice quiz activity, then go back to home', () => {
-    cy.get('svg[class*="Sidebar_menuButton"]').click()
+    cy.getDataTest('sidemenu-button').click()
     cy.get('a').contains('M.C. Quiz').click()
     cy.location('pathname').should('include', 'pages')
       .location('pathname').should('include', 'selection')
       .location('pathname').should('include', 'mc-quiz')
 
-    cy.get('button').click()
+    cy.get('button').contains(/submit/i).click()
     cy.location('pathname').should('include', 'pages')
       .location('pathname').should('not.include', 'selection')
       .location('pathname').should('include', 'mc-quiz')
 
-    cy.get('svg[class*="Sidebar_menuButton"]').click()
+    cy.getDataTest('sidemenu-button').click()
     cy.get('a').contains('Home').click()
     cy.location('pathname').should('not.include', 'pages')
       .location('pathname').should('not.include', 'selection')
@@ -92,18 +102,18 @@ describe('Navigation', () => {
   })
 
   it('navigate to see contents of a chapter and topic, then go back to home', () => {
-    cy.get('svg[class*="Sidebar_menuButton"]').click()
+    cy.getDataTest('sidemenu-button').click()
     cy.get('a').contains('See Contents').click()
     cy.location('pathname').should('include', 'pages')
       .location('pathname').should('include', 'selection')
       .location('pathname').should('include', 'contents-of')
 
-    cy.get('button').click()
+    cy.get('button').contains(/submit/i).click()
     cy.location('pathname').should('include', 'pages')
       .location('pathname').should('not.include', 'selection')
       .location('pathname').should('include', 'contents-of')
 
-    cy.get('svg[class*="Sidebar_menuButton"]').click()
+    cy.getDataTest('sidemenu-button').click()
     cy.get('a').contains('Home').click()
     cy.location('pathname').should('not.include', 'pages')
       .location('pathname').should('not.include', 'selection')

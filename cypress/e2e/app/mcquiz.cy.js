@@ -3,8 +3,8 @@
 describe('Multiple choice quiz activity', () => {
   beforeEach(() => {
     // Start from the flashcards topic selection page
-    cy.visit('http://localhost:3000')
-    cy.get('[class*="Sidebar_menuButton"]').click()
+    cy.visit('/')
+    cy.getDataTest('sidemenu-button').click()
     cy.get('a').contains('M.C. Quiz').click()
   })
 
@@ -33,6 +33,9 @@ describe('Multiple choice quiz activity', () => {
     cy.get('button').click()
     
     cy.wait(1000) // wait for server
-    cy.get('[class*="MCOptions_MCOption_"]').eq(0).click()
+    for (let i = 0; i < 4; i++) {
+      cy.getDataTest(`mc-option-${i}`).click()
+      cy.wait(1)
+    }
   })
 })

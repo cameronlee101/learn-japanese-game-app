@@ -33,14 +33,16 @@ const Sidebar = () => {
     return (
         <div className={`${styles.sidebarContainer}`}>
             <GiHamburgerMenu 
+                data-test='sidemenu-button'
                 className={`${styles.menuButton} ${isOpen ? '' : styles.closed}`}
                 onClick={toggleSidebar}
             />
             <aside 
                 className={`${styles.sidebar} ${isOpen ? '' : styles.closed}`}
+                data-test='sidemenu'
             >
                 <ul className='mx-auto flex justify-between flex-col'>
-                    {sidebarItems.map((item) => (
+                    {sidebarItems.map((item, index) => (
                         <li 
                             className={`${styles.navLink} ${isOpen ? '' : styles.closed}`}
                             key={item.name}
@@ -49,6 +51,7 @@ const Sidebar = () => {
                                 href={item.href} 
                                 className={`${styles.sidebarLink}`}
                                 onClick={toggleSidebar}
+                                data-test={`sidemenu-link-${index}`}
                             >
                                 {item.name}
                             </Link>

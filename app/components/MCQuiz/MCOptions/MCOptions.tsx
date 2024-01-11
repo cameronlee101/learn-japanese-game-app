@@ -2,7 +2,7 @@
 import React, { useEffect, useState } from 'react'
 import styles from './MCOptions.module.css'
 import CheckOrX, { IMAGE_SIZE, symbolOptions } from '../../CheckOrX/CheckOrX'
-import { Content } from '@/app/utils/utils'
+import { Content } from '@/app/utils/content-utils'
 import { getMCOptionText } from '../MCQuiz-utils'
 
 enum validOptionStates {
@@ -38,7 +38,7 @@ const MCOptions = (props: {
   
     setOptions(shuffledOptions.map((content) => ({ content, state: validOptionStates.none })))
     setInputEnabled(true)
-  }, [props])
+  }, [correctOption, otherOptions])
 
   // Handles logic when an option is clicked for the first time
   const handleClick = (choice:Content, index:number, e:React.MouseEvent) => {
@@ -57,7 +57,7 @@ const MCOptions = (props: {
     }
     
     // Set the check or X symbol to the cursor position
-    setCheckOrXPos({ x: e.clientX - IMAGE_SIZE / 2, y: e.clientY - IMAGE_SIZE / 2 })
+    setCheckOrXPos({ x: e.pageX - IMAGE_SIZE / 2, y: e.pageY - IMAGE_SIZE / 2 })
 
     // remove, then add class to reset fading up animation
     setCheckOrXClass('')
@@ -84,7 +84,8 @@ const MCOptions = (props: {
             key={index}
             className={`${styles.MCOption} ${options[index].state === validOptionStates.incorrect ? styles.incorrect : '' }`} 
             // Element only has click event listener if hasn't been clicked yet
-            onMouseUp={inputEnalbed && options[index].state === validOptionStates.none ? (e) => handleClick(option.content, index, e) : ()=>{}}  
+            onMouseUp={inputEnalbed && options[index].state === validOptionStates.none ? (e) => handleClick(option.content, index, e) : ()=>{}}
+            data-test={`mc-option-${index}`}  
           >
             {getMCOptionText(option.content)}
           </div>

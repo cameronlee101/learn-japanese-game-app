@@ -1,4 +1,4 @@
-import { ConjugationContent, Content, KanjiContent, VocabContent, isConjugationContent, isKanjiContent, isVocabContent } from '@/app/utils/utils'
+import { ConjugationContent, Content, KanjiContent, VocabContent, isConjugationContent, isKanjiContent, isVocabContent } from '@/app/utils/content-utils'
 
 export const getMCQuestionText = (content:Content):string => {
   if (isVocabContent(content)) {

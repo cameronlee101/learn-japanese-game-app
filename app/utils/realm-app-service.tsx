@@ -1,5 +1,6 @@
 import * as Realm from 'realm-web'
 
+// MongoDB Atlas realm web documentation: https://www.mongodb.com/docs/realm/web/
 export class RealmAppService {
   private static app: Realm.App
 

@@ -1,6 +1,6 @@
 'use client'
 import React, { useEffect, useState } from 'react'
-import { Content, ContentClass } from "@/app/utils/utils"
+import { Content, ContentClass } from "@/app/utils/content-utils"
 import Flashcard from '@/app/components/Flashcard/Flashcard'
 import styles from './flashcards-activity.module.css'
 import { FaArrowCircleLeft, FaArrowCircleRight  } from "react-icons/fa"
@@ -125,8 +125,16 @@ function FlashcardsActivity({
           <Flashcard contents={contents[currentIndex]}/>
         </div>
         <div className='flex mt-10'>
-          <FaArrowCircleLeft className={`${styles.flashcardButton}`} onClick={flashcardPrev}/>
-          <FaArrowCircleRight className={`${styles.flashcardButton}`} onClick={flashcardNext}/>
+          <FaArrowCircleLeft 
+              className={`${styles.flashcardButton}`} 
+              onClick={flashcardPrev}
+              data-test='flashcard-prev-button'
+            />
+          <FaArrowCircleRight 
+            className={`${styles.flashcardButton}`} 
+            onClick={flashcardNext}
+            data-test='flashcard-next-button'
+          />
         </div>
         <p id='flashcardCounter' className='my-10 text-2xl font-semibold'>{currentIndex+1}/{contents.length}</p>
       </div>

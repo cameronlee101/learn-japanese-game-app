@@ -3,8 +3,8 @@
 describe('Seeing contents of a topic', () => {
   beforeEach(() => {
     // Start from contents topic selection page
-    cy.visit('http://localhost:3000')
-    cy.get('[class*="Sidebar_menuButton"]').click()
+    cy.visit('/')
+    cy.getDataTest('sidemenu-button').click()
     cy.get('a').contains('See Contents').click()
   })
 
