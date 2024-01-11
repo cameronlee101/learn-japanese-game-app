@@ -1,4 +1,4 @@
-import { Chapters, Topics, ContentClass, isVocabContent, isKanjiContent, isSelectionValid, getFullExampleContentObject, isConjugationContent } from './utils';
+import { Chapters, Topics, ContentClass, isVocabContent, isKanjiContent, isSelectionValid, getFullExampleContentObject, isConjugationContent } from './content-utils';
 
 test('isVocabContent function', () => {
   // minimum attributes needed to be true
@@ -93,9 +93,24 @@ test('getExampleFullObject function', () => {
   expect(getFullExampleContentObject({})).toBeUndefined()
 })
 
-// TODO: expand test case
 test('ContentClass class getContent method', async () => {
-  const data = await new ContentClass().getContent(Chapters.Ch1, Topics.Vocabulary)
-  
-  expect(data).toBeDefined()
+  const contentClass = new ContentClass()
+
+  // Testing valid chapter, valid topic, valid combination of both
+  const validData1 = await contentClass.getContent(Chapters.Ch1, Topics.Numbers)
+  const validData2 = await contentClass.getContent(Chapters.Ch2, Topics.Vocabulary)
+  const validData3 = await contentClass.getContent(Chapters.Ch3, Topics.Kanji)
+
+  expect(validData1).toBeDefined()
+  expect(validData2).toBeDefined()
+  expect(validData3).toBeDefined()
+
+  // Testing valid chapter, and valid topic, but not valid combination of both
+  const invalidData1 = await contentClass.getContent(Chapters.Ch1, Topics.Kanji)
+  const invalidData2 = await contentClass.getContent(Chapters.Ch2, Topics.Conjugations)
+  const invalidData3 = await contentClass.getContent(Chapters.Ch3, Topics.Numbers)
+
+  expect(invalidData1).toBeUndefined()
+  expect(invalidData2).toBeUndefined()
+  expect(invalidData3).toBeUndefined()
 })

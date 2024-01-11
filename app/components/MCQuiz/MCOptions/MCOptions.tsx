@@ -3,7 +3,7 @@ import React, { useEffect, useState } from 'react'
 import styles from './MCOptions.module.css'
 import CheckOrX, { IMAGE_SIZE, symbolOptions } from '../../CheckOrX/CheckOrX'
 import { Content } from '@/app/utils/content-utils'
-import { getMCOptionText } from '../MCQuiz-utils'
+import { getMCOption } from '../MCQuiz-utils'
 
 enum validOptionStates {
   none,
@@ -87,7 +87,7 @@ const MCOptions = (props: {
             onMouseUp={inputEnalbed && options[index].state === validOptionStates.none ? (e) => handleClick(option.content, index, e) : ()=>{}}
             data-test={`mc-option-${index}`}  
           >
-            {getMCOptionText(option.content)}
+            {getMCOption(option.content)}
           </div>
         )}
       </div>

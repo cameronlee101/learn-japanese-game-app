@@ -5,7 +5,7 @@ import { Content, ContentClass } from '@/app/utils/content-utils';
 import styles from './mc-quiz.module.css'
 import MCOptions from '@/app/components/MCQuiz/MCOptions/MCOptions';
 import MCQuestion from '@/app/components/MCQuiz/MCQuestion/MCQuestion';
-import { getMCOptionText, getMCQuestionText } from '@/app/components/MCQuiz/MCQuiz-utils';
+import { getMCOptionString, getMCQuestionString } from '@/app/components/MCQuiz/MCQuiz-utils';
 
 function MCQuiz({ 
   params,
@@ -89,8 +89,8 @@ function MCQuiz({
       hasSelectedIncorrect = true
       const curContent = contents[currentIndex]
       
-      if (curContent && !wrongAnswersRef.current.find(item => item.question === getMCQuestionText(curContent))) {
-        wrongAnswersRef.current = [...wrongAnswersRef.current, {question: getMCQuestionText(curContent), answer: getMCOptionText(curContent)}]
+      if (curContent && !wrongAnswersRef.current.find(item => item.question === getMCQuestionString(curContent))) {
+        wrongAnswersRef.current = [...wrongAnswersRef.current, {question: getMCQuestionString(curContent), answer: getMCOptionString(curContent)}]
       }
     }    
   }
