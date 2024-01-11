@@ -45,6 +45,7 @@ describe('Navigation (sidebar)', () => {
     cy.get('a').contains('Home').click()
 
     cy.location('pathname').should('equal', '/')
+    cy.contains(/welcome to the website/i)
   })
 
   it('navigate to flashcard activity, and go back and forth in the browser\'s history', () => {
@@ -53,21 +54,25 @@ describe('Navigation (sidebar)', () => {
     cy.location('pathname').should('include', 'pages')
       .location('pathname').should('include', 'selection')
       .location('pathname').should('include', 'flashcards-activity')
+      cy.contains(/select chapter and topic for flashcards/i)
 
     cy.get('button').contains(/submit/i).click()
     cy.location('pathname').should('include', 'pages')
       .location('pathname').should('not.include', 'selection')
       .location('pathname').should('include', 'flashcards-activity')
+    cy.contains(/chapter 1 vocabulary flashcards/i)
 
     cy.go('back')
     cy.location('pathname').should('include', 'pages')
       .location('pathname').should('include', 'selection')
       .location('pathname').should('include', 'flashcards-activity')
+    cy.contains(/select chapter and topic for flashcards/i)
 
     cy.go('back')
     cy.location('pathname').should('not.include', 'pages')
       .location('pathname').should('not.include', 'selection')
       .location('pathname').should('not.include', 'flashcards-activity')
+    cy.contains(/welcome to the website/i)
 
     cy.wait(1000) // wait to give server time between requests
 
@@ -75,11 +80,13 @@ describe('Navigation (sidebar)', () => {
     cy.location('pathname').should('include', 'pages')
       .location('pathname').should('include', 'selection')
       .location('pathname').should('include', 'flashcards-activity')
+    cy.contains(/select chapter and topic for flashcards/i)
 
     cy.go('forward')
     cy.location('pathname').should('include', 'pages')
       .location('pathname').should('not.include', 'selection')
       .location('pathname').should('include', 'flashcards-activity')
+    cy.contains(/chapter 1 vocabulary flashcards/i)
   })
 
   it('navigate to multiple choice quiz activity, then go back to home', () => {
@@ -88,17 +95,20 @@ describe('Navigation (sidebar)', () => {
     cy.location('pathname').should('include', 'pages')
       .location('pathname').should('include', 'selection')
       .location('pathname').should('include', 'mc-quiz')
+    cy.contains(/select chapter and topic for multiple choice quiz/i)
 
     cy.get('button').contains(/submit/i).click()
     cy.location('pathname').should('include', 'pages')
       .location('pathname').should('not.include', 'selection')
       .location('pathname').should('include', 'mc-quiz')
+    cy.contains(/chapter 1 vocabulary m.c. quiz/i)
 
     cy.getDataTest('sidemenu-button').click()
     cy.get('a').contains('Home').click()
     cy.location('pathname').should('not.include', 'pages')
       .location('pathname').should('not.include', 'selection')
       .location('pathname').should('not.include', 'mc-quiz')
+    cy.contains(/welcome to the website/i)
   })
 
   it('navigate to see contents of a chapter and topic, then go back to home', () => {
@@ -107,16 +117,19 @@ describe('Navigation (sidebar)', () => {
     cy.location('pathname').should('include', 'pages')
       .location('pathname').should('include', 'selection')
       .location('pathname').should('include', 'contents-of')
+    cy.contains(/select chapter and topic to see the contents of/i)
 
     cy.get('button').contains(/submit/i).click()
     cy.location('pathname').should('include', 'pages')
       .location('pathname').should('not.include', 'selection')
       .location('pathname').should('include', 'contents-of')
+    cy.contains(/contents of chapter 1 vocabulary/i)
 
     cy.getDataTest('sidemenu-button').click()
     cy.get('a').contains('Home').click()
     cy.location('pathname').should('not.include', 'pages')
       .location('pathname').should('not.include', 'selection')
       .location('pathname').should('not.include', 'contents-of')
+    cy.contains(/welcome to the website/i)
   })
 })

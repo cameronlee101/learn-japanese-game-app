@@ -111,9 +111,7 @@ function MCQuiz({
 
   return (
     <main className='main-center'>
-      <h1 className='text-5xl font-semibold'>
-        Quiz
-      </h1>
+      <h1 className='text-5xl font-semibold'>{selectedChapterStr} {selectedTopicStr} M.C. Quiz</h1>
       {playingGame && 
         <div className={`${styles.centerArea}`}>
           <div className='flex sm:mb-20 mb-10'>
