@@ -25,7 +25,6 @@ export const getFlashcardFront = (contents:Content):React.JSX.Element => {
     </>)
   }
   else {
-    alert('Error displaying flashcard contents, please return to home.')
     console.error('Error: Unrecognized content type when retrieving flashcard front text.')
 
     return (<>
@@ -46,18 +45,18 @@ export const getFlashcardBack = (contents:Content):React.JSX.Element => {
     const data = contents as KanjiContent
 
     return (<>
-      <div>
-        <span className='font-semibold'>Meaning</span>: {data.english}
-      </div>
-      <div>
-        <span className='font-semibold'>Readings</span>: {data.readings.join(', ')}
-      </div>
-      <div>
-        <span className='font-semibold'>Examples</span>: <br/>
+      <p>
+        <span className='font-semibold'>Meaning:</span> {data.english}
+      </p>
+      <p>
+        <span className='font-semibold'>Readings:</span> {data.readings.join(', ')}
+      </p>
+      <p>
+        <span className='font-semibold'>Examples:</span><br/>
         {data.examples.map((example) => (
           <span key={example}>{example}<br/></span>
         ))}
-      </div>
+      </p>
     </>)
   }
   else if (isConjugationContent(contents)) {
@@ -68,7 +67,6 @@ export const getFlashcardBack = (contents:Content):React.JSX.Element => {
     </>)
   }
   else {
-    alert('Error displaying flashcard contents, please return to home.')
     console.error('Error: Unrecognized content type when retrieving flashcard back text.')  
 
     return (<>

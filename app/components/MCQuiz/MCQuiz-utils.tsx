@@ -15,7 +15,6 @@ export const getMCQuestionString = (content:Content):string => {
     )
   }
   else {
-    alert('Error displaying multiple choice quiz question, please return to home.')
     console.error('Error: Unrecognized content type when retrieving multiple choice quiz question text.')
     
     return 'Error'
@@ -58,7 +57,6 @@ export const getMCQuestion = (content:Content):JSX.Element => {
     </>)
   }
   else {
-    alert('Error displaying multiple choice quiz question, please return to home.')
     console.error('Error: Unrecognized content type when retrieving multiple choice quiz question text.')
     
     return (<>
