@@ -9,6 +9,9 @@ View the website at [https://genki-study-tool.vercel.app](https://genki-study-to
 Built in Typescript utilizing the Next.js React framework. Study material is stored externally on a MongoDB Atlas database. Unit testing is done with Jest and E2E testing with Cypress.
 
 ## Running Tests
+Running Jest unit tests:
+1) Run `npm run test` in a terminal
+
 Running Cypress E2E tests:
 1) In one terminal run `npm run build`, then `npm run start`. <br/>
 2) In a separate terminal, run `npm run cy:open` to start Cypress and run the E2E tests in your preferred browser. Alternatively, you can run `npm run cy:run` to run the E2E tests in the console.
