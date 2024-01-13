@@ -1,5 +1,14 @@
 import { Chapters, Topics, ContentClass, isVocabContent, isKanjiContent, isSelectionValid, getFullExampleContentObject, isConjugationContent } from './content-utils';
 
+beforeEach(() => {
+  jest.spyOn(console, 'error')
+  console.error.mockImplementation(() => {})
+})
+
+afterEach(() => {
+  console.error.mockRestore()
+})
+
 test('isVocabContent function', () => {
   // minimum attributes needed to be true
   expect(isVocabContent({japanese:'テスト', english: 'test'})).toBe(true) 
