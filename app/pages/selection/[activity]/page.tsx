@@ -45,6 +45,11 @@ function Selection({
       setSelectedChapter(selection[0])
       setSelectedTopic(selection[1])
     }
+
+    // Retrieves the content collection
+    new ContentClass().getAggregatedCollection().then((content) => {
+      setCollection(content)
+    })
   }, [])
 
   // If user selection is valid, updates localstorage on user's chapter and topic choice, then changes the page
@@ -71,13 +76,8 @@ function Selection({
     return false
   }
 
-  // Toggles whether the modal is visible. Retrieves content collection if it hasn't been retrieved yet
+  // Toggles whether the modal is visible
   const toggleShowModal = () => {
-    if (collection.length == 0) {
-      new ContentClass().getAggregatedCollection().then((content) => {
-        setCollection(content)
-      })
-    }
     setShowModal(!showModal)
   }
 
