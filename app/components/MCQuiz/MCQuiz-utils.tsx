@@ -9,8 +9,8 @@ export const getMCQuestionString = (content:Content):string => {
   } 
   else if (isConjugationContent(content)) {
     return ( 
-      (content as ConjugationContent).dictionary_kanji + '<br/>' +
-      (content as ConjugationContent).dictionary_hiragana + '<br/>' +
+      (content as ConjugationContent).dictionary_kanji + ' | ' +
+      (content as ConjugationContent).dictionary_hiragana + ' | ' +
       (content as ConjugationContent).conjugate_to
     )
   }
@@ -51,9 +51,9 @@ export const getMCQuestion = (content:Content):JSX.Element => {
   } 
   else if (isConjugationContent(content)) {
     return (<>
-      {(content as ConjugationContent).dictionary_kanji} <br/>
-      {(content as ConjugationContent).dictionary_hiragana} <br/>
-      {(content as ConjugationContent).conjugate_to}
+      <p>{(content as ConjugationContent).dictionary_kanji}</p>
+      <p>{(content as ConjugationContent).dictionary_hiragana}</p>
+      <p>{(content as ConjugationContent).conjugate_to}</p>
     </>)
   }
   else {

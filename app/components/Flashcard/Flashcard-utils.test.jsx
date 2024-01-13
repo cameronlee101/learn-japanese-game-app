@@ -11,6 +11,9 @@ afterEach(() => {
   console.error.mockRestore()
 })
 
+
+
+// getFlashcardFront
 test('getFlashcardFront function vocab 1', () => {
   const content = { japanese: 'テスト', english: 'test' }
   render(getFlashcardFront(content))
@@ -40,14 +43,14 @@ test('getFlashcardFront function vocab 4', () => {
 })
 
 test('getFlashcardFront function kanji 1', () => {
-  const content = { kanji: '大', readings: ['だい', 'おお'], english: 'big', examples: ['大学生（だいがくせい）college student', '大きい（おおきい）big']}
+  const content = { kanji: '大', readings: ['だい', 'おお'], english: 'big', examples: ['大学生（だいがくせい）college student', '大きい（おおきい）big'] }
   render(getFlashcardFront(content))
 
   expect(screen.getByText(`${content.kanji}`)).toBeInTheDocument()
 })
 
 test('getFlashcardFront function conjugation 1', () => {
-  const content = {dictionary_hiragana: "いく", dictionary_kanji: "行く", english: "to go (destination に/へ)", conjugate_to: "present, affirmative", conjugation: "行きます"}
+  const content = { dictionary_hiragana: "いく", dictionary_kanji: "行く", english: "to go (destination に/へ)", conjugate_to: "present, affirmative", conjugation: "行きます" }
   render(getFlashcardFront(content))
 
   expect(screen.getByText(`${content.dictionary_kanji}`)).toBeInTheDocument()
@@ -62,6 +65,9 @@ test('getFlashcardFront function error 1', () => {
   expect(screen.getByText('Error')).toBeInTheDocument()
 })
 
+
+
+// getFlashcardBack
 test('getFlashcardBack function vocab 1', () => {
   const content = { japanese: 'テスト', english: 'test' }
   render(getFlashcardBack(content))
@@ -77,7 +83,7 @@ test('getFlashcardBack function vocab 2', () => {
 })
 
 test('getFlashcardBack function kanji 1', () => {
-  const content = { kanji: '大', readings: ['だい', 'おお'], english: 'big', examples: ['大学生（だいがくせい）college student', '大きい（おおきい）big']}
+  const content = { kanji: '大', readings: ['だい', 'おお'], english: 'big', examples: ['大学生（だいがくせい）college student', '大きい（おおきい）big'] }
   render(getFlashcardBack(content))
 
   expect(screen.getByText(`Meaning:`)).toBeInTheDocument()
@@ -91,7 +97,7 @@ test('getFlashcardBack function kanji 1', () => {
 })
 
 test('getFlashcardBack function conjugation 1', () => {
-  const content = {dictionary_hiragana: "いく", dictionary_kanji: "行く", english: "to go (destination に/へ)", conjugate_to: "present, affirmative", conjugation: "行きます"}
+  const content = { dictionary_hiragana: "いく", dictionary_kanji: "行く", english: "to go (destination に/へ)", conjugate_to: "present, affirmative", conjugation: "行きます" }
   render(getFlashcardBack(content))
 
   expect(screen.getByText(`${content.conjugation}`)).toBeInTheDocument()
