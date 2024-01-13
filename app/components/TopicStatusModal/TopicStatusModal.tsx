@@ -18,14 +18,14 @@ const TopicStatusModal = (props: {
                 <tr>
                   <td></td>
                   {Object.values(Topics).map((topic) => (
-                    <td className='w-1/6'>{topic}</td>
+                    <td key={topic} className='w-1/6'>{topic}</td>
                   ))}
                 </tr>
                 {Object.values(Chapters).map((chapter) => (
-                  <tr>
+                  <tr key={chapter}>
                     <td className='w-1/6 whitespace-nowrap'>{chapter}</td>
                     {Object.values(Topics).map((topic) => (
-                      <td className='w-1/6'>
+                      <td key={topic} className='w-1/6'>
                         <div className={isSelectionValid(chapter, topic) ? 'bg-green-600' : 'bg-red-600'}>&nbsp;</div>
                       </td>  
                     ))}
