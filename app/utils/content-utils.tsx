@@ -4,6 +4,15 @@ export enum Chapters {
   Ch1 = 'Chapter 1',
   Ch2 = 'Chapter 2',
   Ch3 = 'Chapter 3',
+  Ch4 = 'Chapter 4',
+  Ch5 = 'Chapter 5',
+  Ch6 = 'Chapter 6',
+  Ch7 = 'Chapter 7',
+  Ch8 = 'Chapter 8',
+  Ch9 = 'Chapter 9',
+  Ch10 = 'Chapter 10',
+  Ch11 = 'Chapter 11',
+  Ch12 = 'Chapter 12',
 }
 
 export enum Topics {
@@ -12,15 +21,6 @@ export enum Topics {
   Numbers = 'Numbers',
   Conjugations = 'Conjugations',
 }
-
-const validContentSelections = [
-  [Chapters.Ch1, Topics.Vocabulary],
-  [Chapters.Ch1, Topics.Numbers],
-  [Chapters.Ch2, Topics.Vocabulary],
-  [Chapters.Ch3, Topics.Vocabulary],
-  [Chapters.Ch3, Topics.Kanji],
-  [Chapters.Ch3, Topics.Conjugations],
-]
 
 export type VocabContent = {
   japanese: string
@@ -85,6 +85,10 @@ export class ContentClass {
 
     return undefined
   }
+
+  async getAggregatedCollection():Promise<[]> {
+    return await (await this.getCollection()).aggregate([])
+  }
 }
 
 // Function used to check if the given object is of type VocabContent or is an array with VocabContent
@@ -135,13 +139,6 @@ export function isConjugationContent(obj:any):boolean {
     'conjugate_to' in obj &&
     'conjugation' in obj
   }
-}
-
-// Function used to check if the combination of selections is valid and thus have content
-export function isSelectionValid(chapter: string, topic: string): boolean {
-  return validContentSelections.some(([selectedChapter, selectedTopic]) => {
-    return selectedChapter === chapter && selectedTopic === topic;
-  })
 }
 
 // Function used to return an object of the same type as passed in argument that has values for all parameters
