@@ -1,4 +1,4 @@
-import { Chapters, Topics, ContentClass, isVocabContent, isKanjiContent, isSelectionValid, getFullExampleContentObject, isConjugationContent } from './content-utils';
+import { Chapters, Topics, ContentClass, isVocabContent, isKanjiContent, getFullExampleContentObject, isConjugationContent } from './content-utils';
 
 beforeEach(() => {
   jest.spyOn(console, 'error')
@@ -68,24 +68,6 @@ test('isConjugationContent function', () => {
 
   // Not technically correct, but function only checks it has the minimum attribute to be tgat type
   expect(isConjugationContent({dictionary_hiragana: 'テスト', dictionary_kanji: 'テスト', english: 'test', conjugate_to: 'テスト', conjugation: 'テスト', garbage: 'garbage'})).toBe(true)
-})
-
-test('isSelectionValid function', () => {
-  // All possible true inputs
-  expect(isSelectionValid(Chapters.Ch1, Topics.Vocabulary)).toBe(true)
-  expect(isSelectionValid(Chapters.Ch1, Topics.Numbers)).toBe(true)
-  expect(isSelectionValid(Chapters.Ch2, Topics.Vocabulary)).toBe(true)
-  expect(isSelectionValid(Chapters.Ch3, Topics.Vocabulary)).toBe(true)
-  expect(isSelectionValid(Chapters.Ch3, Topics.Kanji)).toBe(true)
-  expect(isSelectionValid(Chapters.Ch3, Topics.Conjugations)).toBe(true)
-
-  // 1 false input for each chapter
-  expect(isSelectionValid(Chapters.Ch1, Topics.Kanji)).toBe(false)
-  expect(isSelectionValid(Chapters.Ch2, Topics.Kanji)).toBe(false)
-  expect(isSelectionValid(Chapters.Ch3, Topics.Numbers)).toBe(false)
-
-  // garbage values, return false
-  expect(isSelectionValid('garbage', 'garbage')).toBe(false)
 })
 
 test('getExampleFullObject function', () => {

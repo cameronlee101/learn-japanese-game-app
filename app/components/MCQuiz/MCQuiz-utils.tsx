@@ -9,8 +9,8 @@ export const getMCQuestionString = (content:Content):string => {
   } 
   else if (isConjugationContent(content)) {
     return ( 
-      (content as ConjugationContent).dictionary_kanji + ' | ' +
-      (content as ConjugationContent).dictionary_hiragana + ' | ' +
+      (content as ConjugationContent).dictionary_kanji + '\n' +
+      (content as ConjugationContent).dictionary_hiragana + '\n' +
       (content as ConjugationContent).conjugate_to
     )
   }

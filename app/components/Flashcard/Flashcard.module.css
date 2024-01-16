@@ -20,6 +20,7 @@
     flex-direction: column;
     justify-content: center;
     align-items: center;
+    white-space: pre-wrap;
     padding-top: 10px;
     padding-bottom: 10px;
     backface-visibility: hidden;

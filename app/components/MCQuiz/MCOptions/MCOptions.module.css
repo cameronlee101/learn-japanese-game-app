@@ -12,6 +12,7 @@
   display: flex;
   justify-content: center;
   align-items: center;
+  white-space: pre-wrap;
   background-color: rgb(212, 212, 212);
   padding: 20px;
   height: 120px;
