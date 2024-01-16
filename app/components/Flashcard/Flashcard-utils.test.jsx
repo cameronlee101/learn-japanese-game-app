@@ -89,7 +89,7 @@ test('getFlashcardBackString function error 1', () => {
   expect(getFlashcardBackString(content)).toEqual('Error')
 })
 
-// **********************************************************************************************
+
 
 // getFlashcardFront
 test('getFlashcardFront function vocab 1', () => {

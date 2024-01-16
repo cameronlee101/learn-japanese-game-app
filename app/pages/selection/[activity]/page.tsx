@@ -60,6 +60,7 @@ function Selection({
       router.push('/pages/' + params.activity + '/' + selectedChapter + '/' + selectedTopic)
     }
     else {
+      // TODO: change alert to something that works on mobile
       alert('Current chapter and topics selection is not valid, please change one or more selection')
     } 
   }
