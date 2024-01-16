@@ -29,7 +29,7 @@ test('getMCQuestionString function kanji 1', () => {
 test('getMCQuestionString function conjugation 1', () => {
   const content = { dictionary_hiragana: "いく", dictionary_kanji: "行く", english: "to go (destination に/へ)", conjugate_to: "present, affirmative", conjugation: "行きます"  }
 
-  expect(getMCQuestionString(content)).toEqual(`${content.dictionary_kanji} | ${content.dictionary_hiragana} | ${content.conjugate_to}`)
+  expect(getMCQuestionString(content)).toEqual(`${content.dictionary_kanji}\n${content.dictionary_hiragana}\n${content.conjugate_to}`)
 })
 
 test('getMCQuestionString function error 1', () => {

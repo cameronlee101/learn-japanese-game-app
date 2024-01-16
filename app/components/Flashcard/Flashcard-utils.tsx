@@ -1,5 +1,72 @@
 import { ConjugationContent, Content, KanjiContent, VocabContent, isConjugationContent, isKanjiContent, isVocabContent } from '@/app/utils/content-utils';
 
+export const getFlashcardFrontString = (contents:Content):string => {
+  if (isVocabContent(contents)) {
+    const data = contents as VocabContent
+
+    return (
+      `${data.japanese}${data.alternate ? ('/' + data.alternate) : ''}${data.kanji ? (' (' + data.kanji + ')') : ''}`
+    )
+  }
+  else if (isKanjiContent(contents)) {
+    const data = contents as KanjiContent
+
+    return (
+      data.kanji
+    )
+  }
+  else if (isConjugationContent(contents)) {
+    const data = contents as ConjugationContent
+
+    return (
+      data.dictionary_kanji + '\n' +
+      data.dictionary_hiragana + '\n' +
+      data.conjugate_to
+    )
+  }
+  else {
+    console.error('Error: Unrecognized content type when retrieving flashcard front text.')
+
+    return (
+      'Error'
+    )
+  }
+}
+
+export const getFlashcardBackString = (contents:Content):string => {
+  if (isVocabContent(contents)) {
+    const data = contents as VocabContent
+
+    return (
+      `${data.english}${data.example ? (', ex. ' + data.example) : ''}`
+    )
+  }
+  else if (isKanjiContent(contents)) {
+    const data = contents as KanjiContent
+
+    return (
+      'Meaning: ' + data.english + '\n' +
+      'Readings: ' + data.readings.join(', ') + '\n' + 
+      'Examples: ' + '\n' + 
+      data.examples.join('\n')
+    )
+  }
+  else if (isConjugationContent(contents)) {
+    const data = contents as ConjugationContent
+
+    return (
+      data.conjugation
+    )
+  }
+  else {
+    console.error('Error: Unrecognized content type when retrieving flashcard back text.')  
+
+    return (
+      'Error'
+    )
+  }
+}
+
 export const getFlashcardFront = (contents:Content):React.JSX.Element => {
   if (isVocabContent(contents)) {
     const data = contents as VocabContent
