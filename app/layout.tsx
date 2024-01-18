@@ -20,7 +20,8 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body className={`${roboto.className} bg-color flex min-h-screen relative`}>
+      <body className={`${roboto.className} bg-color flex min-h-screen relative user-select-none`}>
+        <div id='modal-root' style={{ zIndex: 50 }} data-test='modal-root'></div>
         <Sidebar/>
         {children}
       </body>

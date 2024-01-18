@@ -24,7 +24,7 @@ function FlashcardsActivity({
   const [currentIndex, setCurrentIndex] = useState(0)
   const [direction, setDirection] = useState<'left' | 'right' | null>(null)
 
-  const [contents, setContents] = useState<Content[]>([{japanese: 'Loading...', english: 'Loading...'}])
+  const [contents, setContents] = useState<Content[]>([{japanese: '', english: ''}])
 
   // Gets contents for activity on page load
   useEffect(() => {
@@ -118,7 +118,7 @@ function FlashcardsActivity({
   }
 
   return (    
-    <main className='main-center overflow-hidden user-select-none'>
+    <main className='main-center overflow-hidden'>
       <h1 className='text-5xl font-semibold'>{selectedChapterStr} {selectedTopicStr} Flashcards</h1>
       <div className={`${styles.centerArea}`}>
         <div className={animationClass}>

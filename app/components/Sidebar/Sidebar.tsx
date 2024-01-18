@@ -44,12 +44,12 @@ const Sidebar = () => {
                 <ul className='mx-auto flex justify-between flex-col'>
                     {sidebarItems.map((item, index) => (
                         <li 
-                            className={`${styles.navLink} ${isOpen ? '' : styles.closed}`}
+                            className={`${styles.sidebarLink} ${isOpen ? '' : styles.closed}`}
                             key={item.name}
                         >
                             <Link 
                                 href={item.href} 
-                                className={`${styles.sidebarLink}`}
+                                className={`${styles.navLink}`}
                                 onClick={toggleSidebar}
                                 data-test={`sidemenu-link-${index}`}
                             >

@@ -18,7 +18,7 @@ function MCQuiz({
 
   let hasSelectedIncorrect:boolean = false;
 
-  const [contents, setContents] = useState<Content[]>([{japanese: 'Loading...', english: 'Loading...'}, {japanese: 'Loading...', english: 'Loading...'}, {japanese: 'Loading...', english: 'Loading...'}, {japanese: 'Loading...', english: 'Loading...'}])
+  const [contents, setContents] = useState<Content[]>([{japanese: '', english: ''}, {japanese: '', english: ''}, {japanese: '', english: ''}, {japanese: '', english: ''}])
   const [currentIndex, setCurrentIndex] = useState(0)
   const [correctAnswersNum, setCorrectAnswersNum] = useState(0)
 
