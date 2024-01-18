@@ -14,7 +14,7 @@ function ContentsOf({
 
   const [allParameters, setAllParameters] = useState<string[]>([])
   const [tableHeaders, setTableHeaders] = useState<string[]>([])
-  const [contents, setContents] = useState<Content[]>([{japanese: 'Loading...', english: 'Loading...'}])
+  const [contents, setContents] = useState<Content[]>([{japanese: '', english: ''}])
 
   // Gets contents for the table on page load
   useEffect(() => {

@@ -5,6 +5,7 @@ import { useRouter } from 'next/navigation'
 import { useLocalStorage } from "@uidotdev/usehooks"
 import styles from './selection.module.css'
 import TopicStatusModal from '@/app/components/TopicStatusModal/TopicStatusModal'
+import ErrorBox from '@/app/components/ErrorBox/ErrorBox'
 
 const titleSuffixes = [
   {
@@ -35,6 +36,9 @@ function Selection({
   const [selectedChapter, setSelectedChapter] = useState<string>(chapters[0])
   const [selectedTopic, setSelectedTopic] = useState<string>(topics[0])
 
+  const [errorBoxText, setErrorBoxText] = useState('')
+  const [showError, setShowError] = useState(false)
+
   const [collection, setCollection] = useState([])
   const [showModal, setShowModal] = useState(false)
 
@@ -60,7 +64,8 @@ function Selection({
       router.push('/pages/' + params.activity + '/' + selectedChapter + '/' + selectedTopic)
     }
     else {
-      alert('Current chapter and topics selection is not valid, please change one or more selection')
+      setErrorBoxText('Current chapter and topic selection is not valid, please change one or more selection')
+      setShowError(true)
     } 
   }
 
@@ -79,6 +84,11 @@ function Selection({
   // Toggles whether the modal is visible
   const toggleShowModal = () => {
     setShowModal(!showModal)
+  }
+
+  // Closes the error text box
+  const closeErrorBox = () => {
+    setShowError(false)
   }
 
   return (
@@ -128,6 +138,8 @@ function Selection({
           </div>
           <button 
             className='bg-slate-500 hover:bg-slate-700 text-white text-xl font-bold py-1 px-2 rounded-full mt-20'
+            data-test='submit-button'
+            disabled={collection.length == 0 ? true : false}
           >
             Submit
           </button>
@@ -135,12 +147,14 @@ function Selection({
             className='bg-slate-500 hover:bg-slate-700 text-white text-xl font-bold py-1 px-2 rounded-full mt-10' 
             onClick={toggleShowModal}
             type='button'
+            data-test='valid-topics-button'
           >
             See Valid Topics
           </button>
         </form>
       </div>
       {showModal && <TopicStatusModal onClose={toggleShowModal} isSelectionValid={isSelectionValid}/>}
+      {showError && <ErrorBox text={errorBoxText} onClose={closeErrorBox}/>}
     </main>
   )
 }

@@ -1,5 +1,6 @@
 import { Chapters, Topics } from '@/app/utils/content-utils'
 import React from 'react'
+import ReactDOM from "react-dom"
 
 const TopicStatusModal = (props: { 
   onClose: () => void 
@@ -7,8 +8,8 @@ const TopicStatusModal = (props: {
 }) => {
   const { onClose, isSelectionValid } = props
 
-  return (
-    <div className="fixed inset-0 bg-gray-600 bg-opacity-50 overflow-auto h-full w-full flex items-center justify-center">
+  const modalContent = (
+    <div className="fixed inset-0 bg-gray-600 bg-opacity-50 overflow-auto h-full w-full flex items-center justify-center" data-test='topic-status-modal'>
       <div className="p-8 border lg:w-1/2 w-96 shadow-lg rounded-md bg-white">
         <div className="text-center">
           <h3 className="text-2xl font-bold">Valid Chapter and Topic Selections</h3>
@@ -35,12 +36,24 @@ const TopicStatusModal = (props: {
             </table>
           </div>
           <div className="flex justify-center mt-2">
-            <button className='btn btn-secondary' onClick={onClose}>Close</button>
+            <button className='btn btn-secondary' onClick={onClose} data-test='modal-close'>Close</button>
           </div>
         </div>
       </div>
     </div>
   )
+
+  if (document.getElementById('modal-root')) {
+    return ReactDOM.createPortal(
+      modalContent,
+      document.getElementById('modal-root')!
+    )
+  }
+  else {
+    console.error('Error: could not get HTML element to attach modal to')
+    return modalContent
+  }
+  
 }
 
 export default TopicStatusModal

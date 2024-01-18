@@ -1,7 +1,7 @@
 .sidebarContainer {
     position: absolute;
     height: 100%;
-    z-index: 100;
+    z-index: 30;
 }
 
 .sidebar {
@@ -40,31 +40,30 @@
     }
 }
 
-.navLink {
+.sidebarLink {
     margin: 1rem 0 0.4rem 0;
     display: flex;
     align-items: center;
     justify-content: center;
-    user-select: none;
     white-space: nowrap;
 }
-.navLink.closed {
+.sidebarLink.closed {
     display: none;
 }
 
-.sidebarLink {
+.navLink {
     @apply  text-black/80 no-underline relative prose prose-xl font-semibold
     hover:text-black transition duration-300 ease-in-out
     after:bg-black/80 after:bottom-0 after:left-0 after:duration-300 after:origin-center after:w-full after:absolute
     after:hover:origin-center;
 }
 
-.sidebarLink::after {
+.navLink::after {
     content: '';
     transform: scaleX(0);
     height: 2px;
 }
   
-.sidebarLink:hover::after {
+.navLink:hover::after {
     transform: scaleX(1);
 }

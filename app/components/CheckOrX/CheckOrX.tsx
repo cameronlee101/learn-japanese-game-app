@@ -11,7 +11,7 @@ export const IMAGE_SIZE = 64
 const CheckOrX = (props: { symbol: symbolOptions }) => {
   const { symbol } = props
 
-  const [image, setImage] = useState('/')
+  const [image, setImage] = useState('/xmark.png')
 
   useEffect(() => {
     switch (symbol) {
@@ -27,7 +27,7 @@ const CheckOrX = (props: { symbol: symbolOptions }) => {
   }, [symbol, image])
   
   return (
-    <main className='w-16 h-auto pointer-events-none user-select-none'>
+    <main className='w-16 h-auto'>
       <Image src={image} alt="correctness symbol" width={64} height={64}/>
     </main>
   )
