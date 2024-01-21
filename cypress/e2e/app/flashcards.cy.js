@@ -2,18 +2,20 @@
 
 describe('Flashcards activity', () => {
   beforeEach(() => {
-    // Start from the flashcards topic selection page
+    // Start from chapter 1 flashcards page
     cy.visit('/')
     cy.getDataTest('sidemenu-button').click()
     cy.get('a').contains('Flashcards').click()
-  })
 
-  it('flashcard can be flipped', () => {
+    cy.wait(1000)
+
     cy.get('select#chapter').select('Chapter 1')
     cy.get('select#topic').select('Vocabulary')
     cy.getDataTest('submit-button').click()
     cy.wait(1000) // wait for server to respond
-    
+  })
+
+  it('flashcard can be flipped', () => {    
     cy.getDataTest('flashcard-front').should('be.visible')
     cy.getDataTest('flashcard-back').should('not.be.visible')
 
@@ -30,42 +32,9 @@ describe('Flashcards activity', () => {
     cy.getDataTest('flashcard-back').should('not.be.visible')
   })
 
-  it('go next and previous flashcards multiple times', () => {
-    cy.get('select#chapter').select('Chapter 1')
-    cy.get('select#topic').select('Vocabulary')
-    cy.getDataTest('submit-button').click()
-    cy.wait(1000) // wait for server to respond
-    
-    for (let i = 0; i < 2; i++) {
-      cy.getDataTest('flashcard-next-button').click()
-      cy.wait(600) // wait for animation
-    }
-    for (let i = 0; i < 4; i++) {
-      cy.getDataTest('flashcard-prev-button').click()
-      cy.wait(600) // wait for animation
-    }
-    for (let i = 0; i < 2; i++) {
-      cy.getDataTest('flashcard-next-button').click()
-      cy.wait(600) // wait for animation
-    }
-  })
+  it('flashcard can go back and forth, flashcard counter accurately displays current flashcard number', () => {
+    cy.get('p#flashcardCounter').should('contain.text', '1/77') // Checking there is 77 flashcards for chapter 1 vocabulary
 
-  it('chapter 1 vocabulary has 77 flashcards', () => {
-    cy.get('select#chapter').select('Chapter 1')
-    cy.get('select#topic').select('Vocabulary')
-    cy.getDataTest('submit-button').click()
-    cy.wait(1000) // wait for server to respond
-
-    cy.get('p#flashcardCounter').should('contain.text', '1/77')
-  })
-
-  it('flashcard counter accurately displays current flashcard number', () => {
-    cy.get('select#chapter').select('Chapter 1')
-    cy.get('select#topic').select('Vocabulary')
-    cy.getDataTest('submit-button').click()
-
-    cy.wait(1000) // wait for server to respond
-    
     for (let i = 0; i < 3; i++) {
       cy.getDataTest('flashcard-next-button').click()
       cy.wait(600) // wait for animation

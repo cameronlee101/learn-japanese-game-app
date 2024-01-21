@@ -27,9 +27,9 @@ const CheckOrX = (props: { symbol: symbolOptions }) => {
   }, [symbol, image])
   
   return (
-    <main className='w-16 h-auto'>
+    <div className='w-16 h-auto' data-test='check-or-x'>
       <Image src={image} alt="correctness symbol" width={64} height={64}/>
-    </main>
+    </div>
   )
 }
 

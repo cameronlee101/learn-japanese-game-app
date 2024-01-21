@@ -126,10 +126,10 @@ function FlashcardsActivity({
         </div>
         <div className='flex mt-10'>
           <FaArrowCircleLeft 
-              className={`${styles.flashcardButton}`} 
-              onClick={flashcardPrev}
-              data-test='flashcard-prev-button'
-            />
+            className={`${styles.flashcardButton}`} 
+            onClick={flashcardPrev}
+            data-test='flashcard-prev-button'
+          />
           <FaArrowCircleRight 
             className={`${styles.flashcardButton}`} 
             onClick={flashcardNext}

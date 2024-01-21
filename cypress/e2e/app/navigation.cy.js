@@ -13,30 +13,30 @@ describe('Navigation (sidebar)', () => {
   it('sidebar opens and closes when pressing hamburger button', () => {
     cy.getDataTest('sidemenu-button').should('be.visible')
     cy.getDataTest('sidemenu').should('not.be.visible')
-    cy.get('aside li').should('not.be.visible')
+    cy.get('nav li').should('not.be.visible')
 
     cy.getDataTest('sidemenu-button').click()
 
     cy.getDataTest('sidemenu-button').should('be.visible')
     cy.getDataTest('sidemenu').should('be.visible')
-    cy.get('aside li').should('be.visible')
+    cy.get('nav li').should('be.visible')
 
     cy.getDataTest('sidemenu-button').click()
 
     cy.getDataTest('sidemenu-button').should('be.visible')
     cy.getDataTest('sidemenu').should('not.be.visible')
-    cy.get('aside li').should('not.be.visible')
+    cy.get('nav li').should('not.be.visible')
 
   })
 
   it('has a sidebar with 4 specific links to click', () => {
     cy.getDataTest('sidemenu-button').click()
 
-    cy.get('aside li').should('have.length', 4)
-      .get('aside li').contains('Home').should('have.length', 1)
-      .get('aside li').contains('Flashcards').should('have.length', 1)
-      .get('aside li').contains('M.C. Quiz').should('have.length', 1)
-      .get('aside li').contains('See Contents').should('have.length', 1)
+    cy.get('nav li').should('have.length', 4)
+      .get('nav li').contains('Home').should('have.length', 1)
+      .get('nav li').contains('Flashcards').should('have.length', 1)
+      .get('nav li').contains('M.C. Quiz').should('have.length', 1)
+      .get('nav li').contains('See Contents').should('have.length', 1)
   })
 
   it('navigate to Home page when on Home page', () => {

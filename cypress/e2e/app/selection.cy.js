@@ -2,6 +2,7 @@
 
 describe('Activity selection page', () => {
   beforeEach(() => {
+    // start from flashcards topic selection page
     cy.visit('/')
     cy.getDataTest('sidemenu-button').click()
     cy.get('a').contains('Flashcards').click()
