@@ -37,7 +37,7 @@ const Sidebar = () => {
                 className={`${styles.menuButton} ${isOpen ? '' : styles.closed}`}
                 onClick={toggleSidebar}
             />
-            <aside 
+            <nav 
                 className={`${styles.sidebar} ${isOpen ? '' : styles.closed}`}
                 data-test='sidemenu'
             >
@@ -58,7 +58,7 @@ const Sidebar = () => {
                         </li>
                     ))}
                 </ul>
-            </aside>
+            </nav>
         </div>
     )
 }

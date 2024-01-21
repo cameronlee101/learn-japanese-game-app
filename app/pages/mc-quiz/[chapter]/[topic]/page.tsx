@@ -125,8 +125,8 @@ function MCQuiz({
             />
           </div>
           <div className='flex flex-col mt-10 items-center justify-center'>
-            <p className={`${styles.progressIndicator}`}>First Guess Correct Answers: {correctAnswersNum}</p>
-            <p className={`${styles.progressIndicator}`}>Progress: {currentIndex}/{contents.length}</p>
+            <p className={styles.progressIndicator} data-test='correct-answers-indicator'>First Guess Correct Answers: {correctAnswersNum}</p>
+            <p className={styles.progressIndicator} data-test='progress-indicator'>Progress: {currentIndex}/{contents.length}</p>
           </div>
         </div>
       }
@@ -174,7 +174,6 @@ function MCQuiz({
           </button>
         </div>
       </>}
-      
     </main>
   );
 }

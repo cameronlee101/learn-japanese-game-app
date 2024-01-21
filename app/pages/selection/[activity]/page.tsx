@@ -98,38 +98,38 @@ function Selection({
       </h1>      
       <div>
         <form className='flex flex-col mt-6' onSubmit={submitForm}>
-          <div className={`${styles.selectArea}`}>
+          <div className={styles.selectArea}>
             <label htmlFor='chapter' className='text-xl'>Chapter</label>
             <select 
               id='chapter'
               value={selectedChapter}
               onChange={(e) => {setSelectedChapter(e.target.value)}}
-              className={`${styles.select}`}
+              className={styles.select}
             >
               {chapters.map((item) => (
                 <option 
                   key={item} 
                   value={item} 
-                  className={`${styles.option}`}
+                  className={styles.option}
                 >
                   {item}
                 </option>
               ))}
             </select>
           </div>
-          <div className={`${styles.selectArea}`}>
+          <div className={styles.selectArea}>
             <label htmlFor='topic' className='text-xl'>Topic</label>
             <select 
               id='topic'
               value={selectedTopic}
               onChange={(e) => {setSelectedTopic(e.target.value)}}
-              className={`${styles.select}`}
+              className={styles.select}
             >
               {topics.map((item) => (
                 <option 
                   key={item} 
                   value={item} 
-                  className={`${styles.option}`}
+                  className={styles.option}
                 >
                   {item}
                 </option>
