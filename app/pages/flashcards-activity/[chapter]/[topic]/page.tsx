@@ -1,145 +1,155 @@
-'use client'
-import React, { useEffect, useState } from 'react'
-import { Content, ContentClass } from "@/app/utils/content-utils"
-import Flashcard from '@/app/components/Flashcard/Flashcard'
-import styles from './flashcards-activity.module.css'
-import { FaArrowCircleLeft, FaArrowCircleRight  } from "react-icons/fa"
-import { useRouter } from 'next/navigation'
+"use client";
+import React, { useEffect, useState } from "react";
+import { Content, ContentClass } from "@/app/utils/content-utils";
+import Flashcard from "@/app/components/Flashcard/Flashcard";
+import styles from "./flashcards-activity.module.css";
+import { FaArrowCircleLeft, FaArrowCircleRight } from "react-icons/fa";
+import { useRouter } from "next/navigation";
 
-const ARROW_LEFT = 'ArrowLeft';
-const ARROW_RIGHT = 'ArrowRight';
-const COOLDOWN_DURATION = 600
+const ARROW_LEFT = "ArrowLeft";
+const ARROW_RIGHT = "ArrowRight";
+const COOLDOWN_DURATION = 600;
 
-function FlashcardsActivity({ 
+function FlashcardsActivity({
   params,
 }: {
-  params: { chapter: string, topic: string }
+  params: { chapter: string; topic: string };
 }) {
-  const router = useRouter()
-  const selectedChapterStr = decodeURI(params.chapter)
-  const selectedTopicStr = decodeURI(params.topic)
+  const router = useRouter();
+  const selectedChapterStr = decodeURI(params.chapter);
+  const selectedTopicStr = decodeURI(params.topic);
 
-  const [animationClass, setAnimationClass] = useState('')
-  const [lastKeyPressTime, setLastKeyPressTime] = useState(0)
-  const [currentIndex, setCurrentIndex] = useState(0)
-  const [direction, setDirection] = useState<'left' | 'right' | null>(null)
+  const [animationClass, setAnimationClass] = useState("");
+  const [lastKeyPressTime, setLastKeyPressTime] = useState(0);
+  const [currentIndex, setCurrentIndex] = useState(0);
+  const [direction, setDirection] = useState<"left" | "right" | null>(null);
 
-  const [contents, setContents] = useState<Content[]>([{japanese: '', english: ''}])
+  const [contents, setContents] = useState<Content[]>([
+    { japanese: "", english: "" },
+  ]);
 
   // Gets contents for activity on page load
   useEffect(() => {
-    getShuffledContent()
-  }, [])
+    getShuffledContent();
+  }, []);
 
   // Gets the contents for given chapter and topic checks that they are defined, then shuffles the elements
   const getShuffledContent = () => {
     // Fetches contents
-    new ContentClass().getContent(selectedChapterStr, selectedTopicStr).then((fetchedContents) => {
-      // Check if contents are undefined
-      if (fetchedContents === undefined) {
-        alert('Error retrieving contents, returning to home page (you may need to press "ok" on this alert multiple times)')
-        router.push('/')
-      } else {
-        // Shuffles contents
-        const shuffledContents = shuffleArray(fetchedContents)
+    new ContentClass()
+      .getContent(selectedChapterStr, selectedTopicStr)
+      .then((fetchedContents) => {
+        // Check if contents are undefined
+        if (fetchedContents === undefined) {
+          alert(
+            'Error retrieving contents, returning to home page (you may need to press "ok" on this alert multiple times)',
+          );
+          router.push("/");
+        } else {
+          // Shuffles contents
+          const shuffledContents = shuffleArray(fetchedContents);
 
-        // Update the state with shuffled contents
-        setContents(shuffledContents)
-      }
-    })
-  }
+          // Update the state with shuffled contents
+          setContents(shuffledContents);
+        }
+      });
+  };
 
   // Shuffles the given array
-  const shuffleArray = (array:any[]):any[] => {
+  const shuffleArray = (array: any[]): any[] => {
     for (let i = array.length - 1; i > 0; i--) {
       const j = Math.floor(Math.random() * (i + 1));
       [array[i], array[j]] = [array[j], array[i]];
     }
-    return array
-  }
+    return array;
+  };
 
   // Creates keypress event listener on the window which uses the lastKeyPressTime state
   useEffect(() => {
     const handleKeyPress = (event: KeyboardEvent) => {
       if (event.key == ARROW_LEFT) {
-        flashcardPrev()
+        flashcardPrev();
+      } else if (event.key == ARROW_RIGHT) {
+        flashcardNext();
       }
-      else if (event.key == ARROW_RIGHT) {
-        flashcardNext()
-      }
-    }
+    };
 
-    window.addEventListener('keydown', handleKeyPress)
+    window.addEventListener("keydown", handleKeyPress);
 
     return () => {
-      window.removeEventListener('keydown', handleKeyPress)
-    }
-  }, [lastKeyPressTime])
+      window.removeEventListener("keydown", handleKeyPress);
+    };
+  }, [lastKeyPressTime]);
 
   // Run this effect whenever enableInput or direction states change
   useEffect(() => {
-    if (direction === 'left' || direction === 'right') {
+    if (direction === "left" || direction === "right") {
       // Disable input for a time and assign the animation class to the flashcard to animate it moving
       setLastKeyPressTime(Date.now());
       setDirection(null);
 
-      if (direction === 'left') {
-        setAnimationClass(styles.moveLeft)
+      if (direction === "left") {
+        setAnimationClass(styles.moveLeft);
+      } else if (direction === "right") {
+        setAnimationClass(styles.moveRight);
       }
-      else if (direction === 'right') {
-        setAnimationClass(styles.moveRight)
-      }
-      
+
       // Creates timeout that changes the flashcard's contents when it is off the screen during its animation
       setTimeout(() => {
-        if (direction === 'left') {
+        if (direction === "left") {
           setCurrentIndex((currentIndex + 1) % contents.length);
-        } else if (direction === 'right') {
-          setCurrentIndex(currentIndex === 0 ? contents.length - 1 : currentIndex - 1);
+        } else if (direction === "right") {
+          setCurrentIndex(
+            currentIndex === 0 ? contents.length - 1 : currentIndex - 1,
+          );
         }
       }, COOLDOWN_DURATION / 2);
     }
-  }, [direction])
+  }, [direction]);
 
   const flashcardPrev = () => {
     // If enough time has passed, allow input and queue to move to the previous flashcard (which will execute in useEffect)
     if (Date.now() - lastKeyPressTime >= COOLDOWN_DURATION) {
-      setAnimationClass('')
-      setDirection('right')
+      setAnimationClass("");
+      setDirection("right");
     }
-  }
+  };
 
   const flashcardNext = () => {
     // If enough time has passed, allow input and queue to move to the next flashcard (which will execute in useEffect)
     if (Date.now() - lastKeyPressTime >= COOLDOWN_DURATION) {
-      setAnimationClass('')
-      setDirection('left')
+      setAnimationClass("");
+      setDirection("left");
     }
-  }
+  };
 
-  return (    
-    <main className='main-center overflow-hidden'>
-      <h1 className='text-5xl font-semibold'>{selectedChapterStr} {selectedTopicStr} Flashcards</h1>
+  return (
+    <main className="main-center overflow-hidden">
+      <h1 className="text-5xl font-semibold">
+        {selectedChapterStr} {selectedTopicStr} Flashcards
+      </h1>
       <div className={`${styles.centerArea}`}>
         <div className={animationClass}>
-          <Flashcard contents={contents[currentIndex]}/>
+          <Flashcard contents={contents[currentIndex]} />
         </div>
-        <div className='flex mt-10'>
-          <FaArrowCircleLeft 
-            className={`${styles.flashcardButton}`} 
+        <div className="flex mt-10">
+          <FaArrowCircleLeft
+            className={`${styles.flashcardButton}`}
             onClick={flashcardPrev}
-            data-test='flashcard-prev-button'
+            data-test="flashcard-prev-button"
           />
-          <FaArrowCircleRight 
-            className={`${styles.flashcardButton}`} 
+          <FaArrowCircleRight
+            className={`${styles.flashcardButton}`}
             onClick={flashcardNext}
-            data-test='flashcard-next-button'
+            data-test="flashcard-next-button"
           />
         </div>
-        <p id='flashcardCounter' className='my-10 text-2xl font-semibold'>{currentIndex+1}/{contents.length}</p>
+        <p id="flashcardCounter" className="my-10 text-2xl font-semibold">
+          {currentIndex + 1}/{contents.length}
+        </p>
       </div>
     </main>
-  )
+  );
 }
 
-export default FlashcardsActivity
+export default FlashcardsActivity;

@@ -1,21 +1,21 @@
 /// <reference types="cypress" />
 
-context('Window', () => {
+context("Window", () => {
   beforeEach(() => {
-    cy.visit('/')
-  })
+    cy.visit("/");
+  });
 
-  it('window is defined', () => {
-    cy.window().should('exist')
-    cy.window().should('have.property', 'top')
-  })
+  it("window is defined", () => {
+    cy.window().should("exist");
+    cy.window().should("have.property", "top");
+  });
 
-  it('document is defined', () => {
-    cy.document().should('exist')
-    cy.document().should('have.property', 'charset').and('eq', 'UTF-8')
-  })
+  it("document is defined", () => {
+    cy.document().should("exist");
+    cy.document().should("have.property", "charset").and("eq", "UTF-8");
+  });
 
   it('page title is "Genki Study Tool"', () => {
-    cy.title().should('include', 'Genki Study Tool')
-  })
-})
+    cy.title().should("include", "Genki Study Tool");
+  });
+});

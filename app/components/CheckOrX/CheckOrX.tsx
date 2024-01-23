@@ -1,36 +1,36 @@
-import Image from 'next/image'
-import React, { useEffect, useState } from 'react'
+import Image from "next/image";
+import React, { useEffect, useState } from "react";
 
 export enum symbolOptions {
-  checkMark ,
+  checkMark,
   xMark,
 }
 
-export const IMAGE_SIZE = 64
+export const IMAGE_SIZE = 64;
 
 const CheckOrX = (props: { symbol: symbolOptions }) => {
-  const { symbol } = props
+  const { symbol } = props;
 
-  const [image, setImage] = useState('/xmark.png')
+  const [image, setImage] = useState("/xmark.png");
 
   useEffect(() => {
     switch (symbol) {
       case symbolOptions.checkMark:
-        setImage('/checkmark.png')
-        break
+        setImage("/checkmark.png");
+        break;
       case symbolOptions.xMark:
-        setImage('/xmark.png')
-        break
+        setImage("/xmark.png");
+        break;
       default:
-        console.error('Error: could not set CheckOrX component image')
+        console.error("Error: could not set CheckOrX component image");
     }
-  }, [symbol, image])
-  
-  return (
-    <div className='w-16 h-auto' data-test='check-or-x'>
-      <Image src={image} alt="correctness symbol" width={64} height={64}/>
-    </div>
-  )
-}
+  }, [symbol, image]);
 
-export default CheckOrX
+  return (
+    <div className="w-16 h-auto" data-test="check-or-x">
+      <Image src={image} alt="correctness symbol" width={64} height={64} />
+    </div>
+  );
+};
+
+export default CheckOrX;

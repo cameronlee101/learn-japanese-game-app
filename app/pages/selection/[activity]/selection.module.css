@@ -1,5 +1,5 @@
 .selectArea {
-  @apply flex flex-col space-y-1 mt-8
+  @apply flex flex-col space-y-1 mt-8;
 }
 
 .select {

@@ -1,18 +1,18 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
-@import '~bootstrap/dist/css/bootstrap.min.css';
+@import "~bootstrap/dist/css/bootstrap.min.css";
 
 .bg-color {
-    background-color: #efefef;
+  background-color: #efefef;
 }
 
 .main-center {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    text-align: center;
-    min-height: 100vh;
-    min-width: 100%;
-    @apply py-16 px-4 sm:px-12
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  min-height: 100vh;
+  min-width: 100%;
+  @apply py-16 px-4 sm:px-12;
 }

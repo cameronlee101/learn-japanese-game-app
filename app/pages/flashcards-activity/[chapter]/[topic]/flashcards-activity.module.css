@@ -29,7 +29,8 @@
 }
 
 @keyframes moveRightAnimation {
-  0%, 100% {
+  0%,
+  100% {
     transform: translateX(0);
   }
   50% {
@@ -41,7 +42,8 @@
 }
 
 @keyframes moveLeftAnimation {
-  0%, 100% {
+  0%,
+  100% {
     transform: translateX(0);
   }
   50% {
@@ -54,7 +56,8 @@
 
 @media (min-width: 640px) {
   @keyframes moveRightAnimation {
-    0%, 100% {
+    0%,
+    100% {
       transform: translateX(0);
     }
     50% {
@@ -64,9 +67,10 @@
       transform: translateX(-80vw);
     }
   }
-  
+
   @keyframes moveLeftAnimation {
-    0%, 100% {
+    0%,
+    100% {
       transform: translateX(0);
     }
     50% {
