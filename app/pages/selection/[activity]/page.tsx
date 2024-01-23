@@ -1,162 +1,176 @@
-'use client'
-import React, { useEffect, useState } from 'react'
-import { Chapters, ContentClass, Topics } from '@/app/utils/content-utils'
-import { useRouter } from 'next/navigation'
-import { useLocalStorage } from "@uidotdev/usehooks"
-import styles from './selection.module.css'
-import TopicStatusModal from '@/app/components/TopicStatusModal/TopicStatusModal'
-import ErrorBox from '@/app/components/ErrorBox/ErrorBox'
+"use client";
+import React, { useEffect, useState } from "react";
+import { Chapters, ContentClass, Topics } from "@/app/utils/content-utils";
+import { useRouter } from "next/navigation";
+import { useLocalStorage } from "@uidotdev/usehooks";
+import styles from "./selection.module.css";
+import TopicStatusModal from "@/app/components/TopicStatusModal/TopicStatusModal";
+import ErrorBox from "@/app/components/ErrorBox/ErrorBox";
 
 const titleSuffixes = [
   {
-    activity: 'flashcards-activity',
-    suffix: 'for Flashcards',
+    activity: "flashcards-activity",
+    suffix: "for Flashcards",
   },
   {
-    activity: 'mc-quiz',
-    suffix: 'for Multiple Choice Quiz'
+    activity: "mc-quiz",
+    suffix: "for Multiple Choice Quiz",
   },
   {
-    activity: 'contents-of',
-    suffix: 'to See The Contents of'
-  }
-]
+    activity: "contents-of",
+    suffix: "to See The Contents of",
+  },
+];
 
-function Selection({ 
-  params,
-}: {
-  params: { activity:string }
-}) {
-  const chapters = Object.values(Chapters)
-  const topics = Object.values(Topics)
-  const router = useRouter()
-  const selectedSuffix = titleSuffixes.find((item) => { if (item.activity === params.activity) return item.suffix })
+function Selection({ params }: { params: { activity: string } }) {
+  const chapters = Object.values(Chapters);
+  const topics = Object.values(Topics);
+  const router = useRouter();
+  const selectedSuffix = titleSuffixes.find((item) => {
+    if (item.activity === params.activity) return item.suffix;
+  });
 
-  const [selection, setSelection] = useLocalStorage('selection', [chapters[0].valueOf(), topics[0].valueOf()])
-  const [selectedChapter, setSelectedChapter] = useState<string>(chapters[0])
-  const [selectedTopic, setSelectedTopic] = useState<string>(topics[0])
+  const [selection, setSelection] = useLocalStorage("selection", [
+    chapters[0].valueOf(),
+    topics[0].valueOf(),
+  ]);
+  const [selectedChapter, setSelectedChapter] = useState<string>(chapters[0]);
+  const [selectedTopic, setSelectedTopic] = useState<string>(topics[0]);
 
-  const [errorBoxText, setErrorBoxText] = useState('')
-  const [showError, setShowError] = useState(false)
+  const [errorBoxText, setErrorBoxText] = useState("");
+  const [showError, setShowError] = useState(false);
 
-  const [collection, setCollection] = useState([])
-  const [showModal, setShowModal] = useState(false)
+  const [collection, setCollection] = useState([]);
+  const [showModal, setShowModal] = useState(false);
 
   useEffect(() => {
     // Gets chapter and topic from localstorage and sets the relevant hooks (used for remembering
     // chapter and topic the user previously selected)
-    if (selection) {  
-      setSelectedChapter(selection[0])
-      setSelectedTopic(selection[1])
+    if (selection) {
+      setSelectedChapter(selection[0]);
+      setSelectedTopic(selection[1]);
     }
 
     // Retrieves the content collection
     new ContentClass().getAggregatedCollection().then((content) => {
-      setCollection(content)
-    })
-  }, [])
+      setCollection(content);
+    });
+  }, []);
 
   // If user selection is valid, updates localstorage on user's chapter and topic choice, then changes the page
   const submitForm = (event: React.FormEvent) => {
-    event.preventDefault()
+    event.preventDefault();
     if (isSelectionValid(selectedChapter, selectedTopic)) {
-      setSelection([selectedChapter, selectedTopic])
-      router.push('/pages/' + params.activity + '/' + selectedChapter + '/' + selectedTopic)
+      setSelection([selectedChapter, selectedTopic]);
+      router.push(
+        "/pages/" +
+          params.activity +
+          "/" +
+          selectedChapter +
+          "/" +
+          selectedTopic,
+      );
+    } else {
+      setErrorBoxText(
+        "Current chapter and topic selection is not valid, please change one or more selection",
+      );
+      setShowError(true);
     }
-    else {
-      setErrorBoxText('Current chapter and topic selection is not valid, please change one or more selection')
-      setShowError(true)
-    } 
-  }
+  };
 
   // Returns whether there is content for the selected chapter and topic
   const isSelectionValid = (chapter: string, topic: string): boolean => {
-    const chapterKey = chapter.toLowerCase().replaceAll(' ', '')
-    const topicKey = topic.toLowerCase()
-      
-    const chapterResult = collection.find((item) => chapterKey in item)
+    const chapterKey = chapter.toLowerCase().replaceAll(" ", "");
+    const topicKey = topic.toLowerCase();
+
+    const chapterResult = collection.find((item) => chapterKey in item);
     if (chapterResult && chapterResult[chapterKey][topicKey]) {
-      return true
+      return true;
     }
-    return false
-  }
+    return false;
+  };
 
   // Toggles whether the modal is visible
   const toggleShowModal = () => {
-    setShowModal(!showModal)
-  }
+    setShowModal(!showModal);
+  };
 
   // Closes the error text box
   const closeErrorBox = () => {
-    setShowError(false)
-  }
+    setShowError(false);
+  };
 
   return (
-    <main className='main-center'>
-      <h1 className='text-5xl font-semibold'>
-        Select Chapter and Topic {selectedSuffix ? selectedSuffix.suffix : ''}
-      </h1>      
+    <main className="main-center">
+      <h1 className="text-5xl font-semibold">
+        Select Chapter and Topic {selectedSuffix ? selectedSuffix.suffix : ""}
+      </h1>
       <div>
-        <form className='flex flex-col mt-6' onSubmit={submitForm}>
+        <form className="flex flex-col mt-6" onSubmit={submitForm}>
           <div className={styles.selectArea}>
-            <label htmlFor='chapter' className='text-xl'>Chapter</label>
-            <select 
-              id='chapter'
+            <label htmlFor="chapter" className="text-xl">
+              Chapter
+            </label>
+            <select
+              id="chapter"
               value={selectedChapter}
-              onChange={(e) => {setSelectedChapter(e.target.value)}}
+              onChange={(e) => {
+                setSelectedChapter(e.target.value);
+              }}
               className={styles.select}
             >
               {chapters.map((item) => (
-                <option 
-                  key={item} 
-                  value={item} 
-                  className={styles.option}
-                >
+                <option key={item} value={item} className={styles.option}>
                   {item}
                 </option>
               ))}
             </select>
           </div>
           <div className={styles.selectArea}>
-            <label htmlFor='topic' className='text-xl'>Topic</label>
-            <select 
-              id='topic'
+            <label htmlFor="topic" className="text-xl">
+              Topic
+            </label>
+            <select
+              id="topic"
               value={selectedTopic}
-              onChange={(e) => {setSelectedTopic(e.target.value)}}
+              onChange={(e) => {
+                setSelectedTopic(e.target.value);
+              }}
               className={styles.select}
             >
               {topics.map((item) => (
-                <option 
-                  key={item} 
-                  value={item} 
-                  className={styles.option}
-                >
+                <option key={item} value={item} className={styles.option}>
                   {item}
                 </option>
               ))}
             </select>
           </div>
-          <button 
-            className='bg-slate-500 hover:bg-slate-700 text-white text-xl font-bold py-1 px-2 rounded-full mt-20'
-            data-test='submit-button'
+          <button
+            className="bg-slate-500 hover:bg-slate-700 text-white text-xl font-bold py-1 px-2 rounded-full mt-20"
+            data-test="submit-button"
             disabled={collection.length == 0 ? true : false}
           >
             Submit
           </button>
-          <button 
-            className='bg-slate-500 hover:bg-slate-700 text-white text-xl font-bold py-1 px-2 rounded-full mt-10' 
+          <button
+            className="bg-slate-500 hover:bg-slate-700 text-white text-xl font-bold py-1 px-2 rounded-full mt-10"
             onClick={toggleShowModal}
-            type='button'
-            data-test='valid-topics-button'
+            type="button"
+            data-test="valid-topics-button"
           >
             See Valid Topics
           </button>
         </form>
       </div>
-      {showModal && <TopicStatusModal onClose={toggleShowModal} isSelectionValid={isSelectionValid}/>}
-      {showError && <ErrorBox text={errorBoxText} onClose={closeErrorBox}/>}
+      {showModal && (
+        <TopicStatusModal
+          onClose={toggleShowModal}
+          isSelectionValid={isSelectionValid}
+        />
+      )}
+      {showError && <ErrorBox text={errorBoxText} onClose={closeErrorBox} />}
     </main>
-  )
+  );
 }
 
-export default Selection
+export default Selection;

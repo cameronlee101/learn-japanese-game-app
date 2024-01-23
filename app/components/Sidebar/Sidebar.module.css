@@ -1,69 +1,69 @@
 .sidebarContainer {
-    position: absolute;
-    height: 100%;
-    z-index: 30;
+  position: absolute;
+  height: 100%;
+  z-index: 30;
 }
 
 .sidebar {
-    width: 10rem;
-    height: 100%;
-    padding-top: 4.6rem;
-    background-color: #a9a9a9; 
-    transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-    box-shadow: -30px 20px 100px 10px rgba(0, 0, 0, 0.507);
+  width: 10rem;
+  height: 100%;
+  padding-top: 4.6rem;
+  background-color: #a9a9a9;
+  transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  box-shadow: -30px 20px 100px 10px rgba(0, 0, 0, 0.507);
 }
 .sidebar.closed {
-    width: 0;
-    padding-right: 0;
-    box-shadow: none;
+  width: 0;
+  padding-right: 0;
+  box-shadow: none;
 }
 
 .menuButton {
-    position: absolute;
-    font-size: x-large;
-    width: 3.3rem;
-    height: 3.3rem;
-    padding: 0.6rem;
-    margin-top: 1.3rem;
-    margin-left: 3.4rem;
-    background-color: #a9a9a9; 
-    border-radius: 20%;
-    transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-    cursor: pointer;
+  position: absolute;
+  font-size: x-large;
+  width: 3.3rem;
+  height: 3.3rem;
+  padding: 0.6rem;
+  margin-top: 1.3rem;
+  margin-left: 3.4rem;
+  background-color: #a9a9a9;
+  border-radius: 20%;
+  transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  cursor: pointer;
 }
-.menuButton.closed {   
-    transform: translateX(-53px) translateY(-20px);
+.menuButton.closed {
+  transform: translateX(-53px) translateY(-20px);
 }
 @media (min-width: 640px) {
-    .menuButton.closed {
-        transform: translateX(-30px);
-    }
+  .menuButton.closed {
+    transform: translateX(-30px);
+  }
 }
 
 .sidebarLink {
-    margin: 1rem 0 0.4rem 0;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    white-space: nowrap;
+  margin: 1rem 0 0.4rem 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  white-space: nowrap;
 }
 .sidebarLink.closed {
-    display: none;
+  display: none;
 }
 
 .navLink {
-    @apply  text-black/80 no-underline relative prose prose-xl font-semibold
+  @apply text-black/80 no-underline relative prose prose-xl font-semibold
     hover:text-black transition duration-300 ease-in-out
     after:bg-black/80 after:bottom-0 after:left-0 after:duration-300 after:origin-center after:w-full after:absolute
     after:hover:origin-center;
 }
 
 .navLink::after {
-    content: '';
-    transform: scaleX(0);
-    height: 2px;
+  content: "";
+  transform: scaleX(0);
+  height: 2px;
 }
-  
+
 .navLink:hover::after {
-    transform: scaleX(1);
+  transform: scaleX(1);
 }

@@ -1,107 +1,253 @@
-import { Chapters, Topics, ContentClass, isVocabContent, isKanjiContent, getFullExampleContentObject, isConjugationContent } from './content-utils';
+import {
+  Chapters,
+  Topics,
+  ContentClass,
+  isVocabContent,
+  isKanjiContent,
+  getFullExampleContentObject,
+  isConjugationContent,
+} from "./content-utils";
 
 beforeEach(() => {
-  jest.spyOn(console, 'error')
-  console.error.mockImplementation(() => {})
-})
+  jest.spyOn(console, "error");
+  console.error.mockImplementation(() => {});
+});
 
 afterEach(() => {
-  console.error.mockRestore()
-})
+  console.error.mockRestore();
+});
 
-test('isVocabContent function', () => {
+test("isVocabContent function", () => {
   // minimum attributes needed to be true
-  expect(isVocabContent({japanese:'テスト', english: 'test'})).toBe(true) 
+  expect(isVocabContent({ japanese: "テスト", english: "test" })).toBe(true);
   // all attributes of the type
-  expect(isVocabContent({japanese:'テスト', alternate: 'テスト', kanji:'テスト', english: 'test', example:'test'})).toBe(true)
+  expect(
+    isVocabContent({
+      japanese: "テスト",
+      alternate: "テスト",
+      kanji: "テスト",
+      english: "test",
+      example: "test",
+    }),
+  ).toBe(true);
 
   // missing 1 attribute so returns false
-  expect(isVocabContent({japanese:'テスト'})).toBe(false)
-  expect(isVocabContent({english: 'test'})).toBe(false)
+  expect(isVocabContent({ japanese: "テスト" })).toBe(false);
+  expect(isVocabContent({ english: "test" })).toBe(false);
 
   // empty, returns false
-  expect(isVocabContent({})).toBe(false)
+  expect(isVocabContent({})).toBe(false);
 
   // Not technically correct, but function is not needed to be strict enough to check attribute types
-  expect(isVocabContent({japanese: 1, english: 2})).toBe(true)
+  expect(isVocabContent({ japanese: 1, english: 2 })).toBe(true);
 
   // Not technically correct, but function only checks it has the minimum attribute to be tgat type
-  expect(isVocabContent({japanese:'テスト', english: 'test', garbage: 'garbage'})).toBe(true)
-})
+  expect(
+    isVocabContent({ japanese: "テスト", english: "test", garbage: "garbage" }),
+  ).toBe(true);
+});
 
-test('isKanjiContent function', () => {
-  expect(isKanjiContent({kanji: 'テスト', readings: ['テスト', 'テスト'], english: 'test', examples: ['テスト', 'テスト']})).toBe(true)
+test("isKanjiContent function", () => {
+  expect(
+    isKanjiContent({
+      kanji: "テスト",
+      readings: ["テスト", "テスト"],
+      english: "test",
+      examples: ["テスト", "テスト"],
+    }),
+  ).toBe(true);
 
   // missing 1 attribute so returns false
-  expect(isKanjiContent({readings: ['テスト', 'テスト'], english: 'test', examples: ['テスト', 'テスト']})).toBe(false)
-  expect(isKanjiContent({kanji: 'テスト', english: 'test', examples: ['テスト', 'テスト']})).toBe(false)
-  expect(isKanjiContent({kanji: 'テスト', readings: ['テスト', 'テスト'], examples: ['テスト', 'テスト']})).toBe(false)
-  expect(isKanjiContent({kanji: 'テスト', readings: ['テスト', 'テスト'], english: 'test'})).toBe(false)
-  
+  expect(
+    isKanjiContent({
+      readings: ["テスト", "テスト"],
+      english: "test",
+      examples: ["テスト", "テスト"],
+    }),
+  ).toBe(false);
+  expect(
+    isKanjiContent({
+      kanji: "テスト",
+      english: "test",
+      examples: ["テスト", "テスト"],
+    }),
+  ).toBe(false);
+  expect(
+    isKanjiContent({
+      kanji: "テスト",
+      readings: ["テスト", "テスト"],
+      examples: ["テスト", "テスト"],
+    }),
+  ).toBe(false);
+  expect(
+    isKanjiContent({
+      kanji: "テスト",
+      readings: ["テスト", "テスト"],
+      english: "test",
+    }),
+  ).toBe(false);
+
   // empty, returns false
-  expect(isKanjiContent({})).toBe(false)
+  expect(isKanjiContent({})).toBe(false);
 
   // Not technically correct, but function is not needed to be strict enough to check attribute types
-  expect(isKanjiContent({kanji: 1, readings: 2, english: 3, examples: 4})).toBe(true)
+  expect(
+    isKanjiContent({ kanji: 1, readings: 2, english: 3, examples: 4 }),
+  ).toBe(true);
 
   // Not technically correct, but function only checks it has the minimum attribute to be tgat type
-  expect(isKanjiContent({kanji: 'テスト', readings: ['テスト', 'テスト'], english: 'test', examples: ['テスト', 'テスト'], garbage: 'garbage'})).toBe(true)
-})
+  expect(
+    isKanjiContent({
+      kanji: "テスト",
+      readings: ["テスト", "テスト"],
+      english: "test",
+      examples: ["テスト", "テスト"],
+      garbage: "garbage",
+    }),
+  ).toBe(true);
+});
 
-test('isConjugationContent function', () => {
+test("isConjugationContent function", () => {
   // minimum attributes needed to be true
-  expect(isConjugationContent({dictionary_hiragana: 'テスト', english: 'test', conjugate_to: 'テスト', conjugation: 'テスト'})).toBe(true) 
+  expect(
+    isConjugationContent({
+      dictionary_hiragana: "テスト",
+      english: "test",
+      conjugate_to: "テスト",
+      conjugation: "テスト",
+    }),
+  ).toBe(true);
   // all attributes of the type
-  expect(isConjugationContent({dictionary_hiragana: 'テスト', dictionary_kanji: 'テスト', english: 'test', conjugate_to: 'テスト', conjugation: 'テスト'})).toBe(true) 
+  expect(
+    isConjugationContent({
+      dictionary_hiragana: "テスト",
+      dictionary_kanji: "テスト",
+      english: "test",
+      conjugate_to: "テスト",
+      conjugation: "テスト",
+    }),
+  ).toBe(true);
 
   // missing 1 attribute so returns false
-  expect(isConjugationContent({english: 'test', conjugate_to: 'テスト', conjugation: 'テスト',})).toBe(false)
-  expect(isConjugationContent({dictionary_hiragana: 'テスト', conjugate_to: 'テスト', conjugation: 'テスト'})).toBe(false)
-  expect(isConjugationContent({dictionary_hiragana: 'テスト', english: 'test', conjugation: 'テスト'})).toBe(false)
-  expect(isConjugationContent({dictionary_hiragana: 'テスト', english: 'test', conjugate_to: 'テスト'})).toBe(false)
+  expect(
+    isConjugationContent({
+      english: "test",
+      conjugate_to: "テスト",
+      conjugation: "テスト",
+    }),
+  ).toBe(false);
+  expect(
+    isConjugationContent({
+      dictionary_hiragana: "テスト",
+      conjugate_to: "テスト",
+      conjugation: "テスト",
+    }),
+  ).toBe(false);
+  expect(
+    isConjugationContent({
+      dictionary_hiragana: "テスト",
+      english: "test",
+      conjugation: "テスト",
+    }),
+  ).toBe(false);
+  expect(
+    isConjugationContent({
+      dictionary_hiragana: "テスト",
+      english: "test",
+      conjugate_to: "テスト",
+    }),
+  ).toBe(false);
 
   // empty, returns false
-  expect(isConjugationContent({})).toBe(false)
+  expect(isConjugationContent({})).toBe(false);
 
   // Not technically correct, but function is not needed to be strict enough to check attribute types
-  expect(isConjugationContent({dictionary_hiragana: 1, english: 2, conjugate_to: 3, conjugation: 4})).toBe(true)
+  expect(
+    isConjugationContent({
+      dictionary_hiragana: 1,
+      english: 2,
+      conjugate_to: 3,
+      conjugation: 4,
+    }),
+  ).toBe(true);
 
   // Not technically correct, but function only checks it has the minimum attribute to be tgat type
-  expect(isConjugationContent({dictionary_hiragana: 'テスト', dictionary_kanji: 'テスト', english: 'test', conjugate_to: 'テスト', conjugation: 'テスト', garbage: 'garbage'})).toBe(true)
-})
+  expect(
+    isConjugationContent({
+      dictionary_hiragana: "テスト",
+      dictionary_kanji: "テスト",
+      english: "test",
+      conjugate_to: "テスト",
+      conjugation: "テスト",
+      garbage: "garbage",
+    }),
+  ).toBe(true);
+});
 
-test('getExampleFullObject function', () => {
+test("getExampleFullObject function", () => {
   // Should return object of VocabContent type
-  expect(getFullExampleContentObject({japanese: 'テスト', english: 'test'})).toBeDefined()
+  expect(
+    getFullExampleContentObject({ japanese: "テスト", english: "test" }),
+  ).toBeDefined();
 
   // Should return object of KanjiContent type
-  expect(getFullExampleContentObject({kanji: 'テスト', readings: ['テスト', 'テスト'], english: 'test', examples: ['テスト', 'テスト']})).toBeDefined()
+  expect(
+    getFullExampleContentObject({
+      kanji: "テスト",
+      readings: ["テスト", "テスト"],
+      english: "test",
+      examples: ["テスト", "テスト"],
+    }),
+  ).toBeDefined();
 
   // Should return object of ConjugationContent type
-  expect(getFullExampleContentObject({dictionary_hiragana: 'テスト', dictionary_kanji: 'テスト', english: 'test', conjugate_to: 'テスト', conjugation: 'テスト',})).toBeDefined()
+  expect(
+    getFullExampleContentObject({
+      dictionary_hiragana: "テスト",
+      dictionary_kanji: "テスト",
+      english: "test",
+      conjugate_to: "テスト",
+      conjugation: "テスト",
+    }),
+  ).toBeDefined();
 
   // Should return undefined
-  expect(getFullExampleContentObject({})).toBeUndefined()
-})
+  expect(getFullExampleContentObject({})).toBeUndefined();
+});
 
-test('ContentClass class getContent method', async () => {
-  const contentClass = new ContentClass()
+test("ContentClass class getContent method", async () => {
+  const contentClass = new ContentClass();
 
   // Testing valid chapter, valid topic, valid combination of both
-  const validData1 = await contentClass.getContent(Chapters.Ch1, Topics.Numbers)
-  const validData2 = await contentClass.getContent(Chapters.Ch2, Topics.Vocabulary)
-  const validData3 = await contentClass.getContent(Chapters.Ch3, Topics.Kanji)
+  const validData1 = await contentClass.getContent(
+    Chapters.Ch1,
+    Topics.Numbers,
+  );
+  const validData2 = await contentClass.getContent(
+    Chapters.Ch2,
+    Topics.Vocabulary,
+  );
+  const validData3 = await contentClass.getContent(Chapters.Ch3, Topics.Kanji);
 
-  expect(validData1).toBeDefined()
-  expect(validData2).toBeDefined()
-  expect(validData3).toBeDefined()
+  expect(validData1).toBeDefined();
+  expect(validData2).toBeDefined();
+  expect(validData3).toBeDefined();
 
   // Testing valid chapter, and valid topic, but not valid combination of both
-  const invalidData1 = await contentClass.getContent(Chapters.Ch1, Topics.Kanji)
-  const invalidData2 = await contentClass.getContent(Chapters.Ch2, Topics.Conjugations)
-  const invalidData3 = await contentClass.getContent(Chapters.Ch3, Topics.Numbers)
+  const invalidData1 = await contentClass.getContent(
+    Chapters.Ch1,
+    Topics.Kanji,
+  );
+  const invalidData2 = await contentClass.getContent(
+    Chapters.Ch2,
+    Topics.Conjugations,
+  );
+  const invalidData3 = await contentClass.getContent(
+    Chapters.Ch3,
+    Topics.Numbers,
+  );
 
-  expect(invalidData1).toBeUndefined()
-  expect(invalidData2).toBeUndefined()
-  expect(invalidData3).toBeUndefined()
-})
+  expect(invalidData1).toBeUndefined();
+  expect(invalidData2).toBeUndefined();
+  expect(invalidData3).toBeUndefined();
+});
