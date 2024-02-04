@@ -2,10 +2,10 @@ import {
   Chapters,
   Topics,
   ContentClass,
-  isVocabContent,
-  isKanjiContent,
+  isOrHasVocabContent,
+  isOrHasKanjiContent,
   getFullExampleContentObject,
-  isConjugationContent,
+  isOrHasConjugationContent,
 } from "./content-utils";
 
 beforeEach(() => {
@@ -17,12 +17,14 @@ afterEach(() => {
   console.error.mockRestore();
 });
 
-test("isVocabContent function", () => {
+test("isOrHasVocabContent function", () => {
   // minimum attributes needed to be true
-  expect(isVocabContent({ japanese: "テスト", english: "test" })).toBe(true);
+  expect(isOrHasVocabContent({ japanese: "テスト", english: "test" })).toBe(
+    true,
+  );
   // all attributes of the type
   expect(
-    isVocabContent({
+    isOrHasVocabContent({
       japanese: "テスト",
       alternate: "テスト",
       kanji: "テスト",
@@ -32,24 +34,28 @@ test("isVocabContent function", () => {
   ).toBe(true);
 
   // missing 1 attribute so returns false
-  expect(isVocabContent({ japanese: "テスト" })).toBe(false);
-  expect(isVocabContent({ english: "test" })).toBe(false);
+  expect(isOrHasVocabContent({ japanese: "テスト" })).toBe(false);
+  expect(isOrHasVocabContent({ english: "test" })).toBe(false);
 
   // empty, returns false
-  expect(isVocabContent({})).toBe(false);
+  expect(isOrHasVocabContent({})).toBe(false);
 
-  // Not technically correct, but function is not needed to be strict enough to check attribute types
-  expect(isVocabContent({ japanese: 1, english: 2 })).toBe(true);
+  // attributes wrong types, returns false
+  expect(isOrHasVocabContent({ japanese: 1, english: 2 })).toBe(false);
 
-  // Not technically correct, but function only checks it has the minimum attribute to be tgat type
+  // too many attributes, returns false
   expect(
-    isVocabContent({ japanese: "テスト", english: "test", garbage: "garbage" }),
-  ).toBe(true);
+    isOrHasVocabContent({
+      japanese: "テスト",
+      english: "test",
+      garbage: "garbage",
+    }),
+  ).toBe(false);
 });
 
-test("isKanjiContent function", () => {
+test("isOrHasKanjiContent function", () => {
   expect(
-    isKanjiContent({
+    isOrHasKanjiContent({
       kanji: "テスト",
       readings: ["テスト", "テスト"],
       english: "test",
@@ -59,28 +65,28 @@ test("isKanjiContent function", () => {
 
   // missing 1 attribute so returns false
   expect(
-    isKanjiContent({
+    isOrHasKanjiContent({
       readings: ["テスト", "テスト"],
       english: "test",
       examples: ["テスト", "テスト"],
     }),
   ).toBe(false);
   expect(
-    isKanjiContent({
+    isOrHasKanjiContent({
       kanji: "テスト",
       english: "test",
       examples: ["テスト", "テスト"],
     }),
   ).toBe(false);
   expect(
-    isKanjiContent({
+    isOrHasKanjiContent({
       kanji: "テスト",
       readings: ["テスト", "テスト"],
       examples: ["テスト", "テスト"],
     }),
   ).toBe(false);
   expect(
-    isKanjiContent({
+    isOrHasKanjiContent({
       kanji: "テスト",
       readings: ["テスト", "テスト"],
       english: "test",
@@ -88,29 +94,29 @@ test("isKanjiContent function", () => {
   ).toBe(false);
 
   // empty, returns false
-  expect(isKanjiContent({})).toBe(false);
+  expect(isOrHasKanjiContent({})).toBe(false);
 
-  // Not technically correct, but function is not needed to be strict enough to check attribute types
+  // attributes wrong types, returns false
   expect(
-    isKanjiContent({ kanji: 1, readings: 2, english: 3, examples: 4 }),
-  ).toBe(true);
+    isOrHasKanjiContent({ kanji: 1, readings: 2, english: 3, examples: 4 }),
+  ).toBe(false);
 
-  // Not technically correct, but function only checks it has the minimum attribute to be tgat type
+  // too many attributes, returns false
   expect(
-    isKanjiContent({
+    isOrHasKanjiContent({
       kanji: "テスト",
       readings: ["テスト", "テスト"],
       english: "test",
       examples: ["テスト", "テスト"],
       garbage: "garbage",
     }),
-  ).toBe(true);
+  ).toBe(false);
 });
 
-test("isConjugationContent function", () => {
+test("isOrHasConjugationContent function", () => {
   // minimum attributes needed to be true
   expect(
-    isConjugationContent({
+    isOrHasConjugationContent({
       dictionary_hiragana: "テスト",
       english: "test",
       conjugate_to: "テスト",
@@ -119,7 +125,7 @@ test("isConjugationContent function", () => {
   ).toBe(true);
   // all attributes of the type
   expect(
-    isConjugationContent({
+    isOrHasConjugationContent({
       dictionary_hiragana: "テスト",
       dictionary_kanji: "テスト",
       english: "test",
@@ -130,28 +136,28 @@ test("isConjugationContent function", () => {
 
   // missing 1 attribute so returns false
   expect(
-    isConjugationContent({
+    isOrHasConjugationContent({
       english: "test",
       conjugate_to: "テスト",
       conjugation: "テスト",
     }),
   ).toBe(false);
   expect(
-    isConjugationContent({
+    isOrHasConjugationContent({
       dictionary_hiragana: "テスト",
       conjugate_to: "テスト",
       conjugation: "テスト",
     }),
   ).toBe(false);
   expect(
-    isConjugationContent({
+    isOrHasConjugationContent({
       dictionary_hiragana: "テスト",
       english: "test",
       conjugation: "テスト",
     }),
   ).toBe(false);
   expect(
-    isConjugationContent({
+    isOrHasConjugationContent({
       dictionary_hiragana: "テスト",
       english: "test",
       conjugate_to: "テスト",
@@ -159,21 +165,21 @@ test("isConjugationContent function", () => {
   ).toBe(false);
 
   // empty, returns false
-  expect(isConjugationContent({})).toBe(false);
+  expect(isOrHasConjugationContent({})).toBe(false);
 
-  // Not technically correct, but function is not needed to be strict enough to check attribute types
+  // attributes wrong types, returns false
   expect(
-    isConjugationContent({
+    isOrHasConjugationContent({
       dictionary_hiragana: 1,
       english: 2,
       conjugate_to: 3,
       conjugation: 4,
     }),
-  ).toBe(true);
+  ).toBe(false);
 
-  // Not technically correct, but function only checks it has the minimum attribute to be tgat type
+  // too many attributes, returns false
   expect(
-    isConjugationContent({
+    isOrHasConjugationContent({
       dictionary_hiragana: "テスト",
       dictionary_kanji: "テスト",
       english: "test",
@@ -181,7 +187,7 @@ test("isConjugationContent function", () => {
       conjugation: "テスト",
       garbage: "garbage",
     }),
-  ).toBe(true);
+  ).toBe(false);
 });
 
 test("getExampleFullObject function", () => {

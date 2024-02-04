@@ -3,17 +3,17 @@ import {
   Content,
   KanjiContent,
   VocabContent,
-  isConjugationContent,
-  isKanjiContent,
-  isVocabContent,
+  isOrHasConjugationContent,
+  isOrHasKanjiContent,
+  isOrHasVocabContent,
 } from "@/app/utils/content-utils";
 
 export const getMCQuestionString = (content: Content): string => {
-  if (isVocabContent(content)) {
+  if (isOrHasVocabContent(content)) {
     return (content as VocabContent).japanese;
-  } else if (isKanjiContent(content)) {
+  } else if (isOrHasKanjiContent(content)) {
     return (content as KanjiContent).kanji;
-  } else if (isConjugationContent(content)) {
+  } else if (isOrHasConjugationContent(content)) {
     return (
       (content as ConjugationContent).dictionary_kanji +
       "\n" +
@@ -31,11 +31,11 @@ export const getMCQuestionString = (content: Content): string => {
 };
 
 export const getMCOptionString = (content: Content): string => {
-  if (isVocabContent(content)) {
+  if (isOrHasVocabContent(content)) {
     return (content as VocabContent).english;
-  } else if (isKanjiContent(content)) {
+  } else if (isOrHasKanjiContent(content)) {
     return (content as KanjiContent).english;
-  } else if (isConjugationContent(content)) {
+  } else if (isOrHasConjugationContent(content)) {
     return (content as ConjugationContent).conjugation;
   } else {
     console.error(
@@ -47,11 +47,11 @@ export const getMCOptionString = (content: Content): string => {
 };
 
 export const getMCQuestion = (content: Content): JSX.Element => {
-  if (isVocabContent(content)) {
+  if (isOrHasVocabContent(content)) {
     return <>{(content as VocabContent).japanese}</>;
-  } else if (isKanjiContent(content)) {
+  } else if (isOrHasKanjiContent(content)) {
     return <>{(content as KanjiContent).kanji}</>;
-  } else if (isConjugationContent(content)) {
+  } else if (isOrHasConjugationContent(content)) {
     return (
       <>
         <p>{(content as ConjugationContent).dictionary_kanji}</p>
@@ -69,11 +69,11 @@ export const getMCQuestion = (content: Content): JSX.Element => {
 };
 
 export const getMCOption = (content: Content): JSX.Element => {
-  if (isVocabContent(content)) {
+  if (isOrHasVocabContent(content)) {
     return <>{(content as VocabContent).english}</>;
-  } else if (isKanjiContent(content)) {
+  } else if (isOrHasKanjiContent(content)) {
     return <>{(content as KanjiContent).english}</>;
-  } else if (isConjugationContent(content)) {
+  } else if (isOrHasConjugationContent(content)) {
     return <>{(content as ConjugationContent).conjugation}</>;
   } else {
     console.error(

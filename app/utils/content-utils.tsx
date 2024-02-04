@@ -95,48 +95,72 @@ export class ContentClass {
 }
 
 // Function used to check if the given object is of type VocabContent or is an array with VocabContent
-export function isVocabContent(obj: any): boolean {
-  if (Array.isArray(obj) && (obj as []).length > 0) {
-    return isVocabContent(obj[0]);
-  } else if (Array.isArray(obj) && (obj as []).length == 0) {
+export function isOrHasVocabContent(obj: any): obj is VocabContent {
+  if (Array.isArray(obj) && obj.length > 0) {
+    return isOrHasVocabContent(obj[0]);
+  } else if (Array.isArray(obj) && obj.length == 0) {
     return false;
   } else {
+    const { japanese, english, alternate, kanji, example, ...rest } = obj;
+
+    // Return false if the object has any extra attributes
+    if (Object.keys(rest).length > 0) {
+      return false;
+    }
+
     return (
-      obj && typeof obj === "object" && "japanese" in obj && "english" in obj
+      typeof japanese === "string" &&
+      typeof english === "string" &&
+      (alternate === undefined || typeof alternate === "string") &&
+      (kanji === undefined || typeof kanji === "string") &&
+      (example === undefined || typeof example === "string")
     );
   }
 }
 // Function used to check if the given object is of type KanjiContent or is an array with KanjiContent
-export function isKanjiContent(obj: any): boolean {
-  if (Array.isArray(obj) && (obj as []).length > 0) {
-    return isKanjiContent(obj[0]);
-  } else if (Array.isArray(obj) && (obj as []).length == 0) {
+export function isOrHasKanjiContent(obj: any): obj is KanjiContent {
+  if (Array.isArray(obj) && obj.length > 0) {
+    return isOrHasKanjiContent(obj[0]);
+  } else if (Array.isArray(obj) && obj.length == 0) {
     return false;
   } else {
+    const { kanji, readings, english, examples, ...rest } = obj;
+
+    // Return false if the object has any extra attributes
+    if (Object.keys(rest).length > 0) {
+      return false;
+    }
+
     return (
-      obj &&
-      typeof obj === "object" &&
-      "kanji" in obj &&
-      "readings" in obj &&
-      "english" in obj &&
-      "examples" in obj
+      typeof kanji === "string" &&
+      Array.isArray(readings) &&
+      readings.every((reading: any) => typeof reading === "string") &&
+      typeof english === "string" &&
+      Array.isArray(examples) &&
+      examples.every((example: any) => typeof example === "string")
     );
   }
 }
 // Function used to check if the given object is of type ConjugationContent or is an array with ConjugationContent
-export function isConjugationContent(obj: any): boolean {
-  if (Array.isArray(obj) && (obj as []).length > 0) {
-    return isConjugationContent(obj[0]);
-  } else if (Array.isArray(obj) && (obj as []).length == 0) {
+export function isOrHasConjugationContent(obj: any): obj is ConjugationContent {
+  if (Array.isArray(obj) && obj.length > 0) {
+    return isOrHasConjugationContent(obj[0]);
+  } else if (Array.isArray(obj) && obj.length === 0) {
     return false;
   } else {
+    const { dictionary_hiragana, dictionary_kanji, english, conjugate_to, conjugation, ...rest } = obj;
+
+    // Return false if the object has any extra attributes
+    if (Object.keys(rest).length > 0) {
+      return false;
+    }
+
     return (
-      obj &&
-      typeof obj === "object" &&
-      "dictionary_hiragana" in obj &&
-      "english" in obj &&
-      "conjugate_to" in obj &&
-      "conjugation" in obj
+      typeof dictionary_hiragana === "string" &&
+      (dictionary_kanji === undefined || typeof dictionary_kanji === "string") &&
+      typeof english === "string" &&
+      typeof conjugate_to === "string" &&
+      typeof conjugation === "string"
     );
   }
 }
@@ -144,7 +168,7 @@ export function isConjugationContent(obj: any): boolean {
 // Function used to return an object of the same type as passed in argument that has values for all parameters
 // Returned object used to see all types contained in an interface
 export function getFullExampleContentObject(obj: any): undefined | Content {
-  if (isVocabContent(obj)) {
+  if (isOrHasVocabContent(obj)) {
     return {
       japanese: "a",
       alternate: "a",
@@ -152,14 +176,14 @@ export function getFullExampleContentObject(obj: any): undefined | Content {
       english: "a",
       example: "a",
     };
-  } else if (isKanjiContent(obj)) {
+  } else if (isOrHasKanjiContent(obj)) {
     return {
       kanji: "a",
       readings: ["a"],
       english: "a",
       examples: ["a"],
     };
-  } else if (isConjugationContent(obj)) {
+  } else if (isOrHasConjugationContent(obj)) {
     return {
       dictionary_hiragana: "a",
       dictionary_kanji: "a",

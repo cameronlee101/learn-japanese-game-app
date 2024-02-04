@@ -3,21 +3,21 @@ import {
   Content,
   KanjiContent,
   VocabContent,
-  isConjugationContent,
-  isKanjiContent,
-  isVocabContent,
+  isOrHasConjugationContent,
+  isOrHasKanjiContent,
+  isOrHasVocabContent,
 } from "@/app/utils/content-utils";
 
 export const getFlashcardFrontString = (contents: Content): string => {
-  if (isVocabContent(contents)) {
+  if (isOrHasVocabContent(contents)) {
     const data = contents as VocabContent;
 
     return `${data.japanese}${data.alternate ? "/" + data.alternate : ""}${data.kanji ? " (" + data.kanji + ")" : ""}`;
-  } else if (isKanjiContent(contents)) {
+  } else if (isOrHasKanjiContent(contents)) {
     const data = contents as KanjiContent;
 
     return data.kanji;
-  } else if (isConjugationContent(contents)) {
+  } else if (isOrHasConjugationContent(contents)) {
     const data = contents as ConjugationContent;
 
     return (
@@ -37,11 +37,11 @@ export const getFlashcardFrontString = (contents: Content): string => {
 };
 
 export const getFlashcardBackString = (contents: Content): string => {
-  if (isVocabContent(contents)) {
+  if (isOrHasVocabContent(contents)) {
     const data = contents as VocabContent;
 
     return `${data.english}${data.example ? ", ex. " + data.example : ""}`;
-  } else if (isKanjiContent(contents)) {
+  } else if (isOrHasKanjiContent(contents)) {
     const data = contents as KanjiContent;
 
     return (
@@ -55,7 +55,7 @@ export const getFlashcardBackString = (contents: Content): string => {
       "\n" +
       data.examples.join("\n")
     );
-  } else if (isConjugationContent(contents)) {
+  } else if (isOrHasConjugationContent(contents)) {
     const data = contents as ConjugationContent;
 
     return data.conjugation;
@@ -69,7 +69,7 @@ export const getFlashcardBackString = (contents: Content): string => {
 };
 
 export const getFlashcardFront = (contents: Content): React.JSX.Element => {
-  if (isVocabContent(contents)) {
+  if (isOrHasVocabContent(contents)) {
     const data = contents as VocabContent;
 
     return (
@@ -79,11 +79,11 @@ export const getFlashcardFront = (contents: Content): React.JSX.Element => {
         {data.kanji && "(" + data.kanji + ")"}
       </>
     );
-  } else if (isKanjiContent(contents)) {
+  } else if (isOrHasKanjiContent(contents)) {
     const data = contents as KanjiContent;
 
     return <>{data.kanji}</>;
-  } else if (isConjugationContent(contents)) {
+  } else if (isOrHasConjugationContent(contents)) {
     const data = contents as ConjugationContent;
 
     return (
@@ -103,7 +103,7 @@ export const getFlashcardFront = (contents: Content): React.JSX.Element => {
 };
 
 export const getFlashcardBack = (contents: Content): React.JSX.Element => {
-  if (isVocabContent(contents)) {
+  if (isOrHasVocabContent(contents)) {
     const data = contents as VocabContent;
 
     return (
@@ -112,7 +112,7 @@ export const getFlashcardBack = (contents: Content): React.JSX.Element => {
         {data.example && ", ex. " + data.example}
       </>
     );
-  } else if (isKanjiContent(contents)) {
+  } else if (isOrHasKanjiContent(contents)) {
     const data = contents as KanjiContent;
 
     return (
@@ -136,7 +136,7 @@ export const getFlashcardBack = (contents: Content): React.JSX.Element => {
         </p>
       </>
     );
-  } else if (isConjugationContent(contents)) {
+  } else if (isOrHasConjugationContent(contents)) {
     const data = contents as ConjugationContent;
 
     return <>{data.conjugation}</>;
