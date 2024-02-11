@@ -2,6 +2,14 @@
 
 describe("Navigation (sidebar)", () => {
   beforeEach(() => {
+    cy.intercept(
+      "GET",
+      "https://us-east-2.aws.data.mongodb-api.com/app/data-tonat/endpoint/genkiI",
+      {
+        fixture: "collection.json",
+      },
+    ).as("fetchCollection");
+
     cy.visit("/");
   });
 
@@ -67,9 +75,9 @@ describe("Navigation (sidebar)", () => {
       .should("include", "flashcards-activity");
     cy.contains(/select chapter and topic for flashcards/i);
 
-    cy.get("button")
-      .contains(/submit/i)
-      .click();
+    cy.getDataTest("submit-button").click();
+    cy.wait("@fetchCollection");
+
     cy.location("pathname")
       .should("include", "pages")
       .location("pathname")
@@ -128,9 +136,9 @@ describe("Navigation (sidebar)", () => {
       .should("include", "mc-quiz");
     cy.contains(/select chapter and topic for multiple choice quiz/i);
 
-    cy.get("button")
-      .contains(/submit/i)
-      .click();
+    cy.getDataTest("submit-button").click();
+    cy.wait("@fetchCollection");
+
     cy.location("pathname")
       .should("include", "pages")
       .location("pathname")
@@ -161,9 +169,9 @@ describe("Navigation (sidebar)", () => {
       .should("include", "contents-of");
     cy.contains(/select chapter and topic to see the contents of/i);
 
-    cy.get("button")
-      .contains(/submit/i)
-      .click();
+    cy.getDataTest("submit-button").click();
+    cy.wait("@fetchCollection");
+
     cy.location("pathname")
       .should("include", "pages")
       .location("pathname")

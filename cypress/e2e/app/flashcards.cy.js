@@ -2,23 +2,25 @@
 
 describe("Flashcards activity", () => {
   beforeEach(() => {
-    cy.intercept("GET", "https://us-east-2.aws.data.mongodb-api.com/app/data-tonat/endpoint/genkiI", {
-      fixture: "vocabulary.json"
-    }).as("fetchVocabulary")
+    cy.intercept(
+      "GET",
+      "https://us-east-2.aws.data.mongodb-api.com/app/data-tonat/endpoint/genkiI",
+      {
+        fixture: "collection.json",
+      },
+    ).as("fetchCollection");
 
-    // Start from chapter 1 flashcards page
     cy.visit("/");
     cy.getDataTest("sidemenu-button").click();
     cy.get("a").contains("Flashcards").click();
 
-    cy.wait(1000);
+    cy.wait("@fetchCollection");
 
     cy.get("select#chapter").select("Chapter 1");
     cy.get("select#topic").select("Vocabulary");
     cy.getDataTest("submit-button").click();
-    cy.wait(1000); // wait for server to respond
 
-    cy.wait("@fetchVocabulary")
+    cy.wait("@fetchCollection");
   });
 
   it("flashcard can be flipped", () => {
@@ -39,24 +41,24 @@ describe("Flashcards activity", () => {
   });
 
   it("flashcard can go back and forth, flashcard counter accurately displays current flashcard number", () => {
-    cy.get("p#flashcardCounter").should("contain.text", "1/77"); // Checking there is 77 flashcards for chapter 1 vocabulary
+    cy.get("p#flashcardCounter").should("contain.text", "1/8");
 
     for (let i = 0; i < 3; i++) {
       cy.getDataTest("flashcard-next-button").click();
       cy.wait(600); // wait for animation
     }
-    cy.get("p#flashcardCounter").should("contain.text", "4/77");
+    cy.get("p#flashcardCounter").should("contain.text", "4/8");
 
     for (let i = 0; i < 2; i++) {
       cy.getDataTest("flashcard-prev-button").click();
       cy.wait(600); // wait for animation
     }
-    cy.get("p#flashcardCounter").should("contain.text", "2/77");
+    cy.get("p#flashcardCounter").should("contain.text", "2/8");
 
     for (let i = 0; i < 3; i++) {
       cy.getDataTest("flashcard-prev-button").click();
       cy.wait(600); // wait for animation
     }
-    cy.get("p#flashcardCounter").should("contain.text", "76/77");
+    cy.get("p#flashcardCounter").should("contain.text", "7/8");
   });
 });
