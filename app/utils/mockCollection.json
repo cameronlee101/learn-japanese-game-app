@@ -1,0 +1,164 @@
+[
+  {
+    "_id": {
+      "$oid": "1234567890"
+    },
+    "chapter1": {
+      "vocabulary": [
+        { "japanese": "テスト1", "english": "test1" },
+        { "japanese": "テスト2", "alternate": "てすと2", "english": "test2" },
+        { "japanese": "テスト3", "kanji": "漢字", "english": "test3" },
+        {
+          "japanese": "テスト4",
+          "english": "test4",
+          "example": "this is a test"
+        },
+        {
+          "japanese": "テスト5",
+          "alternate": "てすと5",
+          "kanji": "漢字",
+          "english": "test5"
+        },
+        {
+          "japanese": "テスト6",
+          "alternate": "てすと6",
+          "english": "test6",
+          "example": "this is a test"
+        },
+        {
+          "japanese": "テスト7",
+          "kanji": "漢字",
+          "english": "test7",
+          "example": "this is a test"
+        },
+        {
+          "japanese": "テスト8",
+          "alternate": "てすと8",
+          "kanji": "漢字",
+          "english": "test8",
+          "example": "this is a test"
+        }
+      ]
+    },
+    "chapter2": {
+      "vocabulary": [
+        { "japanese": "テスト1", "english": "test1" },
+        { "japanese": "テスト2", "alternate": "てすと2", "english": "test2" },
+        { "japanese": "テスト3", "kanji": "漢字", "english": "test3" },
+        {
+          "japanese": "テスト4",
+          "english": "test4",
+          "example": "this is a test"
+        },
+        {
+          "japanese": "テスト5",
+          "alternate": "てすと5",
+          "kanji": "漢字",
+          "english": "test5"
+        },
+        {
+          "japanese": "テスト6",
+          "alternate": "てすと6",
+          "english": "test6",
+          "example": "this is a test"
+        },
+        {
+          "japanese": "テスト7",
+          "kanji": "漢字",
+          "english": "test7",
+          "example": "this is a test"
+        },
+        {
+          "japanese": "テスト8",
+          "alternate": "てすと8",
+          "kanji": "漢字",
+          "english": "test8",
+          "example": "this is a test"
+        }
+      ],
+      "numbers": [
+        { "japanese": "いち", "english": "1" },
+        { "japanese": "に", "alternate": "に", "english": "2" },
+        { "japanese": "さん", "kanji": "三", "english": "3" },
+        { "japanese": "し", "english": "test4", "example": "number 4" },
+        {
+          "japanese": "ご",
+          "alternate": "てすと5",
+          "kanji": "五",
+          "english": "5"
+        },
+        {
+          "japanese": "ろく",
+          "alternate": "てすと6",
+          "english": "6",
+          "example": "number 6"
+        },
+        {
+          "japanese": "しち",
+          "kanji": "七",
+          "english": "7",
+          "example": "number 7"
+        },
+        {
+          "japanese": "はち",
+          "alternate": "てすと8",
+          "kanji": "八",
+          "english": "8",
+          "example": "number 8"
+        }
+      ]
+    },
+    "chapter3": {
+      "kanji": [
+        {
+          "kanji": "一",
+          "readings": ["いち"],
+          "english": "one",
+          "examples": ["一（いち）one", "一時（いちじ）one o'clock"]
+        },
+        {
+          "kanji": "二",
+          "readings": ["に"],
+          "english": "two",
+          "examples": ["二（に）two", "二時（にじ）two o'clock"]
+        },
+        {
+          "kanji": "三",
+          "readings": ["さん"],
+          "english": "three",
+          "examples": ["三（さん）three", "三時（さんじ）three o'clock"]
+        }
+      ],
+      "conjugations": [
+        {
+          "dictionary_hiragana": "いく",
+          "dictionary_kanji": "行く",
+          "english": "to go (destination に/へ)",
+          "conjugate_to": "present, affirmative",
+          "conjugation": "行きます"
+        },
+        {
+          "dictionary_hiragana": "いく",
+          "dictionary_kanji": "行く",
+          "english": "to go (destination に/へ)",
+          "conjugate_to": "present, negative",
+          "conjugation": "行きません"
+        },
+        {
+          "dictionary_hiragana": "かえる",
+          "dictionary_kanji": "帰る",
+          "english": "to go back; to return (destination に/へ)",
+          "conjugate_to": "present, affirmative",
+          "conjugation": "帰ります"
+        },
+        {
+          "dictionary_hiragana": "かえる",
+          "dictionary_kanji": "帰る",
+          "english": "to go back; to return (destination に/へ)",
+          "conjugate_to": "present, negative",
+          "conjugation": "帰りません"
+        }
+      ]
+    }
+  }
+]
