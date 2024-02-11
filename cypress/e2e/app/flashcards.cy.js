@@ -2,6 +2,10 @@
 
 describe("Flashcards activity", () => {
   beforeEach(() => {
+    cy.intercept("GET", "https://us-east-2.aws.data.mongodb-api.com/app/data-tonat/endpoint/genkiI", {
+      fixture: "vocabulary.json"
+    }).as("fetchVocabulary")
+
     // Start from chapter 1 flashcards page
     cy.visit("/");
     cy.getDataTest("sidemenu-button").click();
@@ -13,6 +17,8 @@ describe("Flashcards activity", () => {
     cy.get("select#topic").select("Vocabulary");
     cy.getDataTest("submit-button").click();
     cy.wait(1000); // wait for server to respond
+
+    cy.wait("@fetchVocabulary")
   });
 
   it("flashcard can be flipped", () => {

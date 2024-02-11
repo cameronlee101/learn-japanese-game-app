@@ -1,5 +1,7 @@
 import Image from "next/image";
 import React, { useEffect, useState } from "react";
+import checkmark from "@/public/checkmark.png";
+import xmark from "@/public/xmark.png";
 
 export enum symbolOptions {
   checkMark,
@@ -11,15 +13,15 @@ export const IMAGE_SIZE = 64;
 const CheckOrX = (props: { symbol: symbolOptions }) => {
   const { symbol } = props;
 
-  const [image, setImage] = useState("/xmark.png");
+  const [image, setImage] = useState(xmark);
 
   useEffect(() => {
     switch (symbol) {
       case symbolOptions.checkMark:
-        setImage("/checkmark.png");
+        setImage(checkmark);
         break;
       case symbolOptions.xMark:
-        setImage("/xmark.png");
+        setImage(xmark);
         break;
       default:
         console.error("Error: could not set CheckOrX component image");

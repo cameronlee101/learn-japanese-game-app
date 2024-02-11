@@ -40,7 +40,6 @@ next-env.d.ts
 
 # cypress example files
 cypress/e2e/examples
-cypress/fixtures
 
 # misc
 content.json

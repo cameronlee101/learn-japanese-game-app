@@ -1,10 +1,11 @@
 "use client";
 import React, { useEffect, useState } from "react";
-import { Content, ContentClass } from "@/app/utils/content-utils";
+import { Content, fetchContent } from "@/app/utils/content-utils";
 import Flashcard from "@/app/components/Flashcard/Flashcard";
 import styles from "./flashcards-activity.module.css";
 import { FaArrowCircleLeft, FaArrowCircleRight } from "react-icons/fa";
 import { useRouter } from "next/navigation";
+import { useQuery } from "@tanstack/react-query";
 
 const ARROW_LEFT = "ArrowLeft";
 const ARROW_RIGHT = "ArrowRight";
@@ -19,40 +20,36 @@ function FlashcardsActivity({
   const selectedChapterStr = decodeURI(params.chapter);
   const selectedTopicStr = decodeURI(params.topic);
 
+  const { status, data, error } = useQuery({
+    queryKey: ["content", selectedChapterStr, selectedTopicStr],
+    queryFn: () => fetchContent(selectedChapterStr, selectedTopicStr),
+  });
+
   const [animationClass, setAnimationClass] = useState("");
   const [lastKeyPressTime, setLastKeyPressTime] = useState(0);
   const [currentIndex, setCurrentIndex] = useState(0);
   const [direction, setDirection] = useState<"left" | "right" | null>(null);
 
   const [contents, setContents] = useState<Content[]>([
-    { japanese: "", english: "" },
+    { japanese: "Loading...", english: "Loading..." },
   ]);
 
-  // Gets contents for activity on page load
+  // Shuffles and updates the contents based on the result of the react query
   useEffect(() => {
-    getShuffledContent();
-  }, []);
+    setShuffledContents();
+  }, [data]);
 
-  // Gets the contents for given chapter and topic checks that they are defined, then shuffles the elements
-  const getShuffledContent = () => {
-    // Fetches contents
-    new ContentClass()
-      .getContent(selectedChapterStr, selectedTopicStr)
-      .then((fetchedContents) => {
-        // Check if contents are undefined
-        if (fetchedContents === undefined) {
-          alert(
-            'Error retrieving contents, returning to home page (you may need to press "ok" on this alert multiple times)',
-          );
-          router.push("/");
-        } else {
-          // Shuffles contents
-          const shuffledContents = shuffleArray(fetchedContents);
-
-          // Update the state with shuffled contents
-          setContents(shuffledContents);
-        }
-      });
+  // Shuffles and updates the contents based on the result of the react query
+  const setShuffledContents = () => {
+    if (error) {
+      console.error(error);
+      alert("Error retrieving contents, returning to home page");
+      router.push("/");
+    }
+    if (data) {
+      const shuffledContents = shuffleArray(data);
+      setContents(shuffledContents);
+    }
   };
 
   // Shuffles the given array

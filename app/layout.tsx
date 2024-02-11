@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import "./globals.css";
 import Sidebar from "./components/Sidebar/Sidebar";
 import { Roboto } from "next/font/google";
+import { ReactQueryClientProvider } from "./ReactQueryClientProvider";
 
 export const metadata: Metadata = {
   title: "Genki Study Tool",
@@ -19,18 +20,20 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en">
-      <body
-        className={`${roboto.className} bg-color flex min-h-screen relative user-select-none`}
-      >
-        <div
-          id="modal-root"
-          style={{ zIndex: 50 }}
-          data-test="modal-root"
-        ></div>
-        <Sidebar />
-        {children}
-      </body>
-    </html>
+    <ReactQueryClientProvider>
+      <html lang="en">
+        <body
+          className={`${roboto.className} bg-color flex min-h-screen relative user-select-none`}
+        >
+          <div
+            id="modal-root"
+            style={{ zIndex: 50 }}
+            data-test="modal-root"
+          ></div>
+          <Sidebar />
+          {children}
+        </body>
+      </html>
+    </ReactQueryClientProvider>
   );
 }

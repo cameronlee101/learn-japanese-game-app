@@ -1,0 +1,16 @@
+[
+  {
+    "_id": {
+      "$oid": "1234567890"
+    },
+    "chapter1": {
+      "vocabulary": [
+        { "japanese": "テスト1", "english": "test1" },
+        { "japanese": "テスト2", "english": "test2" },
+        { "japanese": "テスト3", "english": "test3" },
+        { "japanese": "テスト4", "english": "test4" },
+        { "japanese": "テスト5", "english": "test5" }
+      ]
+    }
+  }
+]
