@@ -1,5 +1,3 @@
-import { RealmAppService } from "./realm-app-service";
-
 export enum Chapters {
   Ch1 = "Chapter 1",
   Ch2 = "Chapter 2",
@@ -50,48 +48,50 @@ export type ConjugationContent = {
 
 export type Content = VocabContent | KanjiContent | ConjugationContent;
 
-export class ContentClass {
-  private async getCollection() {
-    const app = await new RealmAppService().getAppInstance();
-    const client = await app?.currentUser?.mongoClient("mongodb-atlas");
+// Fetches the array of content for the specified chapter and topic from the database
+export async function fetchContent(
+  chapter: string,
+  topic: string,
+): Promise<Content[]> {
+  const chapterKey = chapter.toLowerCase().replaceAll(" ", "");
+  const topicKey = topic.toLowerCase();
 
-    const collection = await client
-      ?.db("Japanese-content")
-      ?.collection("Genki-I");
+  const response = await fetch(
+    "https://us-east-2.aws.data.mongodb-api.com/app/data-tonat/endpoint/genkiI",
+  );
 
-    if (!collection) {
-      throw new Error("Failed to connect to server");
+  if (!response.ok) {
+    throw new Error("Failed to retrieve content from database");
+  }
+
+  const result = await response.json();
+
+  const chapterContent = result.find((doc: any) => {
+    if (doc[chapterKey] && doc[chapterKey][topicKey]) {
+      return true;
     }
+  });
 
-    return collection;
+  if (!chapterContent) {
+    throw new Error(
+      "Failed to retrieve content for specified chapter and topic",
+    );
+  } else {
+    return chapterContent[chapterKey][topicKey];
+  }
+}
+
+// Fetches the entire database collection
+export async function fetchAllContent(): Promise<Object> {
+  const response = await fetch(
+    "https://us-east-2.aws.data.mongodb-api.com/app/data-tonat/endpoint/genkiI",
+  );
+
+  if (!response.ok) {
+    throw new Error("Failed to retrieve content from database");
   }
 
-  async getContent(
-    chapter: string,
-    topic: string,
-  ): Promise<undefined | Content[]> {
-    const collection: [] = await (await this.getCollection()).aggregate([]);
-    const chapterKey = chapter.toLowerCase().replaceAll(" ", "");
-    const topicKey = topic.toLowerCase();
-
-    const chapterResult = collection.find((item) => chapterKey in item);
-    if (!chapterResult) {
-      console.error(`Error: could not retrieve chapter content for ${chapter}`);
-    } else {
-      const topicResult = chapterResult[chapterKey][topicKey];
-      if (!topicResult) {
-        console.error(`Error: topic '${topic}' not found in ${chapter}`);
-      } else {
-        return topicResult;
-      }
-    }
-
-    return undefined;
-  }
-
-  async getAggregatedCollection(): Promise<[]> {
-    return await (await this.getCollection()).aggregate([]);
-  }
+  return await response.json();
 }
 
 // Function used to check if the given object is of type VocabContent or is an array with VocabContent
@@ -148,7 +148,14 @@ export function isOrHasConjugationContent(obj: any): obj is ConjugationContent {
   } else if (Array.isArray(obj) && obj.length === 0) {
     return false;
   } else {
-    const { dictionary_hiragana, dictionary_kanji, english, conjugate_to, conjugation, ...rest } = obj;
+    const {
+      dictionary_hiragana,
+      dictionary_kanji,
+      english,
+      conjugate_to,
+      conjugation,
+      ...rest
+    } = obj;
 
     // Return false if the object has any extra attributes
     if (Object.keys(rest).length > 0) {
@@ -157,7 +164,8 @@ export function isOrHasConjugationContent(obj: any): obj is ConjugationContent {
 
     return (
       typeof dictionary_hiragana === "string" &&
-      (dictionary_kanji === undefined || typeof dictionary_kanji === "string") &&
+      (dictionary_kanji === undefined ||
+        typeof dictionary_kanji === "string") &&
       typeof english === "string" &&
       typeof conjugate_to === "string" &&
       typeof conjugation === "string"

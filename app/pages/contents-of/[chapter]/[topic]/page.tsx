@@ -1,11 +1,12 @@
 "use client";
 import {
   Content,
-  ContentClass,
+  fetchContent,
   getFullExampleContentObject,
 } from "@/app/utils/content-utils";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
+import { useQuery } from "@tanstack/react-query";
 
 function ContentsOf({
   params,
@@ -16,16 +17,28 @@ function ContentsOf({
   const selectedChapterStr = decodeURI(params.chapter);
   const selectedTopicStr = decodeURI(params.topic);
 
+  const { status, data, error } = useQuery({
+    queryKey: ["content", selectedChapterStr, selectedTopicStr],
+    queryFn: () => fetchContent(selectedChapterStr, selectedTopicStr),
+  });
+
   const [allParameters, setAllParameters] = useState<string[]>([]);
   const [tableHeaders, setTableHeaders] = useState<string[]>([]);
   const [contents, setContents] = useState<Content[]>([
-    { japanese: "", english: "" },
+    { japanese: "Loading...", english: "Loading..." },
   ]);
 
-  // Gets contents for the table on page load
+  // Updates the contents based on the result of the react query
   useEffect(() => {
-    getContent();
-  }, []);
+    if (error) {
+      console.error(error);
+      alert("Error retrieving contents, returning to home page");
+      router.push("/");
+    }
+    if (data) {
+      setContents(data);
+    }
+  }, [data]);
 
   // Extracts parameter names from an example object for the table headers and to align table data
   useEffect(() => {
@@ -51,25 +64,6 @@ function ContentsOf({
       }
     }
   }, [contents]);
-
-  // Gets the contents for given chapter and topic checks that they are defined
-  const getContent = () => {
-    // Fetches contents
-    new ContentClass()
-      .getContent(selectedChapterStr, selectedTopicStr)
-      .then((fetchedContents) => {
-        // Check if contents are undefined
-        if (fetchedContents === undefined) {
-          alert(
-            'Error retrieving contents, returning to home page (you may need to press "ok" on this alert multiple times)',
-          );
-          router.push("/");
-        } else {
-          // Update the state with contents
-          setContents(fetchedContents);
-        }
-      });
-  };
 
   return (
     <main className="main-center">

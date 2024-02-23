@@ -8,6 +8,7 @@ import {
 } from "./MCQuiz-utils";
 
 beforeEach(() => {
+  // Stopping the console.error from printing to console during tests
   jest.spyOn(console, "error");
   console.error.mockImplementation(() => {});
 });
@@ -16,172 +17,176 @@ afterEach(() => {
   console.error.mockRestore();
 });
 
-// getMCQuestionString
-test("getMCQuestionString function vocab 1", () => {
-  const content = { japanese: "テスト", english: "test" };
+describe("getMCQuestionString function", () => {
+  test("vocab 1", () => {
+    const content = { japanese: "テスト", english: "test" };
 
-  expect(getMCQuestionString(content)).toEqual(`${content.japanese}`);
+    expect(getMCQuestionString(content)).toEqual(`${content.japanese}`);
+  });
+
+  test("kanji 1", () => {
+    const content = {
+      kanji: "大",
+      readings: ["だい", "おお"],
+      english: "big",
+      examples: [
+        "大学生（だいがくせい）college student",
+        "大きい（おおきい）big",
+      ],
+    };
+
+    expect(getMCQuestionString(content)).toEqual(`${content.kanji}`);
+  });
+
+  test("conjugation 1", () => {
+    const content = {
+      dictionary_hiragana: "いく",
+      dictionary_kanji: "行く",
+      english: "to go (destination に/へ)",
+      conjugate_to: "present, affirmative",
+      conjugation: "行きます",
+    };
+
+    expect(getMCQuestionString(content)).toEqual(
+      `${content.dictionary_kanji}\n${content.dictionary_hiragana}\n${content.conjugate_to}`,
+    );
+  });
+
+  test("error 1", () => {
+    const content = { japanese: "テスト" };
+
+    expect(getMCQuestionString(content)).toEqual(`Error`);
+  });
 });
 
-test("getMCQuestionString function kanji 1", () => {
-  const content = {
-    kanji: "大",
-    readings: ["だい", "おお"],
-    english: "big",
-    examples: [
-      "大学生（だいがくせい）college student",
-      "大きい（おおきい）big",
-    ],
-  };
+describe("getMCOptionString function", () => {
+  test("vocab 1", () => {
+    const content = { japanese: "テスト", english: "test" };
 
-  expect(getMCQuestionString(content)).toEqual(`${content.kanji}`);
+    expect(getMCOptionString(content)).toEqual(`${content.english}`);
+  });
+
+  test("kanji 1", () => {
+    const content = {
+      kanji: "大",
+      readings: ["だい", "おお"],
+      english: "big",
+      examples: [
+        "大学生（だいがくせい）college student",
+        "大きい（おおきい）big",
+      ],
+    };
+
+    expect(getMCOptionString(content)).toEqual(`${content.english}`);
+  });
+
+  test("conjugation 1", () => {
+    const content = {
+      dictionary_hiragana: "いく",
+      dictionary_kanji: "行く",
+      english: "to go (destination に/へ)",
+      conjugate_to: "present, affirmative",
+      conjugation: "行きます",
+    };
+
+    expect(getMCOptionString(content)).toEqual(`${content.conjugation}`);
+  });
+
+  test("error 1", () => {
+    const content = { japanese: "テスト" };
+
+    expect(getMCOptionString(content)).toEqual(`Error`);
+  });
 });
 
-test("getMCQuestionString function conjugation 1", () => {
-  const content = {
-    dictionary_hiragana: "いく",
-    dictionary_kanji: "行く",
-    english: "to go (destination に/へ)",
-    conjugate_to: "present, affirmative",
-    conjugation: "行きます",
-  };
+describe("getMCQuestion function", () => {
+  test("vocab 1", () => {
+    const content = { japanese: "テスト", english: "test" };
+    render(getMCQuestion(content));
 
-  expect(getMCQuestionString(content)).toEqual(
-    `${content.dictionary_kanji}\n${content.dictionary_hiragana}\n${content.conjugate_to}`,
-  );
+    expect(screen.getByText(`${content.japanese}`)).toBeInTheDocument();
+  });
+
+  test("kanji 1", () => {
+    const content = {
+      kanji: "大",
+      readings: ["だい", "おお"],
+      english: "big",
+      examples: [
+        "大学生（だいがくせい）college student",
+        "大きい（おおきい）big",
+      ],
+    };
+    render(getMCQuestion(content));
+
+    expect(screen.getByText(`${content.kanji}`)).toBeInTheDocument();
+  });
+
+  test("conjugation 1", () => {
+    const content = {
+      dictionary_hiragana: "いく",
+      dictionary_kanji: "行く",
+      english: "to go (destination に/へ)",
+      conjugate_to: "present, affirmative",
+      conjugation: "行きます",
+    };
+    render(getMCQuestion(content));
+
+    expect(screen.getByText(`${content.dictionary_kanji}`)).toBeInTheDocument();
+    expect(
+      screen.getByText(`${content.dictionary_hiragana}`),
+    ).toBeInTheDocument();
+    expect(screen.getByText(`${content.conjugate_to}`)).toBeInTheDocument();
+  });
+
+  test("error 1", () => {
+    const content = { japanese: "テスト" };
+    render(getMCQuestion(content));
+
+    expect(screen.getByText(`Error`)).toBeInTheDocument();
+  });
 });
 
-test("getMCQuestionString function error 1", () => {
-  const content = { japanese: "テスト" };
+describe("getMCOption function", () => {
+  test("vocab 1", () => {
+    const content = { japanese: "テスト", english: "test" };
+    render(getMCOption(content));
 
-  expect(getMCQuestionString(content)).toEqual(`Error`);
-});
+    expect(screen.getByText(`${content.english}`)).toBeInTheDocument();
+  });
 
-// getMCOptionString
-test("getMCOptionString function vocab 1", () => {
-  const content = { japanese: "テスト", english: "test" };
+  test("kanji 1", () => {
+    const content = {
+      kanji: "大",
+      readings: ["だい", "おお"],
+      english: "big",
+      examples: [
+        "大学生（だいがくせい）college student",
+        "大きい（おおきい）big",
+      ],
+    };
+    render(getMCOption(content));
 
-  expect(getMCOptionString(content)).toEqual(`${content.english}`);
-});
+    expect(screen.getByText(`${content.english}`)).toBeInTheDocument();
+  });
 
-test("getMCOptionString function kanji 1", () => {
-  const content = {
-    kanji: "大",
-    readings: ["だい", "おお"],
-    english: "big",
-    examples: [
-      "大学生（だいがくせい）college student",
-      "大きい（おおきい）big",
-    ],
-  };
+  test("conjugation 1", () => {
+    const content = {
+      dictionary_hiragana: "いく",
+      dictionary_kanji: "行く",
+      english: "to go (destination に/へ)",
+      conjugate_to: "present, affirmative",
+      conjugation: "行きます",
+    };
+    render(getMCOption(content));
 
-  expect(getMCOptionString(content)).toEqual(`${content.english}`);
-});
+    expect(screen.getByText(`${content.conjugation}`)).toBeInTheDocument();
+  });
 
-test("getMCOptionString function conjugation 1", () => {
-  const content = {
-    dictionary_hiragana: "いく",
-    dictionary_kanji: "行く",
-    english: "to go (destination に/へ)",
-    conjugate_to: "present, affirmative",
-    conjugation: "行きます",
-  };
+  test("error 1", () => {
+    const content = { japanese: "テスト" };
+    render(getMCOption(content));
 
-  expect(getMCOptionString(content)).toEqual(`${content.conjugation}`);
-});
-
-test("getMCQuestionString function error 1", () => {
-  const content = { japanese: "テスト" };
-
-  expect(getMCOptionString(content)).toEqual(`Error`);
-});
-
-// getMCQuestion
-test("getMCQuestion function vocab 1", () => {
-  const content = { japanese: "テスト", english: "test" };
-  render(getMCQuestion(content));
-
-  expect(screen.getByText(`${content.japanese}`)).toBeInTheDocument();
-});
-
-test("getMCQuestion function kanji 1", () => {
-  const content = {
-    kanji: "大",
-    readings: ["だい", "おお"],
-    english: "big",
-    examples: [
-      "大学生（だいがくせい）college student",
-      "大きい（おおきい）big",
-    ],
-  };
-  render(getMCQuestion(content));
-
-  expect(screen.getByText(`${content.kanji}`)).toBeInTheDocument();
-});
-
-test("getMCQuestion function conjugation 1", () => {
-  const content = {
-    dictionary_hiragana: "いく",
-    dictionary_kanji: "行く",
-    english: "to go (destination に/へ)",
-    conjugate_to: "present, affirmative",
-    conjugation: "行きます",
-  };
-  render(getMCQuestion(content));
-
-  expect(screen.getByText(`${content.dictionary_kanji}`)).toBeInTheDocument();
-  expect(
-    screen.getByText(`${content.dictionary_hiragana}`),
-  ).toBeInTheDocument();
-  expect(screen.getByText(`${content.conjugate_to}`)).toBeInTheDocument();
-});
-
-test("getMCQuestionString function error 1", () => {
-  const content = { japanese: "テスト" };
-  render(getMCQuestion(content));
-
-  expect(screen.getByText(`Error`)).toBeInTheDocument();
-});
-
-// getMCOption
-test("getMCOption function vocab 1", () => {
-  const content = { japanese: "テスト", english: "test" };
-  render(getMCOption(content));
-
-  expect(screen.getByText(`${content.english}`)).toBeInTheDocument();
-});
-
-test("getMCOption function kanji 1", () => {
-  const content = {
-    kanji: "大",
-    readings: ["だい", "おお"],
-    english: "big",
-    examples: [
-      "大学生（だいがくせい）college student",
-      "大きい（おおきい）big",
-    ],
-  };
-  render(getMCOption(content));
-
-  expect(screen.getByText(`${content.english}`)).toBeInTheDocument();
-});
-
-test("getMCOption function conjugation 1", () => {
-  const content = {
-    dictionary_hiragana: "いく",
-    dictionary_kanji: "行く",
-    english: "to go (destination に/へ)",
-    conjugate_to: "present, affirmative",
-    conjugation: "行きます",
-  };
-  render(getMCOption(content));
-
-  expect(screen.getByText(`${content.conjugation}`)).toBeInTheDocument();
-});
-
-test("getMCQuestionString function error 1", () => {
-  const content = { japanese: "テスト" };
-  render(getMCOption(content));
-
-  expect(screen.getByText(`Error`)).toBeInTheDocument();
+    expect(screen.getByText(`Error`)).toBeInTheDocument();
+  });
 });

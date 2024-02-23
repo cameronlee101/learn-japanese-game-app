@@ -2,28 +2,49 @@
 
 describe("Activity selection page", () => {
   beforeEach(() => {
-    // start from flashcards topic selection page
+    cy.intercept(
+      "GET",
+      "https://us-east-2.aws.data.mongodb-api.com/app/data-tonat/endpoint/genkiI",
+      {
+        fixture: "collection.json",
+      },
+    ).as("fetchCollection");
+
     cy.visit("/");
     cy.getDataTest("sidemenu-button").click();
     cy.get("a").contains("Flashcards").click();
+
+    cy.wait("@fetchCollection");
   });
 
-  it("select chapter 1 numbers as the topic", () => {
+  it("select chapter 1 vocabulary as the topic", () => {
     cy.get("select#chapter").select("Chapter 1");
-    cy.get("select#topic").select("Numbers");
-    cy.getDataTest("submit-button").click();
-  });
-
-  it("select chapter 2 vocabulary as the topic", () => {
-    cy.get("select#chapter").select("Chapter 2");
     cy.get("select#topic").select("Vocabulary");
     cy.getDataTest("submit-button").click();
+
+    cy.wait("@fetchCollection");
+
+    cy.getDataTest("error-text-box").should("not.exist");
+  });
+
+  it("select chapter 2 numbers as the topic", () => {
+    cy.get("select#chapter").select("Chapter 2");
+    cy.get("select#topic").select("Numbers");
+    cy.getDataTest("submit-button").click();
+
+    cy.wait("@fetchCollection");
+
+    cy.getDataTest("error-text-box").should("not.exist");
   });
 
   it("select chapter 3 kanji as the topic", () => {
     cy.get("select#chapter").select("Chapter 3");
     cy.get("select#topic").select("Kanji");
     cy.getDataTest("submit-button").click();
+
+    cy.wait("@fetchCollection");
+
+    cy.getDataTest("error-text-box").should("not.exist");
   });
 
   it("opens and closes valid topics modal", () => {

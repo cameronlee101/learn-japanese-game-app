@@ -1,7 +1,7 @@
 "use client";
 import React, { useEffect, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
-import { Content, ContentClass } from "@/app/utils/content-utils";
+import { Content, fetchContent } from "@/app/utils/content-utils";
 import styles from "./mc-quiz.module.css";
 import MCOptions from "@/app/components/MCQuiz/MCOptions/MCOptions";
 import MCQuestion from "@/app/components/MCQuiz/MCQuestion/MCQuestion";
@@ -9,19 +9,25 @@ import {
   getMCOptionString,
   getMCQuestionString,
 } from "@/app/components/MCQuiz/MCQuiz-utils";
+import { useQuery } from "@tanstack/react-query";
 
 function MCQuiz({ params }: { params: { chapter: string; topic: string } }) {
   const router = useRouter();
   const selectedChapterStr = decodeURI(params.chapter);
   const selectedTopicStr = decodeURI(params.topic);
 
+  const { status, data, error } = useQuery({
+    queryKey: ["content", selectedChapterStr, selectedTopicStr],
+    queryFn: () => fetchContent(selectedChapterStr, selectedTopicStr),
+  });
+
   let hasSelectedIncorrect: boolean = false;
 
   const [contents, setContents] = useState<Content[]>([
-    { japanese: "", english: "" },
-    { japanese: "", english: "" },
-    { japanese: "", english: "" },
-    { japanese: "", english: "" },
+    { japanese: "Loading...", english: "Loading..." },
+    { japanese: "Loading...", english: "Loading..." },
+    { japanese: "Loading...", english: "Loading..." },
+    { japanese: "Loading...", english: "Loading..." },
   ]);
   const [currentIndex, setCurrentIndex] = useState(0);
   const [correctAnswersNum, setCorrectAnswersNum] = useState(0);
@@ -33,11 +39,6 @@ function MCQuiz({ params }: { params: { chapter: string; topic: string } }) {
 
   const [playingGame, setPlayingGame] = useState(true);
 
-  // Gets contents for activity on page load
-  useEffect(() => {
-    getShuffledContent();
-  }, []);
-
   // Resets all the states (effectively resetting the game)
   const resetStates = () => {
     setCurrentIndex(0);
@@ -47,26 +48,22 @@ function MCQuiz({ params }: { params: { chapter: string; topic: string } }) {
     setPlayingGame(true);
   };
 
-  // Gets the contents for given chapter and topic checks that they are defined, and shuffles them
-  const getShuffledContent = () => {
-    // Fetches contents
-    new ContentClass()
-      .getContent(selectedChapterStr, selectedTopicStr)
-      .then((fetchedContents) => {
-        // Check if contents are undefined
-        if (fetchedContents === undefined) {
-          alert(
-            'Error retrieving contents, returning to home page (you may need to press "ok" on this alert multiple times)',
-          );
-          router.push("/");
-        } else {
-          // Shuffles contents
-          const shuffledContents = shuffleArray(fetchedContents);
+  // Shuffles and updates the contents based on the result of the react query
+  useEffect(() => {
+    setShuffledContents();
+  }, [data]);
 
-          // Update the state with shuffled contents
-          setContents(shuffledContents);
-        }
-      });
+  // Shuffles and updates the contents based on the result of the react query
+  const setShuffledContents = () => {
+    if (error) {
+      console.error(error);
+      alert("Error retrieving contents, returning to home page");
+      router.push("/");
+    }
+    if (data) {
+      const shuffledContents = shuffleArray(data);
+      setContents(shuffledContents);
+    }
   };
 
   // Shuffles the given array
@@ -212,7 +209,7 @@ function MCQuiz({ params }: { params: { chapter: string; topic: string } }) {
               className="bg-slate-500 hover:bg-slate-700 text-white text-xl font-bold py-1 px-8 rounded-full mt-20"
               onClick={() => {
                 resetStates();
-                getShuffledContent();
+                setShuffledContents();
               }}
             >
               Play Again

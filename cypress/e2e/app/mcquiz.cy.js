@@ -2,15 +2,25 @@
 
 describe("Multiple choice quiz activity", () => {
   beforeEach(() => {
-    // Start from chapter 1 multiple choice quiz page
+    cy.intercept(
+      "GET",
+      "https://us-east-2.aws.data.mongodb-api.com/app/data-tonat/endpoint/genkiI",
+      {
+        fixture: "collection.json",
+      },
+    ).as("fetchCollection");
+
     cy.visit("/");
     cy.getDataTest("sidemenu-button").click();
     cy.get("a").contains("M.C. Quiz").click();
 
+    cy.wait("@fetchCollection");
+
     cy.get("select#chapter").select("Chapter 1");
     cy.get("select#topic").select("Vocabulary");
     cy.getDataTest("submit-button").click();
-    cy.wait(1000); // wait for server
+
+    cy.wait("@fetchCollection");
   });
 
   // TODO: figure out how to make test deterministic
@@ -22,21 +32,21 @@ describe("Multiple choice quiz activity", () => {
   });
 
   it("progress indicator correctly tracks ", () => {
-    cy.getDataTest("progress-indicator").should("contain.text", "0/77"); // Checking there is 77 questions for chapter 1 vocabulary
+    cy.getDataTest("progress-indicator").should("contain.text", "0/8");
 
     for (let i = 0; i < 4; i++) {
       cy.getDataTest(`mc-option-${i}`).click();
       cy.wait(1);
     }
 
-    cy.getDataTest("progress-indicator").should("contain.text", "1/77");
+    cy.getDataTest("progress-indicator").should("contain.text", "1/8");
 
     for (let i = 0; i < 4; i++) {
       cy.getDataTest(`mc-option-${i}`).click();
       cy.wait(1);
     }
 
-    cy.getDataTest("progress-indicator").should("contain.text", "2/77");
+    cy.getDataTest("progress-indicator").should("contain.text", "2/8");
   });
 
   it("check or x symbol correctly displays, then fades away", () => {

@@ -1,11 +1,12 @@
 "use client";
 import React, { useEffect, useState } from "react";
-import { Chapters, ContentClass, Topics } from "@/app/utils/content-utils";
+import { Chapters, Topics, fetchAllContent } from "@/app/utils/content-utils";
 import { useRouter } from "next/navigation";
 import { useLocalStorage } from "@uidotdev/usehooks";
 import styles from "./selection.module.css";
 import TopicStatusModal from "@/app/components/TopicStatusModal/TopicStatusModal";
 import ErrorBox from "@/app/components/ErrorBox/ErrorBox";
+import { useQuery } from "@tanstack/react-query";
 
 const titleSuffixes = [
   {
@@ -23,6 +24,11 @@ const titleSuffixes = [
 ];
 
 function Selection({ params }: { params: { activity: string } }) {
+  const { status, data, error } = useQuery({
+    queryKey: ["collection"],
+    queryFn: fetchAllContent,
+  });
+
   const chapters = Object.values(Chapters);
   const topics = Object.values(Topics);
   const router = useRouter();
@@ -40,7 +46,7 @@ function Selection({ params }: { params: { activity: string } }) {
   const [errorBoxText, setErrorBoxText] = useState("");
   const [showError, setShowError] = useState(false);
 
-  const [collection, setCollection] = useState([]);
+  const [collection, setCollection] = useState(Object);
   const [showModal, setShowModal] = useState(false);
 
   useEffect(() => {
@@ -50,12 +56,14 @@ function Selection({ params }: { params: { activity: string } }) {
       setSelectedChapter(selection[0]);
       setSelectedTopic(selection[1]);
     }
-
-    // Retrieves the content collection
-    new ContentClass().getAggregatedCollection().then((content) => {
-      setCollection(content);
-    });
   }, []);
+
+  // Updates the contents based on the result of the react query
+  useEffect(() => {
+    if (data) {
+      setCollection(data);
+    }
+  }, [data]);
 
   // If user selection is valid, updates localstorage on user's chapter and topic choice, then changes the page
   const submitForm = (event: React.FormEvent) => {
@@ -83,11 +91,18 @@ function Selection({ params }: { params: { activity: string } }) {
     const chapterKey = chapter.toLowerCase().replaceAll(" ", "");
     const topicKey = topic.toLowerCase();
 
-    const chapterResult = collection.find((item) => chapterKey in item);
-    if (chapterResult && chapterResult[chapterKey][topicKey]) {
+    if (
+      collection &&
+      collection.find((doc: any) => {
+        if (doc[chapterKey] && doc[chapterKey][topicKey]) {
+          return true;
+        }
+      })
+    ) {
       return true;
+    } else {
+      return false;
     }
-    return false;
   };
 
   // Toggles whether the modal is visible
