@@ -1,9 +1,6 @@
 import "@testing-library/jest-dom";
 import { render, screen } from "@testing-library/react";
-import {
-  getFlashcardBack,
-  getFlashcardFront,
-} from "./Flashcard-utils";
+import { getFlashcardBack, getFlashcardFront } from "./Flashcard-utils";
 
 beforeEach(() => {
   // Stopping the console.error from printing to console during tests

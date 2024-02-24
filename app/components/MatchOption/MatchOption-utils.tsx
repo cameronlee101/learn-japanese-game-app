@@ -8,3 +8,4 @@ import {
   isOrHasVocabContent,
 } from "@/app/utils/content-utils";
 
+export const getText = (content: Content, side: number) => {};

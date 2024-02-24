@@ -24,7 +24,7 @@ const titleSuffixes = [
   {
     activity: "contents-of",
     suffix: "to See The Contents of",
-  }
+  },
 ];
 
 function Selection({ params }: { params: { activity: string } }) {
