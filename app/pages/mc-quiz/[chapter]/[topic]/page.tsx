@@ -138,7 +138,7 @@ function MCQuiz({ params }: { params: { chapter: string; topic: string } }) {
         {selectedChapterStr} {selectedTopicStr} M.C. Quiz
       </h1>
       {playingGame && (
-        <div className={`${styles.centerArea}`}>
+        <div className="flex flex-col justify-center items-center min-h-full">
           <div className="flex sm:mb-20 mb-10">
             <MCQuestion content={getMCOptions().correct} />
           </div>

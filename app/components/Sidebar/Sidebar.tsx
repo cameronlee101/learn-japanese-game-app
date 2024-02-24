@@ -18,6 +18,10 @@ const sidebarItems = [
     href: "/pages/selection/mc-quiz",
   },
   {
+    name: "Matching",
+    href: "/pages/selection/matching-activity",
+  },
+  {
     name: "See Contents",
     href: "/pages/selection/contents-of",
   },

@@ -1,0 +1,14 @@
+.fadeUp {
+  animation: fadeUpAnimation 1s ease-out 1;
+  opacity: 0;
+  z-index: 1;
+}
+@keyframes fadeUpAnimation {
+  0% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+    transform: translateY(-100px);
+  }
+}

@@ -1,0 +1,24 @@
+.matchOption {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  white-space: pre-wrap;
+  width: 300px;
+  height: 200px;
+  padding-top: 10px;
+  padding-bottom: 10px;
+  background-color: rgb(255, 237, 213);
+  box-shadow: 4px 4px 8px rgba(0, 0, 0, 0.3);
+  border-radius: 4%;
+  font-size: x-large;
+  overflow-y: auto;
+}
+
+.focused {
+  border: 2px solid rgba(0, 0, 0, 0.2);
+}
+
+.fadeAway {
+  
+}

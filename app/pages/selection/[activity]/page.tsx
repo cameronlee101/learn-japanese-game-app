@@ -18,9 +18,13 @@ const titleSuffixes = [
     suffix: "for Multiple Choice Quiz",
   },
   {
+    activity: "matching-activity",
+    suffix: "for Term Matching",
+  },
+  {
     activity: "contents-of",
     suffix: "to See The Contents of",
-  },
+  }
 ];
 
 function Selection({ params }: { params: { activity: string } }) {
@@ -46,7 +50,7 @@ function Selection({ params }: { params: { activity: string } }) {
   const [errorBoxText, setErrorBoxText] = useState("");
   const [showError, setShowError] = useState(false);
 
-  const [collection, setCollection] = useState(Object);
+  const [collection, setCollection] = useState<any[]>([]);
   const [showModal, setShowModal] = useState(false);
 
   useEffect(() => {
@@ -60,7 +64,7 @@ function Selection({ params }: { params: { activity: string } }) {
 
   // Updates the contents based on the result of the react query
   useEffect(() => {
-    if (data) {
+    if (data && Array.isArray(data)) {
       setCollection(data);
     }
   }, [data]);

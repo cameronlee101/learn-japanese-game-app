@@ -24,7 +24,7 @@ const MCOptions = (props: {
     { content: Content; state: validOptionStates }[]
   >([]);
 
-  const [checkOrXClass, setCheckOrXClass] = useState("");
+  const [animationClass, setAnimationClass] = useState("");
   const [checkOrXPos, setCheckOrXPos] = useState({ x: 0, y: 0 });
   const [checkOrXSymbol, setCheckOrXSymbol] = useState(symbolOptions.xMark);
   const [inputEnalbed, setInputEnabled] = useState(true);
@@ -70,9 +70,9 @@ const MCOptions = (props: {
     });
 
     // remove, then add class to reset fading up animation
-    setCheckOrXClass("");
+    setAnimationClass("");
     setTimeout(() => {
-      setCheckOrXClass(styles.fadeUp);
+      setAnimationClass(styles.fadeUp);
     }, 1);
   };
 
@@ -106,7 +106,7 @@ const MCOptions = (props: {
         ))}
       </div>
       <div
-        className={`${checkOrXClass} absolute pointer-events-none`}
+        className={`${animationClass} absolute pointer-events-none`}
         style={{ left: checkOrXPos.x, top: checkOrXPos.y, opacity: 0 }}
       >
         <CheckOrX symbol={checkOrXSymbol} />
