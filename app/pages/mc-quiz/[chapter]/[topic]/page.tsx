@@ -207,7 +207,7 @@ function MCQuiz({ params }: { params: { chapter: string; topic: string } }) {
             )}
             <button
               className="bg-slate-500 hover:bg-slate-700 text-white text-xl font-bold py-1 px-8 rounded-full mt-20"
-              onClick={() => {
+              onMouseUp={() => {
                 resetStates();
                 setShuffledContents();
               }}

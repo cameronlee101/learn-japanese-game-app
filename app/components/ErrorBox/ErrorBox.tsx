@@ -13,7 +13,7 @@ const ErrorBox = (props: { text: string; onClose: () => void }) => {
         <button
           className="btn-close"
           aria-label="Close"
-          onClick={onClose}
+          onMouseUp={onClose}
           data-test="error-text-box-close"
         ></button>
       </div>

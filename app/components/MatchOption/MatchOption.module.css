@@ -19,5 +19,15 @@
   border: 2px solid rgba(0, 0, 0, 0.2);
 }
 
-.fadeAway {
+.completed {
+  animation: fadeAwayAnimation 1s ease-out 1;
+  opacity: 0;
+}
+@keyframes fadeAwayAnimation {
+  0% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+  }
 }

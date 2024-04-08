@@ -39,7 +39,7 @@ const Sidebar = () => {
       <GiHamburgerMenu
         data-test="sidemenu-button"
         className={`${styles.menuButton} ${isOpen ? "" : styles.closed}`}
-        onClick={toggleSidebar}
+        onMouseUp={toggleSidebar}
       />
       <nav
         className={`${styles.sidebar} ${isOpen ? "" : styles.closed}`}
@@ -54,7 +54,7 @@ const Sidebar = () => {
               <Link
                 href={item.href}
                 className={`${styles.navLink}`}
-                onClick={toggleSidebar}
+                onMouseUp={toggleSidebar}
                 data-test={`sidemenu-link-${index}`}
               >
                 {item.name}

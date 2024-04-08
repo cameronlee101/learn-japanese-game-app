@@ -53,7 +53,7 @@ const TopicStatusModal = (props: {
           <div className="flex justify-center mt-2">
             <button
               className="btn btn-secondary"
-              onClick={onClose}
+              onMouseUp={onClose}
               data-test="modal-close"
             >
               Close

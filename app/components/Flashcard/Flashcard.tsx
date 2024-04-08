@@ -78,7 +78,7 @@ const Flashcard = (props: { contents: Content }) => {
   return (
     <div
       className={`${styles.flashcard} ${isFlipped ? styles.flipped : ""}`}
-      onClick={handleFlip}
+      onMouseUp={handleFlip}
       data-test="flashcard"
     >
       <div

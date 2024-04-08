@@ -173,7 +173,7 @@ function Selection({ params }: { params: { activity: string } }) {
           </button>
           <button
             className="bg-slate-500 hover:bg-slate-700 text-white text-xl font-bold py-1 px-2 rounded-full mt-10"
-            onClick={toggleShowModal}
+            onMouseUp={toggleShowModal}
             type="button"
             data-test="valid-topics-button"
           >

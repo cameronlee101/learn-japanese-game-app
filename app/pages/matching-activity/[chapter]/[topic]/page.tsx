@@ -102,29 +102,89 @@ function MatchingActivity({
         <h1 className="text-5xl font-semibold">
           {selectedChapterStr} {selectedTopicStr} Term Matching
         </h1>
-        <div>
+        <div className="grid grid-cols-4">
           <MatchOption
             content={contents[0]}
-            attr="english"
+            side="front"
             focused={focus}
+            completed={false}
             handleClick={handleClick}
           ></MatchOption>
           <MatchOption
             content={contents[0]}
-            attr="english"
+            side="front"
             focused={focus}
+            completed={false}
             handleClick={handleClick}
           ></MatchOption>
           <MatchOption
             content={contents[0]}
-            attr="english"
+            side="front"
             focused={focus}
+            completed={false}
             handleClick={handleClick}
           ></MatchOption>
           <MatchOption
             content={contents[0]}
-            attr="english"
+            side="front"
             focused={focus}
+            completed={false}
+            handleClick={handleClick}
+          ></MatchOption>
+          <MatchOption
+            content={contents[0]}
+            side="front"
+            focused={focus}
+            completed={false}
+            handleClick={handleClick}
+          ></MatchOption>
+          <MatchOption
+            content={contents[0]}
+            side="front"
+            focused={focus}
+            completed={false}
+            handleClick={handleClick}
+          ></MatchOption>
+          <MatchOption
+            content={contents[0]}
+            side="back"
+            focused={focus}
+            completed={false}
+            handleClick={handleClick}
+          ></MatchOption>
+          <MatchOption
+            content={contents[0]}
+            side="back"
+            focused={focus}
+            completed={false}
+            handleClick={handleClick}
+          ></MatchOption>
+          <MatchOption
+            content={contents[0]}
+            side="back"
+            focused={focus}
+            completed={false}
+            handleClick={handleClick}
+          ></MatchOption>
+          <MatchOption
+            content={contents[0]}
+            side="back"
+            focused={focus}
+            completed={false}
+            handleClick={handleClick}
+          ></MatchOption>
+          <MatchOption
+            content={contents[0]}
+            side="back"
+            focused={focus}
+            completed={false}
+            handleClick={handleClick}
+          ></MatchOption>
+          <MatchOption
+            content={contents[0]}
+            side="back"
+            focused={focus}
+            completed={false}
             handleClick={handleClick}
           ></MatchOption>
         </div>

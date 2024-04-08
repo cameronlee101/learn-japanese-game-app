@@ -2,19 +2,21 @@ import React, { useEffect, useRef } from "react";
 import styles from "./MatchOption.module.css";
 import { Content } from "@/app/utils/content-utils";
 import classNames from "classnames";
+import { getText } from "./MatchOption-utils";
 
 type MatchOptionProps = {
   content: Content;
-  attr: string;
+  side: "front"|"back";
   focused: boolean;
+  completed: boolean;
   handleClick: (e: React.MouseEvent) => void;
 };
 
-// TODO: change attr to something else
 const MatchOption = ({
   content,
-  attr,
+  side,
   focused,
+  completed,
   handleClick,
 }: MatchOptionProps) => {
   const matchOptionRef = useRef<HTMLDivElement>(null);
@@ -29,14 +31,14 @@ const MatchOption = ({
 
   return (
     <div
-      className={classNames(styles.matchOption, focused && styles.focused)}
+      className={classNames(styles.matchOption, focused && styles.focused, completed && styles.completed)}
       ref={matchOptionRef}
       data-test="matchOption"
       onMouseUp={(e) => {
         handleClick(e);
       }}
     >
-      {content[attr]}
+      {getText(content, side)}
     </div>
   );
 };
