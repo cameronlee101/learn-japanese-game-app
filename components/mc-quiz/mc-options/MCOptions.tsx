@@ -2,7 +2,7 @@
 import React, { useEffect, useState } from "react";
 import styles from "./MCOptions.module.css";
 import CheckOrX, { IMAGE_SIZE, symbolOptions } from "../../check-or-x/CheckOrX";
-import { Content } from "@/app/utils/content-utils";
+import { Content } from "@/utils/types";
 import { getMCOption } from "../MCQuiz-utils";
 
 enum validOptionStates {

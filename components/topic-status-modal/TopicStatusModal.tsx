@@ -1,4 +1,4 @@
-import { Chapters, Topics } from "@/app/utils/content-utils";
+import { Chapters, Topics } from "@/utils/types";
 import React from "react";
 import ReactDOM from "react-dom";
 

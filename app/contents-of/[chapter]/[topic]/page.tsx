@@ -1,9 +1,6 @@
 "use client";
-import {
-	Content,
-	fetchContent,
-	getFullExampleContentObject,
-} from "@/app/utils/content-utils";
+import { fetchContent, getFullExampleContentObject } from "@/utils/helper-fns";
+import { Content } from "@/utils/types";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { useQuery } from "@tanstack/react-query";

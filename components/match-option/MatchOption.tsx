@@ -1,15 +1,15 @@
 import React, { useEffect, useRef } from "react";
 import styles from "./MatchOption.module.css";
-import { Content } from "@/app/utils/content-utils";
+import { Content, Side } from "@/utils/types";
 import classNames from "classnames";
 import { getText } from "./MatchOption-utils";
 
 type MatchOptionProps = {
 	content: Content;
-	side: "front" | "back";
+	side: Side;
 	focused: boolean;
 	completed: boolean;
-	handleClick: (e: React.MouseEvent) => void;
+	handleClick: (e: React.MouseEvent, cardText: string) => void;
 };
 
 const MatchOption = ({
@@ -39,7 +39,7 @@ const MatchOption = ({
 			ref={matchOptionRef}
 			data-test="matchOption"
 			onMouseUp={(e) => {
-				handleClick(e);
+				handleClick(e, getText(content, side));
 			}}
 		>
 			{getText(content, side)}

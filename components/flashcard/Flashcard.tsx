@@ -1,7 +1,7 @@
 "use client";
 import React, { useEffect, useRef, useState } from "react";
 import styles from "./Flashcard.module.css";
-import { Content } from "@/app/utils/content-utils";
+import { Content } from "@/utils/types";
 import { getFlashcardBack, getFlashcardFront } from "./Flashcard-utils";
 
 const SPACE = " ";

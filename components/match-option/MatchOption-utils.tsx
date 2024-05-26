@@ -1,15 +1,12 @@
 import {
-	ConjugationContent,
-	Content,
-	KanjiContent,
-	VocabContent,
 	isOrHasConjugationContent,
 	isOrHasKanjiContent,
 	isOrHasVocabContent,
-} from "@/app/utils/content-utils";
+} from "@/utils/helper-fns";
+import { Content, Side } from "@/utils/types";
 
 // TODO: make the strings that are returned more thorough
-export const getText = (content: Content, side: "front" | "back"): string => {
+export const getText = (content: Content, side: Side): string => {
 	if (isOrHasVocabContent(content)) {
 		return side == "front" ? content.japanese : content.english;
 	} else if (isOrHasKanjiContent(content)) {

@@ -1,4 +1,4 @@
-import { Content } from "@/app/utils/content-utils";
+import { Content } from "@/utils/types";
 import React from "react";
 import { getMCQuestion } from "../MCQuiz-utils";
 

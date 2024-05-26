@@ -1,7 +1,8 @@
 "use client";
 import React, { useEffect, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
-import { Content, fetchContent } from "@/app/utils/content-utils";
+import { fetchContent } from "@/utils/helper-fns";
+import { Content } from "@/utils/types";
 import styles from "./mc-quiz.module.css";
 import MCOptions from "@/components/mc-quiz/mc-options/MCOptions";
 import MCQuestion from "@/components/mc-quiz/mc-question/MCQuestion";

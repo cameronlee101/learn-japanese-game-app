@@ -1,6 +1,7 @@
 "use client";
 import React, { useEffect, useState } from "react";
-import { Chapters, Topics, fetchAllContent } from "@/app/utils/content-utils";
+import { fetchAllContent } from "@/utils/helper-fns";
+import { Chapters, Topics } from "@/utils/types";
 import { useRouter } from "next/navigation";
 import { useLocalStorage } from "@uidotdev/usehooks";
 import styles from "./selection.module.css";

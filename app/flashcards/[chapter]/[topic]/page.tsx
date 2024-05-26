@@ -1,6 +1,7 @@
 "use client";
 import React, { useEffect, useState } from "react";
-import { Content, fetchContent } from "@/app/utils/content-utils";
+import { fetchContent } from "@/utils/helper-fns";
+import { Content } from "@/utils/types";
 import Flashcard from "@/components/flashcard/Flashcard";
 import styles from "./flashcards.module.css";
 import { FaArrowCircleLeft, FaArrowCircleRight } from "react-icons/fa";
