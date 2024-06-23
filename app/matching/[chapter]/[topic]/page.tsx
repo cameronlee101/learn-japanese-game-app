@@ -11,11 +11,12 @@ import { useRouter } from "next/navigation";
 import React, { useEffect, useState } from "react";
 import styles from "./matching.module.css";
 import classNames from "classnames";
+import ProgressIndicator from "@/components/general/ProgressIndicator";
 
 type ChosenOption = {
 	x: number;
 	y: number;
-	text: string;
+	indexAndSide: IndexAndSide;
 };
 
 const NUM_OF_PAIRS = 6;
@@ -45,16 +46,15 @@ function MatchingActivity({
 	const [checkOrXSymbol, setCheckOrXSymbol] = useState(symbolOptions.xMark);
 
 	// Game logic related states
-	const [curContentIndices, setCurContentIndices] = useState({
+	const [curContentIndexRange, setCurContentIndexRange] = useState({
 		first: 0,
-		last: 0,
+		last: -1,
 	});
 	const [rangeArray, setRangeArray] = useState<IndexAndSide[]>([]);
+	const [completedIndices, setCompletedIndices] = useState<number[]>([]);
 
 	const [firstOptionChosenInfo, setFirstOptionChosenInfo] =
 		useState<null | ChosenOption>(null);
-	// TODO: remove
-	const [focus, setFocus] = useState(false);
 
 	// Shuffles and updates the contents based on the result of the react query
 	useEffect(() => {
@@ -66,23 +66,30 @@ function MatchingActivity({
 		getNextContentIndices();
 	}, [contents]);
 
+	// Once the user matches all of the options currently displayed, moves to the next set of options after the animations finish
+	useEffect(() => {
+		if (completedIndices.length % NUM_OF_PAIRS == 0) {
+			setTimeout(() => {
+				getNextContentIndices();
+			}, 1000);
+		}
+	}, [completedIndices]);
+
 	// TODO: desc
 	useEffect(() => {
-		const { first, last } = curContentIndices;
-
-		console.log(curContentIndices);
-
 		const array: IndexAndSide[] = [];
 
-		for (let i = first; i <= last; i++) {
+		for (
+			let i = curContentIndexRange.first;
+			i <= curContentIndexRange.last;
+			i++
+		) {
 			array.push({ index: i, side: "front" });
 			array.push({ index: i, side: "back" });
 		}
 
-		console.log(array);
-
 		setRangeArray(shuffleArray(array));
-	}, [curContentIndices]);
+	}, [curContentIndexRange]);
 
 	// Shuffles and updates the contents based on the result of the react query
 	const setShuffledContents = () => {
@@ -109,44 +116,75 @@ function MatchingActivity({
 	// TODO: desc
 	const getNextContentIndices = (): void => {
 		if (contents.length != 1) {
-			if (contents.length == curContentIndices.last + 1) {
+			if (contents.length == curContentIndexRange.last + 1) {
 				// TODO
 				console.error("end game");
-			} else if (contents.length < curContentIndices.last + NUM_OF_PAIRS + 1) {
-				setCurContentIndices({
-					first: curContentIndices.last + 1,
+			} else if (
+				contents.length <
+				curContentIndexRange.last + NUM_OF_PAIRS + 1
+			) {
+				setCurContentIndexRange({
+					first: curContentIndexRange.last + 1,
 					last: contents.length - 1,
 				});
 			} else {
-				setCurContentIndices({
-					first: curContentIndices.last + 1,
-					last: curContentIndices.last + NUM_OF_PAIRS,
+				setCurContentIndexRange({
+					first: curContentIndexRange.last + 1,
+					last: curContentIndexRange.last + NUM_OF_PAIRS,
 				});
 			}
 		}
 	};
 
 	// Callback function passed to MatchOption components, handles logic for the first and second component that is clicked to see if they match
-	const handleClick = (e: React.MouseEvent, cardText: string) => {
-		setFocus(!focus);
+	const handleClick = (
+		e: React.MouseEvent,
+		indexAndSide: IndexAndSide,
+		wasCompleted: boolean
+	) => {
+		// if this option was already matched with it's counterpart, do nothing
+		if (wasCompleted) return;
 
+		// case: first option hasn't been selected yet
 		if (!firstOptionChosenInfo) {
-			setFirstOptionChosenInfo({ x: e.pageX, y: e.pageY, text: cardText });
-		} else {
-			setCheckOrX1Pos({
-				x: firstOptionChosenInfo.x - IMAGE_SIZE / 2,
-				y: firstOptionChosenInfo.y - IMAGE_SIZE / 2,
-			});
-			setCheckOrX2Pos({
-				x: e.pageX - IMAGE_SIZE / 2,
-				y: e.pageY - IMAGE_SIZE / 2,
+			setFirstOptionChosenInfo({
+				x: e.pageX,
+				y: e.pageY,
+				indexAndSide: indexAndSide,
 			});
 
-			// remove then add class to reset fading up animation
-			setAnimationClass("");
-			setTimeout(() => {
-				setAnimationClass(styles.fadeUp);
-			}, 1);
+			// case: first option has been chosen; checking if second option chosen is different to the first option chosen, in which case performs logic to see if the two options match
+			// otherwise, just cancels the first chosen option
+		} else {
+			if (
+				!(
+					firstOptionChosenInfo.indexAndSide.index == indexAndSide.index &&
+					firstOptionChosenInfo.indexAndSide.side == indexAndSide.side
+				)
+			) {
+				setCheckOrX1Pos({
+					x: firstOptionChosenInfo.x - IMAGE_SIZE / 2,
+					y: firstOptionChosenInfo.y - IMAGE_SIZE / 2,
+				});
+				setCheckOrX2Pos({
+					x: e.pageX - IMAGE_SIZE / 2,
+					y: e.pageY - IMAGE_SIZE / 2,
+				});
+
+				// checking if both the options match
+				if (firstOptionChosenInfo.indexAndSide.index == indexAndSide.index) {
+					setCompletedIndices([...completedIndices, indexAndSide.index]);
+					setCheckOrXSymbol(symbolOptions.checkMark);
+				} else {
+					setCheckOrXSymbol(symbolOptions.xMark);
+				}
+
+				// remove then add class in 1ms to reset fading up animation
+				setAnimationClass("");
+				setTimeout(() => {
+					setAnimationClass(styles.fadeUp);
+				}, 1);
+			}
 
 			setFirstOptionChosenInfo(null);
 		}
@@ -161,8 +199,20 @@ function MatchingActivity({
 						content={contents[curIndexAndSide.index]}
 						key={curIndexAndSide.index + "_" + curIndexAndSide.side}
 						side={curIndexAndSide.side}
-						focused={focus}
-						completed={false}
+						index={curIndexAndSide.index}
+						focused={
+							firstOptionChosenInfo &&
+							firstOptionChosenInfo.indexAndSide.index ==
+								curIndexAndSide.index &&
+							firstOptionChosenInfo.indexAndSide.side == curIndexAndSide.side
+								? true
+								: false
+						}
+						completed={
+							completedIndices.find((index) => curIndexAndSide.index == index)
+								? true
+								: false
+						}
 						handleClick={handleClick}
 					/>
 				))}
@@ -171,13 +221,11 @@ function MatchingActivity({
 	};
 
 	return (
-		<>
-			<div className="main-center">
-				<h1 className="text-5xl font-semibold">
-					{selectedChapterStr} {selectedTopicStr} Term Matching
-				</h1>
-				<div className="grid grid-cols-4 gap-2">{distributeCards()}</div>
-			</div>
+		<main className="main-center">
+			<h1 className="text-5xl font-semibold">
+				{selectedChapterStr} {selectedTopicStr} Term Matching
+			</h1>
+			<div className="grid grid-cols-4 gap-2">{distributeCards()}</div>
 			<div
 				className={classNames(animationClass, "absolute pointer-events-none")}
 				style={{ left: checkOrXPos1.x, top: checkOrXPos1.y, opacity: 0 }}
@@ -190,7 +238,12 @@ function MatchingActivity({
 			>
 				<CheckOrX symbol={checkOrXSymbol} />
 			</div>
-		</>
+			<ProgressIndicator
+				firstTimeCorrect={0}
+				completed={completedIndices.length}
+				total={contents.length}
+			/>
+		</main>
 	);
 }
 

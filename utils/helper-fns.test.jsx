@@ -1,6 +1,4 @@
 import {
-	Chapters,
-	Topics,
 	isOrHasVocabContent,
 	isOrHasKanjiContent,
 	getFullExampleContentObject,
@@ -8,6 +6,7 @@ import {
 	fetchContent,
 	fetchAllContent,
 } from "./helper-fns";
+import { Chapters, Topics } from "./types";
 import mockCollection from "./mockCollection.json";
 
 beforeEach(() => {

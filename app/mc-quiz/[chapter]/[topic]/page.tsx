@@ -3,7 +3,6 @@ import React, { useEffect, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 import { fetchContent } from "@/utils/helper-fns";
 import { Content } from "@/utils/types";
-import styles from "./mc-quiz.module.css";
 import MCOptions from "@/components/mc-quiz/mc-options/MCOptions";
 import MCQuestion from "@/components/mc-quiz/mc-question/MCQuestion";
 import {
@@ -11,6 +10,7 @@ import {
 	getMCQuestionString,
 } from "@/components/mc-quiz/MCQuiz-utils";
 import { useQuery } from "@tanstack/react-query";
+import ProgressIndicator from "@/components/general/ProgressIndicator";
 
 function MCQuiz({ params }: { params: { chapter: string; topic: string } }) {
 	const router = useRouter();
@@ -150,20 +150,11 @@ function MCQuiz({ params }: { params: { chapter: string; topic: string } }) {
 							otherOptions={getMCOptions().incorrect}
 						/>
 					</div>
-					<div className="flex flex-col mt-10 items-center justify-center">
-						<p
-							className={styles.progressIndicator}
-							data-test="correct-answers-indicator"
-						>
-							First Guess Correct Answers: {correctAnswersNum}
-						</p>
-						<p
-							className={styles.progressIndicator}
-							data-test="progress-indicator"
-						>
-							Progress: {currentIndex}/{contents.length}
-						</p>
-					</div>
+					<ProgressIndicator
+						firstTimeCorrect={correctAnswersNum}
+						completed={currentIndex}
+						total={contents.length}
+					/>
 				</div>
 			)}
 			{!playingGame && (
