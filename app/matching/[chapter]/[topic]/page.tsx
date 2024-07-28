@@ -12,6 +12,7 @@ import React, { useEffect, useState } from "react";
 import styles from "./matching.module.css";
 import classNames from "classnames";
 import ProgressIndicator from "@/components/general/ProgressIndicator";
+import { getText } from "@/components/match-option/MatchOption-utils";
 
 type ChosenOption = {
 	x: number;
@@ -52,9 +53,23 @@ function MatchingActivity({
 	});
 	const [rangeArray, setRangeArray] = useState<IndexAndSide[]>([]);
 	const [completedIndices, setCompletedIndices] = useState<number[]>([]);
+	const [playingGame, setPlayingGame] = useState(true);
+
+	const [wrongAnswersIndices, setWrongAnswersIndices] = useState<number[]>([]);
 
 	const [firstOptionChosenInfo, setFirstOptionChosenInfo] =
 		useState<null | ChosenOption>(null);
+
+	// Resets all the states (effectively resetting the game)
+	const resetStates = () => {
+		setCurContentIndexRange({
+			first: 0,
+			last: -1,
+		});
+		setWrongAnswersIndices([]);
+		setCompletedIndices([]);
+		setPlayingGame(true);
+	};
 
 	// Shuffles and updates the contents based on the result of the react query
 	useEffect(() => {
@@ -68,7 +83,10 @@ function MatchingActivity({
 
 	// Once the user matches all of the options currently displayed, moves to the next set of options after the animations finish
 	useEffect(() => {
-		if (completedIndices.length % NUM_OF_PAIRS == 0) {
+		if (
+			completedIndices.length % NUM_OF_PAIRS == 0 ||
+			completedIndices.length == contents.length
+		) {
 			setTimeout(() => {
 				getNextContentIndices();
 			}, 1000);
@@ -117,8 +135,7 @@ function MatchingActivity({
 	const getNextContentIndices = (): void => {
 		if (contents.length != 1) {
 			if (contents.length == curContentIndexRange.last + 1) {
-				// TODO
-				console.error("end game");
+				setPlayingGame(false);
 			} else if (
 				contents.length <
 				curContentIndexRange.last + NUM_OF_PAIRS + 1
@@ -177,6 +194,17 @@ function MatchingActivity({
 					setCheckOrXSymbol(symbolOptions.checkMark);
 				} else {
 					setCheckOrXSymbol(symbolOptions.xMark);
+
+					if (
+						!wrongAnswersIndices.find((index) => {
+							return indexAndSide.index == index;
+						})
+					) {
+						setWrongAnswersIndices([
+							...wrongAnswersIndices,
+							indexAndSide.index,
+						]);
+					}
 				}
 
 				// remove then add class in 1ms to reset fading up animation
@@ -225,24 +253,86 @@ function MatchingActivity({
 			<h1 className="text-5xl font-semibold">
 				{selectedChapterStr} {selectedTopicStr} Term Matching
 			</h1>
-			<div className="grid grid-cols-4 gap-2">{distributeCards()}</div>
-			<div
-				className={classNames(animationClass, "absolute pointer-events-none")}
-				style={{ left: checkOrXPos1.x, top: checkOrXPos1.y, opacity: 0 }}
-			>
-				<CheckOrX symbol={checkOrXSymbol} />
-			</div>
-			<div
-				className={classNames(animationClass, "absolute pointer-events-none")}
-				style={{ left: checkOrXPos2.x, top: checkOrXPos2.y, opacity: 0 }}
-			>
-				<CheckOrX symbol={checkOrXSymbol} />
-			</div>
-			<ProgressIndicator
-				firstTimeCorrect={0}
-				completed={completedIndices.length}
-				total={contents.length}
-			/>
+			{playingGame && (
+				<>
+					<div className="grid grid-cols-4 gap-2">{distributeCards()}</div>
+					<div
+						className={classNames(
+							animationClass,
+							"absolute pointer-events-none"
+						)}
+						style={{ left: checkOrXPos1.x, top: checkOrXPos1.y, opacity: 0 }}
+					>
+						<CheckOrX symbol={checkOrXSymbol} />
+					</div>
+					<div
+						className={classNames(
+							animationClass,
+							"absolute pointer-events-none"
+						)}
+						style={{ left: checkOrXPos2.x, top: checkOrXPos2.y, opacity: 0 }}
+					>
+						<CheckOrX symbol={checkOrXSymbol} />
+					</div>
+					<ProgressIndicator
+						firstTimeCorrect={contents.length - wrongAnswersIndices.length}
+						completed={completedIndices.length}
+						total={contents.length}
+					/>
+				</>
+			)}
+			{!playingGame && (
+				<>
+					<p className="text-xl mt-8">
+						Game Over! <br />
+						Total First Guess Correct Answers:{" "}
+						{contents.length - wrongAnswersIndices.length}/{contents.length}
+					</p>
+					<div className="mt-8">
+						{wrongAnswersIndices.length == 0 ? (
+							<>
+								<p className="text-xl">
+									Congratulations! You got all questions perfect!
+								</p>
+							</>
+						) : (
+							<>
+								<p className="text-xl mb-4">
+									Here is the list of questions you got incorrect on the first
+									guess:
+								</p>
+								<div className="overflow-x-auto w-full">
+									<table className="table table-striped-columns table-hover table-bordered table-sm">
+										<thead>
+											<tr>
+												<th className="w-1/2">Question</th>
+												<th className="w-1/2">Answer</th>
+											</tr>
+										</thead>
+										<tbody className="table-group-divider">
+											{wrongAnswersIndices.map((index) => (
+												<tr key={index}>
+													<td>{getText(contents[index], "front")}</td>
+													<td>{getText(contents[index], "back")}</td>
+												</tr>
+											))}
+										</tbody>
+									</table>
+								</div>
+							</>
+						)}
+						<button
+							className="bg-slate-500 hover:bg-slate-700 text-white text-xl font-bold py-1 px-8 rounded-full mt-20"
+							onMouseUp={() => {
+								resetStates();
+								setShuffledContents();
+							}}
+						>
+							Play Again
+						</button>
+					</div>
+				</>
+			)}
 		</main>
 	);
 }
